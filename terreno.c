@@ -10,9 +10,9 @@ struct terreno{
 
 Terreno novoTerreno(char tipo, float velocidade)
 {
-    Terreno terrTemp = mallocSafe(sizeof(*Terreno));
+    Terreno terrTemp = mallocSafe(sizeof(Terreno*));
 
-    terrTemp->char = tipo;
+    terrTemp->tipo = tipo;
     terrTemp->velocidade = velocidade;
 
     return terrTemp;

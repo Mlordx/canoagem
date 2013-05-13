@@ -1,3 +1,6 @@
+#define AGUA '.'
+#define TERRA '#'
+
 typedef struct terreno *Terreno;
 
 Terreno novoTerreno(char tipo, float velocidade);

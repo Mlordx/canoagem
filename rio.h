@@ -1,13 +1,17 @@
+#define PROB_OBST 0.2
+#define VAR_MARG 1
+#define FLUXO_DEFAULT 1
+#define TAM_MIN_DEFAULT 30
 
-typedef Rio *Linha;
 
-void atualizaRio();
+typedef struct rio *Rio;
 
-void setFluxo(float fluxo);
+void atualizaRio(Rio);
+
+void rioInit(Rio);
 
 void desenhaRio();
 
-void setVarMargem(int varMax, int varMin);
+Rio alocaRio(int lin, int col, float fluxo, int tamMin);
 
-void rioInit(int lin, int col);
 
