@@ -1,9 +1,10 @@
 #include "terreno.h"
 
-typedef struct celula *Celula;
+typedef struct fila *Fila;
 typedef Terreno* Item;
 
-Celula filaInit();
-Celula insereFila(Celula, Item);
-Item removeFila(Celula);
-void freeFila(Celula);
+Fila filaInit();
+void insereFila(Fila, Item);
+Item removeFila(Fila);
+int filaVazia();
+void freeFila(Fila);

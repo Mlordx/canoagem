@@ -1,3 +1,6 @@
+#ifndef TERRENO_H
+#define TERRENO_H
+
 #define AGUA '.'
 #define TERRA '#'
 
@@ -15,3 +18,5 @@ char getTipo(Terreno);
 void setVelocidade(Terreno, float);
 
 void setTipo(Terreno, char);
+
+#endif

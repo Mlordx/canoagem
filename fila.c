@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "utils.h"
 
+typedef struct celula *Celula;
 
 struct celula
 {
@@ -10,28 +11,35 @@ struct celula
     Celula prox;
 };
 
-
-Celula filaInit()
+struct fila
 {
-  Celula cabeca = mallocSafe(sizeof(struct celula));
-  cabeca->prox = cabeca;
-  return cabeca;
+  Celula cabeca;
+};
+
+
+Fila filaInit()
+{
+  Fila fila = mallocSafe(sizeof *fila);
+  fila->cabeca = mallocSafe(sizeof(struct celula));
+
+  fila->cabeca->prox = fila->cabeca;
+  return fila;
 }
 
-Celula insereFila(Celula cel, Item novo)
+void insereFila(Fila fila, Item novo)
 {
-    Celula novaCabeca;
+    Celula cel = fila->cabeca, novaCabeca;
+
     novaCabeca = mallocSafe(sizeof(struct celula));
     cel->item = novo;
     novaCabeca->prox = cel->prox;
     cel->prox = novaCabeca;
-
-    return novaCabeca;
+    fila->cabeca = novaCabeca;
 }
 
-Item removeFila(Celula cabeca)
+Item removeFila(Fila fila)
 {
-    Celula x;
+    Celula x, cabeca = fila->cabeca;
     Item item;
     x = cabeca->prox;
     cabeca->prox = x->prox;
@@ -40,8 +48,14 @@ Item removeFila(Celula cabeca)
 
     return item;
 }
-void freeFila(Celula cabeca)
+void freeFila(Fila fila)
 {
-    while(cabeca->prox!= cabeca)
-        removeFila(cabeca);
+    while(!filaVazia(fila))
+        removeFila(fila);
+    free(fila);
+}
+
+int filaVazia(Fila fila)
+{
+  return (fila->cabeca->prox == fila->cabeca);
 }
