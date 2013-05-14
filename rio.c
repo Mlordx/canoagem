@@ -26,7 +26,7 @@ struct rio
 
 void atualizaRio(Rio nilo)
 {
-    int i;
+    int i, numAleatorio;
     Fila fila = nilo->linhas;
     linhaT temp;
 
@@ -39,6 +39,11 @@ void atualizaRio(Rio nilo)
 
 
     temp= geraLinha(temp, nilo);
+    if(rand()*1.0/RAND_MAX <= PROB_OBST)
+    {
+      numAleatorio = rand()%(getMargDir(temp)-getMargEsq(temp)-2);
+      geraObstaculo(temp,numAleatorio);
+    }
     insereFila(fila,temp);
 }
 
@@ -52,8 +57,10 @@ linhaT geraLinha(linhaT linhaAnt, Rio nilo)
     printf("HUEEEE: %d %d\n", margDir, margEsq);
 
     do{
-         novaMargDir = (((1.0*rand())/RAND_MAX) < 0.5)? (margDir - VAR_MARG) : (margDir + VAR_MARG);
-         novaMargEsq = (((1.0*rand())/RAND_MAX) < 0.5)? (margEsq - VAR_MARG) : (margEsq + VAR_MARG);
+         /*novaMargDir = (((1.0*rand())/RAND_MAX) < 0.5)? (margDir - VAR_MARG) : (margDir + VAR_MARG);*/
+        /* novaMargEsq = (((1.0*rand())/RAND_MAX) < 0.5)? (margEsq - VAR_MARG) : (margEsq + VAR_MARG);*/
+        novaMargDir = rand()%3 -1 + margDir;
+        novaMargEsq = rand()%3 -1 + margEsq;
 
     } while(novaMargDir - novaMargEsq < nilo->tamMin || novaMargEsq <= 0 || novaMargDir >= nilo->col-1);
 

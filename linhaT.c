@@ -64,8 +64,20 @@ int getMargDir(linhaT lin)
   return lin->margD;
 }
 
-linhaT geraObstaculo(linhaT lin, int tam)
+void geraObstaculo(linhaT lin, int tam)
 {
+  int inicio,i;
 
+
+  if(tam>=lin->tam) exit(-1);
+
+
+  inicio = rand()%(lin->margD-tam);
+
+  for(i=0;i<tam;i++)
+  {
+    /*freeTerreno(lin->linha[inicio+i]);*/
+    lin->linha[inicio+i] = novoTerreno(TERRA,0);
+  }
 }
 
