@@ -26,25 +26,29 @@ struct rio
 
 void atualizaRio(Rio nilo)
 {
-    int i, numAleatorio;
+    int i, numAleatorio, ultimaBarr = 0;
     Fila fila = nilo->linhas;
-    linhaT temp;
+    linhaT temp, novaLinha;
 
-    freeLinha(removeFila(fila));
+    temp = removeFila(fila);
+    novaLinha = geraLinha(temp, nilo);
+    insereFila(fila,novaLinha);
+
     for(i=0;i<nilo->lin-1; i++)
     {
-      temp = removeFila(fila);
+      if(temBarreira(temp) && i<=nilo->lin) ultimaBarr = 1; /*Verifica a distancia da ultima barreira*/
       insereFila(fila, temp);
+      temp = removeFila(fila);
     }
 
+    freeLinha(temp);
 
-    temp= geraLinha(temp, nilo);
-    if(rand()*1.0/RAND_MAX <= PROB_OBST)
+    if(!ultimaBarr && rand()*1.0/RAND_MAX <= PROB_OBST)
     {
-      numAleatorio = rand()%(getMargDir(temp)-getMargEsq(temp)-2);
-      geraObstaculo(temp,numAleatorio);
+      numAleatorio = rand()%((getMargDir(novaLinha)-getMargEsq(novaLinha))/2-TAM_MIN_BARREIRA)+TAM_MIN_BARREIRA;
+      geraObstaculo(novaLinha,numAleatorio);
     }
-    insereFila(fila,temp);
+
 }
 
 linhaT geraLinha(linhaT linhaAnt, Rio nilo)
@@ -75,6 +79,7 @@ void rioInit(Rio nilo)
 {
     int i, margEsq, margDir, margMax;
     linhaT linhaTemp;
+    srand(666);
 
 
     margMax = (nilo->col - nilo->tamMin)/2;

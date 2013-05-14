@@ -4,12 +4,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+
 struct linhat
 {
   Terreno* linha;
   int margE;
   int margD;
   int tam;
+  int barreira;
 };
 
 linhaT novaLinha(int tam, int margE, int margD)
@@ -25,6 +27,7 @@ linhaT novaLinha(int tam, int margE, int margD)
   lin->margE = margE;
   lin->margD = margD;
   lin->tam = tam;
+  lin->barreira = 0;
 
   return lin;
 
@@ -64,6 +67,11 @@ int getMargDir(linhaT lin)
   return lin->margD;
 }
 
+int temBarreira(linhaT lin)
+{
+  return lin->barreira;
+}
+
 void geraObstaculo(linhaT lin, int tam)
 {
   int inicio,i;
@@ -72,12 +80,13 @@ void geraObstaculo(linhaT lin, int tam)
   if(tam>=lin->tam) exit(-1);
 
 
-  inicio = rand()%(lin->margD-tam);
+  inicio = lin->margE+1+(rand()%(tam));
 
   for(i=0;i<tam;i++)
   {
     /*freeTerreno(lin->linha[inicio+i]);*/
     lin->linha[inicio+i] = novoTerreno(TERRA,0);
   }
+  lin->barreira = 1;
 }
 

@@ -23,9 +23,9 @@ int main(int argc, char* argv[])
 
 
 
-    req.tv_sec = 0;
-    req.tv_nsec = milisec * 1000000L;
-    nanosleep(&req, (struct timespec *)NULL);
+      req.tv_sec = 0;
+      req.tv_nsec = milisec * 1000000L;
+      nanosleep(&req, (struct timespec *)NULL);
 
 
         system("clear");
