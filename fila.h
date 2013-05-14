@@ -1,7 +1,7 @@
-#include "terreno.h"
+#include "linhaT.h"
 
 typedef struct fila *Fila;
-typedef Terreno* Item;
+typedef linhaT Item;
 
 Fila filaInit();
 void insereFila(Fila, Item);

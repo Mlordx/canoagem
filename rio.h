@@ -1,7 +1,7 @@
 #define PROB_OBST 0.2
 #define VAR_MARG 1
 #define FLUXO_DEFAULT 1
-#define TAM_MIN_DEFAULT 30
+#define TAM_MIN_DEFAULT 20
 
 
 typedef struct rio *Rio;
