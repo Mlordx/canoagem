@@ -36,7 +36,7 @@ void atualizaRio(Rio nilo)
 
     for(i=0;i<nilo->lin-1; i++)
     {
-      if(temBarreira(temp) && i<=nilo->lin) ultimaBarr = 1; /*Verifica a distancia da ultima barreira*/
+      if(temBarreira(temp) && i<=nilo->lin/10) ultimaBarr = 1; /*Verifica a distancia da ultima barreira*/
       insereFila(fila, temp);
       temp = removeFila(fila);
     }
@@ -61,8 +61,6 @@ linhaT geraLinha(linhaT linhaAnt, Rio nilo)
     printf("HUEEEE: %d %d\n", margDir, margEsq);
 
     do{
-         /*novaMargDir = (((1.0*rand())/RAND_MAX) < 0.5)? (margDir - VAR_MARG) : (margDir + VAR_MARG);*/
-        /* novaMargEsq = (((1.0*rand())/RAND_MAX) < 0.5)? (margEsq - VAR_MARG) : (margEsq + VAR_MARG);*/
         novaMargDir = rand()%3 -1 + margDir;
         novaMargEsq = rand()%3 -1 + margEsq;
 

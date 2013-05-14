@@ -79,8 +79,7 @@ void geraObstaculo(linhaT lin, int tam)
 
   if(tam>=lin->tam) exit(-1);
 
-
-  inicio = lin->margE+1+(rand()%(tam));
+  inicio = lin->margE+1+(rand()%(lin->margD-lin->margE-1-(tam)));
 
   for(i=0;i<tam;i++)
   {
