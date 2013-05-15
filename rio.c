@@ -36,7 +36,7 @@ void atualizaRio(Rio nilo)
 
     for(i=0;i<nilo->lin-1; i++)
     {
-      if(temBarreira(temp) && i<=nilo->lin/10) ultimaBarr = 1; /*Verifica a distancia da ultima barreira*/
+      if(temBarreira(temp) && i<=nilo->lin/4) ultimaBarr = 1; /*Verifica a distancia da ultima barreira*/
       insereFila(fila, temp);
       temp = removeFila(fila);
     }
@@ -45,8 +45,16 @@ void atualizaRio(Rio nilo)
 
     if(!ultimaBarr && rand()*1.0/RAND_MAX <= PROB_OBST)
     {
+      novaLinha = removeFila(fila);
+      temp = removeFila(fila);
+
       numAleatorio = rand()%((getMargDir(novaLinha)-getMargEsq(novaLinha))/2-TAM_MIN_BARREIRA)+TAM_MIN_BARREIRA;
       geraObstaculo(novaLinha,numAleatorio);
+      igualaFluxo(temp, novaLinha);
+      insereFila(fila, novaLinha);
+      insereFila(fila, temp);
+
+      for(i=0;i<nilo->lin-2;i++) insereFila(fila,removeFila(fila));
     }
 
 }
@@ -54,6 +62,7 @@ void atualizaRio(Rio nilo)
 linhaT geraLinha(linhaT linhaAnt, Rio nilo)
 {
     int novaMargEsq, novaMargDir, margDir, margEsq;
+    linhaT linhaNova;
 
     margEsq = getMargEsq(linhaAnt);
     margDir = getMargDir(linhaAnt);
@@ -66,8 +75,11 @@ linhaT geraLinha(linhaT linhaAnt, Rio nilo)
 
     } while(novaMargDir - novaMargEsq < nilo->tamMin || novaMargEsq <= 0 || novaMargDir >= nilo->col-1);
 
-    return novaLinha(nilo->col,novaMargEsq, novaMargDir);
+    linhaNova = novaLinha(nilo->col,novaMargEsq, novaMargDir);
+    igualaFluxo(linhaAnt, linhaNova);
 
+
+    return linhaNova;
 
 
 
@@ -85,6 +97,7 @@ void rioInit(Rio nilo)
     margDir = nilo->col - (rand()%margMax+1);
 
     linhaTemp = novaLinha(nilo->col, margEsq,margDir);
+    setFluxo(linhaTemp, nilo->fluxo);
     insereFila(nilo->linhas,linhaTemp);
 
     for(i=1; i < nilo->lin; i++)
@@ -131,16 +144,4 @@ Rio alocaRio(int lin, int col, float fluxo, int tamMin)
 
 }
 
-/*static Terreno** alocaFase(int lin, int col)
-{
-    int i, j;
-    Terreno** fase = mallocSafe(lin*sizeof(Terreno*));
 
-    for(i = 0; i < lin; i++)
-    {
-        fase[i] = mallocSafe(col*sizeof(Terreno));
-        for(j=0;j<col;j++) fase[i][j] = NULL;
-    }
-
-    return fase;
-}*/
