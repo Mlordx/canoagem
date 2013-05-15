@@ -20,3 +20,9 @@ int temBarreira(linhaT);
 void imprimeLinha(linhaT);
 
 void freeLinha(linhaT);
+
+float getFluxo(linhaT);
+
+void setFluxo(linhaT, float);
+
+void igualaFluxo(linhaT, linhaT);

@@ -89,3 +89,63 @@ void geraObstaculo(linhaT lin, int tam)
   lin->barreira = 1;
 }
 
+float getFluxo(linhaT lin)
+{
+  int soma = 0, i;
+
+  for(i=0;i < lin->tam; i++)
+    soma+= getVelocidade(lin->linha[i]);
+
+  return soma;
+}
+
+void setFluxo(linhaT lin, float fluxoNovo)
+{
+  int i;
+  float fluxoAnt;
+
+  fluxoAnt = getFluxo(lin);
+
+  for(i=0;i<lin->tam; i++)
+    setVelocidade(lin->linha[i], getVelocidade(lin->linha[i])*(fluxoNovo/fluxoAnt));
+
+
+}
+
+
+void igualaFluxo(linhaT lin1, linhaT lin2)
+{
+  int i;
+  float fluxo, velTemp;
+
+  fluxo = getFluxo(lin1);
+  setFluxo(lin1,1); /*Para tratarmos com mais facilidade das velocidades*/
+
+  for(i=1; i<lin1->tam; i++)
+  {
+
+    if(getTipo(lin2->linha[i-1]) == TERRA)
+    {
+      setVelocidade(lin2->linha[i], 0);
+      continue;
+    }
+    if(getTipo(lin2->linha[i])== AGUA)
+    {
+      if(getTipo(lin1->linha[i])== TERRA) setVelocidade(lin2->linha[i],0.1);
+      else
+      {
+        velTemp = getVelocidade(lin1->linha[i]) + ((rand()%3) -1)/10;
+        if(velTemp<0) velTemp+= 0.1;
+
+        setVelocidade(lin2->linha[i], velTemp);
+      }
+    }
+  }
+
+  setFluxo(lin1,fluxo);
+  setFluxo(lin2,fluxo);
+
+
+
+}
+
