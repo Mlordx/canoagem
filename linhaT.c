@@ -128,7 +128,6 @@ void igualaFluxo(linhaT lin1, linhaT lin2)
   float fluxo, velTemp;
 
   fluxo = getFluxo(lin1);
-  printf("FLUXO %f\n", fluxo);
   setFluxo(lin1,1); /*Para tratarmos com mais facilidade das velocidades*/
 
   for(i=1; i<lin1->tam; i++)
@@ -154,7 +153,6 @@ void igualaFluxo(linhaT lin1, linhaT lin2)
 
   setFluxo(lin1,fluxo);
   setFluxo(lin2,fluxo);
-  printf("FLUXO %f\n", getFluxo(lin2));
 
 
 
