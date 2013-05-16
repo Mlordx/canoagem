@@ -41,12 +41,20 @@ linhaT novaLinha(int tam, int margE, int margD)
 
 }
 
+void imprimeLinhaN(linhaT temp)
+{
+  int i;
+  for (i=0; i<temp->tam; i++)
+    printf("%0.2f|", getVelocidade(temp->linha[i]));
+  printf("    %f\n", getFluxo(temp));
+}
+
 void imprimeLinha(linhaT temp)
 {
   int i;
   for (i=0; i<temp->tam; i++)
    printf("%c",getTipo(temp->linha[i]));
-  printf("\n");
+  printf("  %f\n", getFluxo(temp));
 }
 
 Terreno getTerreno(linhaT linha, int ind)
@@ -88,6 +96,9 @@ void geraObstaculo(linhaT lin, int tam)
   if(tam>=lin->tam) exit(-1);
 
   inicio = lin->margE+1+(rand()%(lin->margD-lin->margE-1-(tam)));
+  setVelocidade(lin->linha[inicio-1],0);
+  setVelocidade(lin->linha[inicio+tam],0);
+
 
   for(i=0;i<tam;i++)
   {
@@ -130,10 +141,10 @@ void igualaFluxo(linhaT lin1, linhaT lin2)
   fluxo = getFluxo(lin1);
   setFluxo(lin1,1); /*Para tratarmos com mais facilidade das velocidades*/
 
-  for(i=1; i<lin1->tam; i++)
+  for(i=1; i<(lin1->tam-1); i++)
   {
 
-    if(getTipo(lin2->linha[i-1]) == TERRA)
+    if(getTipo(lin2->linha[i-1]) == TERRA || getTipo(lin2->linha[i+1]) == TERRA)
     {
       setVelocidade(lin2->linha[i], 0);
       continue;
@@ -144,7 +155,7 @@ void igualaFluxo(linhaT lin1, linhaT lin2)
       else
       {
         velTemp = getVelocidade(lin1->linha[i]) + (1.0*(rand()%3) -1)/10;
-        if(velTemp<0) velTemp+= 0.1;
+        if(velTemp<0) velTemp= 0.1;
 
         setVelocidade(lin2->linha[i], velTemp);
       }

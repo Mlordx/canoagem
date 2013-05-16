@@ -1,6 +1,7 @@
 #include "terreno.h"
 
 
+void imprimeLinhaN(linhaT);
 
 
 typedef struct linhat *linhaT;

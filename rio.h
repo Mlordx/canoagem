@@ -1,6 +1,6 @@
 #define PROB_OBST 0.3
 #define VAR_MARG 1
-#define FLUXO_DEFAULT 100
+#define FLUXO_DEFAULT 1
 #define TAM_MIN_DEFAULT 5
 #define TAM_MIN_BARREIRA 1
 

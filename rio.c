@@ -45,16 +45,11 @@ void atualizaRio(Rio nilo)
 
     if(!ultimaBarr && rand()*1.0/RAND_MAX <= PROB_OBST)
     {
-      novaLinha = removeFila(fila);
-      temp = removeFila(fila);
+
 
       numAleatorio = rand()%((getMargDir(novaLinha)-getMargEsq(novaLinha))/2-TAM_MIN_BARREIRA)+TAM_MIN_BARREIRA;
       geraObstaculo(novaLinha,numAleatorio);
-      igualaFluxo(temp, novaLinha);
-      insereFila(fila, novaLinha);
-      insereFila(fila, temp);
-
-      for(i=0;i<nilo->lin-2;i++) insereFila(fila,removeFila(fila));
+      setFluxo(novaLinha,nilo->fluxo);
     }
 
 }
@@ -120,6 +115,14 @@ void desenhaRio(Rio nilo)
     imprimeLinha(temp);
     insereFila(nilo->linhas,temp);
   }
+
+  for(i=0; i<nilo->lin; i++)
+  {
+    temp = removeFila(nilo->linhas);
+    imprimeLinhaN(temp);
+    insereFila(nilo->linhas,temp);
+  }
+
 
 }
 

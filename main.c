@@ -10,10 +10,10 @@
 int main(int argc, char* argv[])
 {
     Rio nilo;
-    int milisec = 100; // length of time to sleep, in miliseconds
+    int milisec = 10; // length of time to sleep, in miliseconds
     struct timespec req = {0};
 
-    nilo = alocaRio(30,100,0,0);
+    nilo = alocaRio(15,30,0,0);
     rioInit(nilo);
 
 
