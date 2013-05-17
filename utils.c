@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
+#include <time.h>
 
 
 void* mallocSafe (size_t n){
@@ -10,4 +11,15 @@ void* mallocSafe (size_t n){
     exit(-1);
   }
   return pt;
+}
+
+void meuSleep(int ms)
+{
+  struct timespec req = {0};
+
+  req.tv_sec = 0;
+  req.tv_nsec = ms * 1000000L;
+  nanosleep(&req, (struct timespec *)NULL);
+
+
 }
