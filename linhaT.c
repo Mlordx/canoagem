@@ -90,12 +90,14 @@ int temBarreira(linhaT lin)
 
 void geraObstaculo(linhaT lin, int tam)
 {
-  int inicio,i;
+  int inicio,i, inicioMax;
 
 
   if(tam>=lin->tam) exit(-1);
 
-  inicio = lin->margE+1+(rand()%(lin->margD-lin->margE-1-(tam)));
+  if((inicioMax = lin->margD-lin->margE -1 -tam)<5) return;
+
+  inicio = lin->margE+1+(rand()%(inicioMax));
   setVelocidade(lin->linha[inicio-1],0);
   setVelocidade(lin->linha[inicio+tam],0);
 

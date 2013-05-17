@@ -26,7 +26,7 @@ struct rio
 
 void atualizaRio(Rio nilo)
 {
-    int i, numAleatorio, ultimaBarr = 0;
+    int i, numAleatorio, ultimaBarr = 0, tamMaxObs;
     Fila fila = nilo->linhas;
     linhaT temp, novaLinha;
 
@@ -45,9 +45,15 @@ void atualizaRio(Rio nilo)
 
     if(!ultimaBarr && rand()*1.0/RAND_MAX <= PROB_OBST)
     {
+      tamMaxObs = (getMargDir(novaLinha)-getMargEsq(novaLinha))*PORC_MAX_BARREIRA-TAM_MIN_BARREIRA;
 
+      if(tamMaxObs<=0)/*Precisa arrumar isso*/
+      {
+        setFluxo(novaLinha,nilo->fluxo);
+        return;
+      }
 
-      numAleatorio = rand()%((getMargDir(novaLinha)-getMargEsq(novaLinha))/2-TAM_MIN_BARREIRA)+TAM_MIN_BARREIRA;
+      numAleatorio = rand()%(tamMaxObs)+TAM_MIN_BARREIRA;
       geraObstaculo(novaLinha,numAleatorio);
       setFluxo(novaLinha,nilo->fluxo);
     }

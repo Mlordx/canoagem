@@ -3,6 +3,7 @@
 #define FLUXO_DEFAULT 1
 #define TAM_MIN_DEFAULT 5
 #define TAM_MIN_BARREIRA 1
+#define PORC_MAX_BARREIRA 1
 
 
 typedef struct rio *Rio;
