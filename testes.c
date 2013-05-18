@@ -38,4 +38,14 @@ int testaTudo(int iteracoes){
             printf("Falha no teste de fluxo\n")
             return -1;
         }
+
+  printf("Teste da variação maxima das margens\n");
+  nilo = alocaRio(100,30,0,0);
+
+    for(i=0;i<iteracoes;i++)
+        if(!atualizaRio(nilo)){
+            printf("Falha no teste\n")
+            return -1;
+        }
+
 }
