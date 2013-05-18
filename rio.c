@@ -3,7 +3,7 @@
 #include "rio.h"
 #include "utils.h"
 #include "terreno.h"
-#include "fila.h"
+#include "list.h"
 
 
 
@@ -14,7 +14,7 @@ linhaT geraLinha(linhaT linhaAnt, Rio nilo);
 
 struct rio
 {
-    Fila linhas;
+    List linhas;
     float fluxo;
     int tamMin;
     int lin;
@@ -27,23 +27,29 @@ struct rio
 void atualizaRio(Rio nilo)
 {
     int i, numAleatorio, ultimaBarr = 0, tamMaxObs;
-    Fila fila = nilo->linhas;
+    List lista = nilo->linhas;
     linhaT temp, novaLinha;
 
-    temp = removeFila(fila);
-    novaLinha = geraLinha(temp, nilo);
-    insereFila(fila,novaLinha);
+    mvEOL(lista);
+    mvNext(lista);
+    temp = removeList(lista);
 
-    for(i=0;i<nilo->lin-1; i++)
+    novaLinha = geraLinha(temp, nilo);
+    insertList(lista, temp);
+    mvNext(lista);
+
+    ultimaBarr = 0;
+    while(!isEOL(lista))
     {
-      if(temBarreira(temp) && i<=nilo->lin/4) ultimaBarr = 1; /*Verifica a distancia da ultima barreira*/
-      insereFila(fila, temp);
-      temp = removeFila(fila);
+      i++;
+      temp = removeList(lista);
+      insertList(lista,temp);
+      mvNext(lista);
+      mvNext(lista);
+      if(temBarreira(temp)) break;
     }
 
-    freeLinha(temp);
-
-    if(!ultimaBarr && rand()*1.0/RAND_MAX <= PROB_OBST)
+    if(ultimaBarr>(nilo->lin/4) && rand()*1.0/RAND_MAX <= PROB_OBST)
     {
       tamMaxObs = (getMargDir(novaLinha)-getMargEsq(novaLinha))*PORC_MAX_BARREIRA-TAM_MIN_BARREIRA;
 
@@ -57,6 +63,11 @@ void atualizaRio(Rio nilo)
       geraObstaculo(novaLinha,numAleatorio);
       setFluxo(novaLinha,nilo->fluxo);
     }
+
+    insertList(lista,novaLinha);
+    mvEOL(lista);
+    mvPrev(lista);
+    freeLinha(removeList(lista));
 
 }
 
@@ -99,12 +110,14 @@ void rioInit(Rio nilo)
 
     linhaTemp = novaLinha(nilo->col, margEsq,margDir);
     setFluxo(linhaTemp, nilo->fluxo);
-    insereFila(nilo->linhas,linhaTemp);
+    insertList(nilo->linhas,linhaTemp);
+    mvNext(nilo->linhas);
 
     for(i=1; i < nilo->lin; i++)
     {
          linhaTemp = geraLinha(linhaTemp, nilo);
-         insereFila(nilo->linhas, linhaTemp);
+         insertList(nilo->linhas, linhaTemp);
+         mvNext(nilo->linhas);
     }
 
 
@@ -112,22 +125,31 @@ void rioInit(Rio nilo)
 
 void desenhaRio(Rio nilo)
 {
-    int i;
-    linhaT temp;
+  int i;
+  linhaT temp;
 
-  for(i=0; i<nilo->lin; i++)
+  mvEOL(nilo->linhas);
+  mvNext(nilo->linhas);
+
+  while(!isEOL(nilo->linhas))
   {
-    temp = removeFila(nilo->linhas);
+    temp = removeList(nilo->linhas);
     imprimeLinha(temp);
-    insereFila(nilo->linhas,temp);
+    insertList(nilo->linhas,temp);
+    mvNext(nilo->linhas);
+    mvNext(nilo->linhas);
   }
 
-  for(i=0; i<nilo->lin; i++)
+  /*mvNext(nilo->linhas);
+
+  while(!isEOL(nilo->linhas))
   {
-    temp = removeFila(nilo->linhas);
+    temp = removeList(nilo->linhas);
     imprimeLinhaN(temp);
-    insereFila(nilo->linhas,temp);
-  }
+    insertList(nilo->linhas,temp);
+    mvNext(nilo->linhas);
+    mvNext(nilo->linhas);
+  }*/
 
 
 }
@@ -138,7 +160,7 @@ Rio alocaRio(int lin, int col, float fluxo, int tamMin)
 {
     Rio nilo = mallocSafe(sizeof (struct rio));
 
-    nilo->linhas = filaInit();
+    nilo->linhas = listInit();
     nilo->col = col;
     nilo->lin = lin;
 

@@ -19,7 +19,7 @@ struct lista
 
 };
 
-List listaInit()
+List listInit()
 {
   List list;
   list = mallocSafe(sizeof *list);
@@ -47,7 +47,7 @@ void mvEOL(List list)
   list->celAtual = list->cabeca;
 }
 
-void insertItem(List list, Item item)
+void insertList(List list, Item item)
 {
   Link newCel;
   newCel = mallocSafe(sizeof(struct celula));
@@ -59,7 +59,7 @@ void insertItem(List list, Item item)
   list->nItens++;
 }
 
-Item removeItem(List list)
+Item removeList(List list)
 {
   Link celTemp;
   Item itemTemp;
@@ -67,7 +67,9 @@ Item removeItem(List list)
   if(isEOL(list)) return NULL;
 
   celTemp = list->celAtual;
+
   mvPrev(list);
+
   list->celAtual->prox = celTemp->prox;
   celTemp->prox->ant = celTemp->ant;
   itemTemp = celTemp->item;

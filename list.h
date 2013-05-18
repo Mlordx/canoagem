@@ -5,7 +5,7 @@ typedef struct lista *List;
 
 typedef linhaT Item;
 
-List listaInit();
+List listInit();
 
 void mvNext(List);
 
@@ -13,9 +13,9 @@ void mvPrev(List);
 
 void mvEOL(List);
 
-void insertItem(List, Item);
+void insertList(List, Item);
 
-Item removeItem(List);
+Item removeList(List);
 
 int emptyList(List);
 
