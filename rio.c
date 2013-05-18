@@ -41,7 +41,7 @@ void atualizaRio(Rio nilo)
     ultimaBarr = 0;
     while(!isEOL(lista))
     {
-      i++;
+      ultimaBarr++;
       temp = removeList(lista);
       insertList(lista,temp);
       mvNext(lista);
@@ -63,9 +63,10 @@ void atualizaRio(Rio nilo)
       geraObstaculo(novaLinha,numAleatorio);
       setFluxo(novaLinha,nilo->fluxo);
     }
+    setFluxo(novaLinha, nilo->fluxo); /*Necessário devido a erro de precisão do float*/
 
-    insertList(lista,novaLinha);
     mvEOL(lista);
+    insertList(lista,novaLinha);
     mvPrev(lista);
     freeLinha(removeList(lista));
 
