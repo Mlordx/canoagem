@@ -87,3 +87,9 @@ int isEOL(List list)
   return (list->celAtual == list->cabeca);
 }
 
+int nItens(List list)
+{
+  return list->nItens;
+}
+
+

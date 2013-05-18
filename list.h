@@ -21,6 +21,8 @@ int emptyList(List);
 
 int isEOL(List);
 
+int nItens(List);
+
 
 
 
