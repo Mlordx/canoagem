@@ -11,7 +11,7 @@ typedef struct linhat *linhaT;
 
 linhaT novaLinha(int tam, int margE, int margD);
 
-void geraObstaculo(linhaT, int);
+int geraObstaculo(linhaT, int);
 
 Terreno getTerreno(linhaT, int);
 

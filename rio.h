@@ -5,12 +5,16 @@
 #define TAM_MIN_BARREIRA 1
 #define PORC_MAX_BARREIRA 1
 
+#define FALHA_OBST -1
+#define FALHA_ATUALIZA 0
+#define SUCESSO_ATUALIZA 1
+
 #include "linhaT.h"
 
 
 typedef struct rio *Rio;
 
-void atualizaRio(Rio);
+int atualizaRio(Rio);
 
 void rioInit(Rio);
 

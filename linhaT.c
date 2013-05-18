@@ -88,14 +88,22 @@ int temBarreira(linhaT lin)
   return lin->barreira;
 }
 
-void geraObstaculo(linhaT lin, int tam)
+int geraObstaculo(linhaT lin, int tam)
 {
   int inicio,i, inicioMax;
 
 
-  if(tam>=lin->tam) exit(-1);
+  if(tam>=lin->tam)
+  {
+    fprintf(stderr,"Erro ao criar obstáculo: Tamanho do obstáculo maior que do Rio\n");
+    return 0;
+  }
 
-  if((inicioMax = lin->margD-lin->margE -1 -tam)<5) return;
+  if((inicioMax = lin->margD-lin->margE -1 -tam)<5)
+  {
+    fprintf(stderr,"Erro ao criar obstáculo: Tamanho do obstáculo faria o fluxo zerar\n");
+    return 0;
+  }
 
   inicio = lin->margE+1+(rand()%(inicioMax));
   setVelocidade(lin->linha[inicio-1],0);
@@ -108,6 +116,8 @@ void geraObstaculo(linhaT lin, int tam)
     lin->linha[inicio+i] = novoTerreno(TERRA,0);
   }
   lin->barreira = 1;
+
+  return 1;
 }
 
 float getFluxo(linhaT lin)

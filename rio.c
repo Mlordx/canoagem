@@ -24,48 +24,74 @@ struct rio
 
 
 
-void atualizaRio(Rio nilo)
+int atualizaRio(Rio nilo)
 {
-    int numAleatorio, ultimaBarr = 0, tamMaxObs;
+    int numAleatorio, ultimaBarr = 0, tamMaxObs, status;
     List lista = nilo->linhas;
     linhaT temp, novaLinha;
+
+    status = SUCESSO_ATUALIZA;
 
     mvEOL(lista);
     mvNext(lista);
     temp = getItem(lista);
+    if(temp == NULL)
+    {
+      fprintf(stderr,"Erro ao tentar ler as linhas do rio");
+      return FALHA_ATUALIZA;
+    }
     novaLinha = geraLinha(temp, nilo);
+    if(novaLinha == NULL)
+    {
+      fprintf(stderr,"Erro ao tentar gerar uma nova linha");
+      return FALHA_ATUALIZA;
+    }
+
+
 
     ultimaBarr = 0;
     while(!isEOL(lista))
     {
       ultimaBarr++;
       temp = getItem(lista);
+      if(temp == NULL)
+      {
+        fprintf(stderr,"Erro ao tentar ler as linhas do rio");
+        return FALHA_ATUALIZA;
+      }
       mvNext(lista);
       if(temBarreira(temp)) break;
     }
+
 
     if(ultimaBarr>(nilo->lin/4) && rand()*1.0/RAND_MAX <= PROB_OBST)
     {
       tamMaxObs = (getMargDir(novaLinha)-getMargEsq(novaLinha))*PORC_MAX_BARREIRA-TAM_MIN_BARREIRA;
 
-      if(tamMaxObs<=0)/*Precisa arrumar isso*/
+      if(tamMaxObs<=0)
       {
-        setFluxo(novaLinha,nilo->fluxo);
-        return;
+        status = FALHA_OBST;
       }
-
-      numAleatorio = rand()%(tamMaxObs)+TAM_MIN_BARREIRA;
-      geraObstaculo(novaLinha,numAleatorio);
-      setFluxo(novaLinha,nilo->fluxo);
+      else
+      {
+        numAleatorio = rand()%(tamMaxObs)+TAM_MIN_BARREIRA;
+        if(!geraObstaculo(novaLinha,numAleatorio))
+        {
+          fprintf(stderr,"Erro ao tentar criar obstáculo");
+          status = FALHA_OBST;
+        }
+      }
     }
-
     setFluxo(novaLinha, nilo->fluxo); /*Necessário devido a erro de precisão do float*/
+
 
     mvEOL(lista);
     insertList(lista,novaLinha);
     mvPrev(lista);
     freeLinha(getItem(lista));
     removeList(lista);
+
+    return status;
 
 }
 
