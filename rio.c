@@ -26,25 +26,20 @@ struct rio
 
 void atualizaRio(Rio nilo)
 {
-    int i, numAleatorio, ultimaBarr = 0, tamMaxObs;
+    int numAleatorio, ultimaBarr = 0, tamMaxObs;
     List lista = nilo->linhas;
     linhaT temp, novaLinha;
 
     mvEOL(lista);
     mvNext(lista);
-    temp = removeList(lista);
-
+    temp = getItem(lista);
     novaLinha = geraLinha(temp, nilo);
-    insertList(lista, temp);
-    mvNext(lista);
 
     ultimaBarr = 0;
     while(!isEOL(lista))
     {
       ultimaBarr++;
-      temp = removeList(lista);
-      insertList(lista,temp);
-      mvNext(lista);
+      temp = getItem(lista);
       mvNext(lista);
       if(temBarreira(temp)) break;
     }
@@ -63,12 +58,14 @@ void atualizaRio(Rio nilo)
       geraObstaculo(novaLinha,numAleatorio);
       setFluxo(novaLinha,nilo->fluxo);
     }
+
     setFluxo(novaLinha, nilo->fluxo); /*Necessário devido a erro de precisão do float*/
 
     mvEOL(lista);
     insertList(lista,novaLinha);
     mvPrev(lista);
-    freeLinha(removeList(lista));
+    freeLinha(getItem(lista));
+    removeList(lista);
 
 }
 
@@ -126,7 +123,6 @@ void rioInit(Rio nilo)
 
 void desenhaRio(Rio nilo)
 {
-  int i;
   linhaT temp;
 
   mvEOL(nilo->linhas);
@@ -134,23 +130,10 @@ void desenhaRio(Rio nilo)
 
   while(!isEOL(nilo->linhas))
   {
-    temp = removeList(nilo->linhas);
+    temp = getItem(nilo->linhas);
     imprimeLinha(temp);
-    insertList(nilo->linhas,temp);
-    mvNext(nilo->linhas);
     mvNext(nilo->linhas);
   }
-
-  /*mvNext(nilo->linhas);
-
-  while(!isEOL(nilo->linhas))
-  {
-    temp = removeList(nilo->linhas);
-    imprimeLinhaN(temp);
-    insertList(nilo->linhas,temp);
-    mvNext(nilo->linhas);
-    mvNext(nilo->linhas);
-  }*/
 
 
 }
@@ -175,5 +158,32 @@ Rio alocaRio(int lin, int col, float fluxo, int tamMin)
     return nilo;
 
 }
+
+
+linhaT getLinha(Rio nilo,int ind)
+{
+  linhaT linhaTemp;
+  int i;
+
+  if(ind > nilo->lin) return NULL;
+
+  mvEOL(nilo->linhas);
+  for(i=0;i<ind;i++) mvNext(nilo->linhas);
+  linhaTemp = getItem(nilo->linhas);
+
+  return linhaTemp;
+}
+
+int getNLinhas(Rio nilo)
+{
+  return nilo->lin;
+}
+
+
+
+
+
+
+
 
 

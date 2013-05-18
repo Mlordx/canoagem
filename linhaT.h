@@ -1,3 +1,6 @@
+#ifndef LINHAT_H
+#define LINHAT_H
+
 #include "terreno.h"
 
 
@@ -27,3 +30,5 @@ float getFluxo(linhaT);
 void setFluxo(linhaT, float);
 
 void igualaFluxo(linhaT, linhaT);
+
+#endif

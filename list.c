@@ -59,12 +59,12 @@ void insertList(List list, Item item)
   list->nItens++;
 }
 
-Item removeList(List list)
+int removeList(List list)
 {
   Link celTemp;
   Item itemTemp;
 
-  if(isEOL(list)) return NULL;
+  if(isEOL(list)) return -1;
 
   celTemp = list->celAtual;
 
@@ -72,11 +72,12 @@ Item removeList(List list)
 
   list->celAtual->prox = celTemp->prox;
   celTemp->prox->ant = celTemp->ant;
-  itemTemp = celTemp->item;
+  /*itemTemp = celTemp->item;*/
   free(celTemp);
   list->nItens--;
+  return 0;
 
-  return itemTemp;
+  /*return itemTemp;*/
 }
 
 int emptyList(List list)
@@ -92,6 +93,12 @@ int isEOL(List list)
 int nItens(List list)
 {
   return list->nItens;
+}
+
+Item getItem(List list)
+{
+  if(!isEOL(list)) return list->celAtual->item;
+  else{printf("PINTO\n"); return NULL;}
 }
 
 

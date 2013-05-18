@@ -15,7 +15,9 @@ void mvEOL(List);
 
 void insertList(List, Item);
 
-Item removeList(List);
+int removeList(List);
+
+Item getItem(List);
 
 int emptyList(List);
 
