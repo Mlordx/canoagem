@@ -40,7 +40,7 @@ int atualizaRio(Rio nilo)
       fprintf(stderr,"Erro ao tentar ler as linhas do rio");
       return FALHA_ATUALIZA;
     }
-    novaLinha = geraLinha(temp, nilo);
+    novaLinha = geraLinha(temp, nilo->tamMin);
     if(novaLinha == NULL)
     {
       fprintf(stderr,"Erro ao tentar gerar uma nova linha");
@@ -113,7 +113,7 @@ static void rioInit(Rio nilo)
 
     for(i=1; i < nilo->lin; i++)
     {
-         linhaTemp = geraLinha(linhaTemp, nilo);
+         linhaTemp = geraLinha(linhaTemp, nilo->tamMin);
          insertList(nilo->linhas, linhaTemp);
          mvNext(nilo->linhas);
     }

@@ -23,8 +23,6 @@ linhaT geraLinha(linhaT linhaAnt, int tamMin)
     margEsq = getMargEsq(linhaAnt);
     margDir = getMargDir(linhaAnt);
 
-    printf("HUEEEE: %d %d\n", margDir, margEsq);
-
     do{
         novaMargDir = rand()%3 -1 + margDir;
         novaMargEsq = rand()%3 -1 + margEsq;

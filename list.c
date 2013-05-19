@@ -62,7 +62,7 @@ void insertList(List list, Item item)
 int removeList(List list)
 {
   Link celTemp;
-  Item itemTemp;
+
 
   if(isEOL(list)) return -1;
 

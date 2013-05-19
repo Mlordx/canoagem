@@ -1,5 +1,4 @@
 #define PROB_OBST 0.3
-#define VAR_MARG 1
 #define TAM_MIN_BARREIRA 1
 #define PORC_MAX_BARREIRA 1
 
