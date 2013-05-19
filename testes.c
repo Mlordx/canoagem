@@ -7,6 +7,8 @@
 #define SUCESSO 1
 
 #include "testes.h"
+#include "rio.h"
+#include "linhaT.h"
 #include <stdlib.h>
 #include <stdio.h>
 
@@ -19,7 +21,7 @@ int testaMargem(int iteracoes){
 
     for(i=0;i<iteracoes;i++)
         if(atualizaRio(nilo) == FALHA){
-            printf("Falha no teste\n")
+            printf("Falha no teste\n");
             return FALHA;
         }
 
@@ -67,7 +69,7 @@ int testaFluxo(int iteracoes){
 
     for(i=0;i<iteracoes;i++)
         if(atualizaRio(nilo) == FALHA){
-            printf("Falha no teste de fluxo\n")
+            printf("Falha no teste de fluxo\n");
             return FALHA;
         }
 
@@ -75,7 +77,7 @@ int testaFluxo(int iteracoes){
   nilo = alocaRio(NUM_LIN_DEFAULT,NUM_COL_DEFAULT,FLUXO_DEFAULT,TAM_MIN_DEFAULT);
 
   for(i=0;i<iteracoes;i++)
-    if(atualizaRio(nilo) == FALHA && /*para ter ao menos 2 linhas*/ && (getFluxo(getLinha(0)) - getFluxo(getLinha(1)) > 0.0001){
+    if(atualizaRio(nilo) == FALHA && /*para ter ao menos 2 linhas*/  (getFluxo(getLinha(nilo,0)) - getFluxo(getLinha(nilo,1))) > 0.0001){
             printf("Falha no teste!\n");
             return FALHA;
        }
@@ -95,8 +97,8 @@ void testaVariacao(int iteracoes){
     for(i =0; i< iteracoes;i++){
         atualizaRio(nilo);
 
-        varEsq = getMargEsq(getLinha(0)) - getMargEsq(getLinha(1));
-        varDir = getMargDir(getLinha(0)) - getMargDir(getLinha(1))
+        varEsq = getMargEsq(getLinha(nilo,0)) - getMargEsq(getLinha(nilo,1));
+        varDir = getMargDir(getLinha(nilo,0)) - getMargDir(getLinha(nilo,1));
 
             if(varEsq < varMinEsq ) varMinEsq = varEsq;
                 else if(varEsq > varMaxEsq) varMaxEsq = varEsq;
