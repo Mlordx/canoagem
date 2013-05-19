@@ -15,11 +15,11 @@ int main(int argc, char* argv[])
 {
     Rio nilo;
 
-/*************************************************/
+/* ************************************************/
     int seed = SEED_DEFAULT, args;
     int linhas = NUM_LIN_DEFAULT;
     int colunas = NUM_COL_DEFAULT;
-    int testeRobustez = 0, testeCorrecoes = 0, testeVariacoes = 0;
+    int testeLinhas = 0, testeFluxo = 0, testeVariacoes = 0, testeMargem = 0;
 
     int tamanhoMinimo = TAM_MIN_DEFAULT;
     int fluxoRio = FLUXO_DEFAULT;
@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
         for(args = 1; args < argc; args++){
             if(argv[args][0] == '-'){
                 switch(argv[args][1]) {
-                    /** Tudo que precisa é adcionar novos casos necessários aqui e as variáveis correspondentes à cada scanf :D .**/
+                    /* Tudo que precisa é adcionar novos casos necessários aqui e as variáveis correspondentes à cada scanf :D .*/
                     case 'L':   sscanf(argv[args], "-L%d", &linhas);
                                 break;
                     case 'C':   sscanf(argv[args], "-C%d", &colunas);
@@ -39,10 +39,11 @@ int main(int argc, char* argv[])
                                 break;
                     case 'F':   sscanf(argv[args], "-F%d", &fluxoRio);
                                 break;
-                    /****************************************/
-                    case 'T':   if(argv[args][2] == '1') testeRobustez = 1;/* Robustez  */
-                                if(argv[args][2] == '2') testeCorrecoes = 1;/* Correções */
-                                if(argv[args][2] == '3') testeVariacoes = 1;/* Variações */
+                    /* ***************************************/
+                    case 'T':   if(argv[args][2] == '1') testeLinhas = 1;
+                                if(argv[args][2] == '2') testeFluxo = 1;
+                                if(argv[args][2] == '3') testeMargem = 1;
+                                if(argv[args][2] == '4') testeVariacoes = 1;
                                 else {
                                     printf("Comando inválido.");
                                     exit(EXIT_FAILURE);
@@ -55,15 +56,15 @@ int main(int argc, char* argv[])
         }
         /* Modifica a seed de acordo com o valor passado. */
         srand(seed);
-        /***************************************************************************************************/
+        /* **************************************************************************************************/
 
     }
-    /** Inicializa o rio de acordo com os parâmetros passados pelo usuário. Caso ele não tenha passado, são utilizados valores default. **/
+    /* * Inicializa o rio de acordo com os parâmetros passados pelo usuário. Caso ele não tenha passado, são utilizados valores default. **/
     nilo = alocaRio(linhas, colunas, fluxoRio, tamanhoMinimo);
     rioInit(nilo);
 
 
-/*************************************************/
+/* ************************************************/
     while(1)
     {
         desenhaRio(nilo);
