@@ -83,6 +83,10 @@ int getMargDir(linhaT lin)
   return lin->margD;
 }
 
+int getLinhaTam(linhaT lin){
+  return lin->tam;
+}
+
 int temBarreira(linhaT lin)
 {
   return lin->barreira;

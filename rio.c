@@ -8,7 +8,7 @@
 
 
 
-linhaT geraLinha(linhaT linhaAnt, Rio nilo);
+linhaT geraLinha(linhaT linhaAnt, int tamMin);
 
 /*static Terreno** alocaFase(int lin, int col);*/
 
@@ -95,9 +95,10 @@ int atualizaRio(Rio nilo)
 
 }
 
-linhaT geraLinha(linhaT linhaAnt, Rio nilo)
+linhaT geraLinha(linhaT linhaAnt, int tamMin)
 {
     int novaMargEsq, novaMargDir, margDir, margEsq;
+    int col = getLinhaTam(linhaAnt);
     linhaT linhaNova;
 
     margEsq = getMargEsq(linhaAnt);
@@ -109,9 +110,9 @@ linhaT geraLinha(linhaT linhaAnt, Rio nilo)
         novaMargDir = rand()%3 -1 + margDir;
         novaMargEsq = rand()%3 -1 + margEsq;
 
-    } while(novaMargDir - novaMargEsq < nilo->tamMin || novaMargEsq <= 0 || novaMargDir >= nilo->col-1);
+    } while(novaMargDir - novaMargEsq < tamMin || novaMargEsq <= 0 || novaMargDir >= col-1);
 
-    linhaNova = novaLinha(nilo->col,novaMargEsq, novaMargDir);
+    linhaNova = novaLinha(col, novaMargEsq, novaMargDir);
     igualaFluxo(linhaAnt, linhaNova);
 
 
@@ -121,11 +122,10 @@ linhaT geraLinha(linhaT linhaAnt, Rio nilo)
 
 }
 
-void rioInit(Rio nilo)
+static void rioInit(Rio nilo)
 {
     int i, margEsq, margDir, margMax;
     linhaT linhaTemp;
-    srand(666);
 
 
     margMax = (nilo->col - nilo->tamMin)/2;
@@ -175,6 +175,8 @@ Rio alocaRio(int lin, int col, float fluxo, int tamMin)
     nilo->lin = lin;
     nilo->fluxo = fluxo;
     nilo->tamMin = tamMin;
+
+    rioInit(nilo);
 
     return nilo;
 

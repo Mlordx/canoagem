@@ -61,7 +61,6 @@ int main(int argc, char* argv[])
     }
     /* * Inicializa o rio de acordo com os parâmetros passados pelo usuário. Caso ele não tenha passado, são utilizados valores default. **/
     nilo = alocaRio(linhas, colunas, fluxoRio, tamanhoMinimo);
-    rioInit(nilo);
 
 
 /* ************************************************/

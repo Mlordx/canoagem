@@ -19,6 +19,8 @@ int getMargEsq(linhaT);
 
 int getMargDir(linhaT);
 
+int getLinhaTam(linhaT);
+
 int temBarreira(linhaT);
 
 void imprimeLinha(linhaT);
