@@ -1,0 +1,173 @@
+\documentclass[11pt]{article}
+\usepackage[brazilian]{babel}
+\usepackage[utf8]{inputenc} %Deixa eu colocar letras com ascentos
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{color}
+
+\title{Exercício Programa 2 - Parte 1 - Guia do Desenvolvedor}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduç\~ao}
+
+\begin{flushleft}
+\subsection*{Integrantes:} 
+
+\begin{itemize}
+\item Victor Sanches Portella -  Nº USP: 7991152
+\item Mateus Barros Rodrigues -  Nº USP: 7991037
+\item Lucas Dário  -  Nº USP: 7991152
+\end{itemize}
+
+\section{Módulos e Tipos}
+
+Em nosso programa, criamos os seguintes tipos de primeira classe:
+\begin{itemize}
+
+\item \textbf{Terreno} Usado para representar cada "pixel"
+ do jogo, contendo como informação seu tipo (Água ou Terra) e
+a velocidade.
+
+\item \textbf{linhaT:} Usado para representar cada linha do
+rio. Ela possui a sequência de terrenos que a formam, e indicação
+de suas margens e tamanho da linha. 
+
+\item \textbf{Rio:} Representa o Rio em si, com seu fluxo de água,
+a sequência de linhas que formam o rio, o número de colunas de pixels
+e o tamanho mínimo que o rio deve ter de água.
+
+\item \textbf{List:} Representa uma lista duplamente encadeada circular
+com cabeça que opera com objetos do tipo Item\footnote{Item foi definido como um vetor de objetos do tipo linhaT, mas pode ser facilmente mudado no cabeçalho desse módulo}.
+
+\end{itemize}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\newpage
+
+Módulos usados em nosso programa:
+
+\begin{itemize}
+	\item \textbf{utils.h} Biblioteca que contém funções de uso geral.
+	
+	\item \textbf{terreno.h} Biblioteca que contém funções para manipulação de 		objetos do tipo Terreno.
+	
+	\item \textbf{testes.h} Biblioteca que contém as funções para execução de testes de certos parâmetros do rio em determinadas condições.
+	
+	\item \textbf{linhaT.h} Biblioteca para manipulação de objetos do tipo linhaT.
+	
+	\item \textbf{list.h} Biblioteca para manipulação de objetos do tipo List.
+	
+\end{itemize}
+\end{flushleft}
+
+Agora, daremos uma explicação sobre o funcionamento dos tipos e das principais funções presentes nos módulos já mencionados.
+
+\subsection{Terreno}
+
+Terreno é o objeto que usamos para representar cada pixel. Ele é definido por um tipo e uma velocidade. Por definição, todo bloco de terra tem velocidade 0.
+Além disso, o tipo do bloco será um caractere, que é o mesmo que será impresso na tela. Por isso, temos os seguintes defines no nosso terreno.h:
+\begin{center}
+\begin{tabular}{|c|c|}
+\hline
+AGUA & .\\
+\hline
+TERRA & \#\\
+\hline
+\end{tabular}
+\end{center}
+
+
+
+\subsection{linhaT}
+
+O tipo linhaT é usado para representar uma linha do rio, ou seja, uma sequência ordenada de objetos do tipo Terreno. Nela, temos as informações de tamanho da linha, as margens direita e esquerda e uma flag para indicar se a linha tem ou não um ostáculo.
+
+As funções \textbf{setFluxo} e \textbf{getFluxo} funcionam de forma a executar o processo de normalização explanado no enunciado do exercício.
+
+Já função \textbf{igualaFluxo} recebe dois objetos do tipo linhaT. A primeira linha será usada como base para a segunda linha. Com isso, definiremos as velocidades de cada Terreno da linha 2 baseado nas velocidades da linha 1.
+Para isso, definimos temporariamente o fluxo da linha 1 como 1. Com isso, aplicamos a seguinte regra:
+\begin{itemize}
+	
+	\item Caso o terreno da linha 2 esteja adjacente a alguma terra, a velocidade desse terreno é automaticamente 0, independentemente das outras regras.
+
+	\item Caso o terreno da linha 1 fosse terra e se transformou em água na linha 2, a velocidade dessa água será 0.1.
+
+	\item Caso o terreno da linha 1 erá água e continuou como água na linha 2, é sorteado um número inteiro $x,\  -1 < x < 1$, e a velocidade da linha 2 será igual a $V_1 + x$, sendo $V_1$ a velocidade do terreno da mesma coluna na linha 1.
+	
+\end{itemize}
+
+Explicação de algumas funções importantes:
+\begin{itemize}
+
+\item \textbf{int geraObstaculo({\color{red}linhaT}, {\color{red}int}):} Essa função cria um obstáculo na linha passada como argumento, com o tamanho passado. Caso não seja possivel criar um obstáculo do tamanho pedido, a função retorna 0. Caso contrário, ela cria o obstáculo, coloca a velocidade das águas adjascentes ao obstáculo como 0, e retorna 1. É importante ressaltar que, caso o obstáculo fosse fazer com que o fluxo zerasse, a criação do obstáculo é cancelada é a função retorna 0.
+
+\item \textbf{linhaT geraLinha({\color{red}linhaT}, {\color{red}tamMin}):}
+Essa função ira gerar uma nova linha baseada na linha passada como argumento. Para isso, usará dentro dela a função \emph{igualaFluxo} para manipular as velocidades, e definirá as margens da nova linha com base nas antigas, sendo que as margens tem igual probabilidade de aumentar, diminuir ou se manter, e as margens variam sómente de 1 pixel de uma linha para outra, para evitar mudanças bruscas.
+
+
+\end{itemize}
+
+Após definidas as velocidades, os fluxos são normalizados com a função \textbf{setFluxo}, definindo o fluxo como o antigo fluxo da linha1.
+
+\subsection{List}
+
+List é um tipo de primeira classe usado para representar uma lista duplamente encadeada circular com cabeça. A ideia do funcionamento dela é que ela é constituida de nós, cada um com uma conexão para o seu próximo e seu anterior. Toda list tem um \emph{item Atual}, sendo esse um nó da lista o qual o cliente tem acesso. E é através dele que navegaremos pela lista. A maioria das funções se baseia nele, como veremos.
+
+	A lista sempre tem um nó que define o fim/começo da lista, que chamaremos de \textbf{EOL} (\emph{End Of List}). Nessa implementação de lista, definimos o tipo \emph{Item} como um vetor de objetos do tipo emph{linhaT}
+	
+	Explicação geral das principais funções:
+	
+\begin{itemize}
+	\item \textbf{List listInit():} Ao chamar a função, é retornada uma lista do tipo List, contendo um único nó(\emph{EOL}).
+	
+	\item \textbf{mvEOL({\color{red}List}), mvNext({\color{red}List}), mvPrev({\color{red}List}):} Essas são funções para navegação através da lista, ou seja, elas mudam o \emph{item Atual} para o qual a lista aponta. As ações dessas funções são, respectivamente, apontar o \emph{item Atual} para o \emph{EOL}, para o próximo nó do \emph{item Atual} e para o nó anterior do \emph{item Atual}.
+	
+	\item \textbf{Item getItem({\color{red}List}):} Essa função retorna o item apontado atualmente pela lista (o \emph{item Atual}). Caso o \emph{item Atual} seja o EOL, a função retorna {\color{red}NULL}.
+	
+	\item \textbf{removeItem({\color{red}List}), insertItem({\color{red}List},{\color{red}Item}):} Essas são as funções de remoção e inserção de itens na lista, respectivamente. A primeira deleta da lista o nó do \emph{item Atual}\footnote{Mas caso o cliente tente deletar o EOL, a função não faz nada.}, e define o novo \emph{item Atual} como o nó anterior do nó que foi deletado. Ja a segunda função insere o Item como um nó e o posiciona como o próximo do \emph{item Atual} da lista.
+	
+	\item \textbf{int isEOL({\color{red}List}):} Uma função que retorna 1 caso o nó para o qual a sua lista está apontando seja o \emph{EOL}, e 0 caso contrário.
+	
+	\item \textbf{int emptyList({\color{red}List}):} Essa função retorna 1 caso a lista contenha sómente o EOL, e 0 caso contrário.
+	
+\end{itemize}
+
+
+\subsection{Rio}
+
+Rio é um tipo de primeira classe usado para representar o Rio em si. Nele temos as informações do fluxo, tamanho (linhas e colunas), uma List de objetos linhaT que constituem o rio, além do tamanho mínimo que o rio precisa ter.
+Explicação das principais funções de manipulação do Rio:
+
+\begin{itemize}
+
+	\item \textbf{Rio alocaRio({\color{red}int}, {\color{red}int}, {\color{red}f\mbox{}loat}, {\color{red}int}):} Essa função retorna um objeto do tipo Rio, sendo os parametrôs, respectivamente, para as seguintes informações:
+	\begin{enumerate}
+		\item Número de linhas
+		\item Número de colunas
+		\item Fluxo
+		\item Tamanho mínimo do rio		
+	\end{enumerate}
+	
+	\item \textbf{int atualizaRio({\color{red}Rio}):} Essa função atualiza o rio. Sendo as linhas numeradas de cima para baixo de 1\ldots N, a função deleta a N-ésima linha, e gera uma nova linha baseada na linha 1, e a coloca no começo da lista. Ou seja, a linha nova vira a linha 1, a linha 1 vira a 2, etc.	
+	Além disso, o atualiza rio retorna um int dependendo se a geração da linha foi um sucesso, ou se deu algum erro. Tabela dos valores retornados:
+	
+	\begin{itemize}
+	\item[+]\textbf{SUCESSO\_{}ATUALIZA}: Sem erros, rio atualizado com sucesso.
+    \item[+]\textbf{FALHA\_{}ATUALIZA}: Erro ao tentar gerar uma nova linha. Não é recomendado que se use a função desenhaRio() nesse caso. Normalmente, rios sem linhas ou erros internos do sistema causam esse erro.
+    \item[+]\textbf{FALHA\_{}OBST}: Erro ao tentar criar um obstáculo na nova linha. Esse erro acontece quando o tamanho da barreira iria zerar o fluxo
+    do rio, ou caso o tamanho da barreira fosse exceder o tamanho do rio.
+    	\end{itemize}
+    
+    \item\textbf{desenhaRio({\color{red}Rio}):} Essa função desenha o rio na stdout. Ou seja, imprime, em ordem, todos os terrenos das linhas da lista de objetos linhaT.
+	
+	\item\textbf{LinhaT getLinha({\color{red}Rio},{\color{red}int}):} Retorna a i-ésima linha do Rio, sendo que as linahs são numeradas de 1\ldots N, de cima para baixo, sendo que N é o número total de linhas.
+
+		
+
+\end{itemize}
+
+
+
+\end{document}
