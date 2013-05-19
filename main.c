@@ -1,3 +1,7 @@
+#define SEED_DEFAULT 1234567890
+#define NUM_LIN_DEFAULT 30
+#define NUM_COL_DEFAULT 100
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "rio.h"
@@ -8,9 +12,56 @@
 int main(int argc, char* argv[])
 {
     Rio nilo;
-    nilo = alocaRio(30,100,0,0);
+
+/*************************************************/
+    int seed = SEED_DEFAULT;
+    int linhas = NUM_LIN_DEFAULT;
+    int colunas = NUM_COL_DEFAULT;
+    int testeRobustez = 0, testeCorrecoes = 0, testeVariacoes = 0;
+
+    int tamanhoMinimo = TAM_MIN_DEFAULT;
+    int fluxoRio = FLUXO_DEFAULT;
+
+    if(argc >= 2){
+        for(args = 1; args < argc; args++){
+            if(argv[args][0] == '-'){
+                switch(argv[args][1]) {
+                    /** Tudo que precisa é adcionar novos casos necessários aqui e as variáveis correspondentes à cada scanf :D .**/
+                    case 'L':   sscanf(argv[args], "-L%d", &linhas);
+                                break;
+                    case 'C':   sscanf(argv[args], "-C%d", &colunas);
+                                break;
+                    case 's':   sscanf(argv[args], "-s%d", &seed);
+                                break;
+                    case 't':   sscanf(argv[args], "-t%d", &tamanhoMinimo);
+                                break;
+                    case 'F':   sscanf(argv[args], "-F%d", &fluxoRio);
+                                break;
+                    /****************************************/
+                    case 'T':   if(argv[args][2] == '1') testeRobustez = 1;/* Robustez  */
+                                if(argv[args][2] == '2') testeCorrecoes = 1;/* Correções */
+                                if(argv[args][2] == '3') testeVariacoes = 1;/* Variações */
+                                else {
+                                    printf("Comando inválido.");
+                                    exit(EXIT_FAILURE);
+                                }
+                                break;
+                    default:    printf("Comando inválido.");
+                                exit(EXIT_FAILURE);
+                }
+            }
+        }
+        /* Modifica a seed de acordo com o valor passado. */
+        srand(seed);
+        /***************************************************************************************************/
+
+    }
+    /** Inicializa o rio de acordo com os parâmetros passados pelo usuário. Caso ele não tenha passado, são utilizados valores default. **/
+    nilo = alocaRio(linhas, colunas, fluxoRio, tamanhoMinimo);
     rioInit(nilo);
 
+
+/*************************************************/
     while(1)
     {
         desenhaRio(nilo);
