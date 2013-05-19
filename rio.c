@@ -173,13 +173,8 @@ Rio alocaRio(int lin, int col, float fluxo, int tamMin)
     nilo->linhas = listInit();
     nilo->col = col;
     nilo->lin = lin;
-
-
-    if(fluxo > 0) nilo->fluxo = fluxo;
-    else nilo->fluxo = FLUXO_DEFAULT;
-
-    if(tamMin > 0) nilo->tamMin = tamMin;
-    else nilo->tamMin = TAM_MIN_DEFAULT;
+    nilo->fluxo = fluxo;
+    nilo->tamMin = tamMin;
 
     return nilo;
 

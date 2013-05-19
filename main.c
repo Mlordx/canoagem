@@ -1,6 +1,8 @@
 #define SEED_DEFAULT 1234567890
 #define NUM_LIN_DEFAULT 30
 #define NUM_COL_DEFAULT 100
+#define FLUXO_DEFAULT 1
+#define TAM_MIN_DEFAULT 5
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -14,7 +16,7 @@ int main(int argc, char* argv[])
     Rio nilo;
 
 /*************************************************/
-    int seed = SEED_DEFAULT;
+    int seed = SEED_DEFAULT, args;
     int linhas = NUM_LIN_DEFAULT;
     int colunas = NUM_COL_DEFAULT;
     int testeRobustez = 0, testeCorrecoes = 0, testeVariacoes = 0;
