@@ -14,8 +14,6 @@ typedef struct rio *Rio;
 
 int atualizaRio(Rio);
 
-void rioInit(Rio);
-
 void desenhaRio(Rio);
 
 Rio alocaRio(int lin, int col, float fluxo, int tamMin);

@@ -122,11 +122,10 @@ linhaT geraLinha(linhaT linhaAnt, int tamMin)
 
 }
 
-void rioInit(Rio nilo)
+static void rioInit(Rio nilo)
 {
     int i, margEsq, margDir, margMax;
     linhaT linhaTemp;
-    srand(666);
 
 
     margMax = (nilo->col - nilo->tamMin)/2;
@@ -176,6 +175,8 @@ Rio alocaRio(int lin, int col, float fluxo, int tamMin)
     nilo->lin = lin;
     nilo->fluxo = fluxo;
     nilo->tamMin = tamMin;
+
+    rioInit(nilo);
 
     return nilo;
 
