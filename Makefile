@@ -5,8 +5,8 @@ CC=gcc
 
 
 
-ep2: main.o terreno.o rio.o utils.o fila.o linhaT.o
-	$(CC) main.o terreno.o rio.o utils.o fila.o linhaT.o -o ep2 -lm
+ep2: main.o terreno.o rio.o utils.o list.o linhaT.o
+	$(CC) main.o terreno.o rio.o utils.o list.o linhaT.o -o ep2 -lm
 
 main.o: main.c
 	$(CC) $(CFLAGS) -c main.c
@@ -15,8 +15,8 @@ main.o: main.c
 terreno.o: terreno.h terreno.c
 	$(CC) $(CFLAGS) -c terreno.c
 
-fila.o: fila.h fila.c
-	$(CC) $(CFLAGS) -c fila.c
+fila.o: list.h list.c
+	$(CC) $(CFLAGS) -c list.c
 
 rio.o: rio.h rio.c
 	$(CC) $(CFLAGS) -c rio.c
