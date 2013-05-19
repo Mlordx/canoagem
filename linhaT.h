@@ -9,6 +9,8 @@ void imprimeLinhaN(linhaT);
 
 typedef struct linhat *linhaT;
 
+linhaT geraLinha(linhaT linhaAnt, int tamMin);
+
 linhaT novaLinha(int tam, int margE, int margD);
 
 int geraObstaculo(linhaT, int);

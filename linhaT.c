@@ -14,6 +14,32 @@ struct linhat
   int barreira;
 };
 
+linhaT geraLinha(linhaT linhaAnt, int tamMin)
+{
+    int novaMargEsq, novaMargDir, margDir, margEsq;
+    int col = getLinhaTam(linhaAnt);
+    linhaT linhaNova;
+
+    margEsq = getMargEsq(linhaAnt);
+    margDir = getMargDir(linhaAnt);
+
+    printf("HUEEEE: %d %d\n", margDir, margEsq);
+
+    do{
+        novaMargDir = rand()%3 -1 + margDir;
+        novaMargEsq = rand()%3 -1 + margEsq;
+
+    } while(novaMargDir - novaMargEsq < tamMin || novaMargEsq <= 0 || novaMargDir >= col-1);
+
+    linhaNova = novaLinha(col, novaMargEsq, novaMargDir);
+    igualaFluxo(linhaAnt, linhaNova);
+
+
+    return linhaNova;
+
+
+}
+
 linhaT novaLinha(int tam, int margE, int margD)
 {
   int i;
