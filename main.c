@@ -3,6 +3,7 @@
 #define NUM_COL_DEFAULT 100
 #define FLUXO_DEFAULT 1
 #define TAM_MIN_DEFAULT 5
+#define ITERACOES_DEFAULT 1000
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -18,11 +19,11 @@ int main(int argc, char* argv[])
 /* ************************************************/
     int seed = SEED_DEFAULT, args;
     int linhas = NUM_LIN_DEFAULT;
-    int colunas = NUM_COL_DEFAULT;
-    int testeLinhas = 0, testeFluxo = 0, testeVariacoes = 0, testeMargem = 0;
+    int colunas = NUM_COL_DEFAULT, it = ITERACOES_DEFAULT;
+    int testeLinhas = 0, testeFluxo = 0, testeVariacoes = 0, testeMargem = 0, teste = 0;
 
     int tamanhoMinimo = TAM_MIN_DEFAULT;
-    int fluxoRio = FLUXO_DEFAULT;
+    float fluxoRio = FLUXO_DEFAULT;
 
     if(argc >= 2){
         for(args = 1; args < argc; args++){
@@ -37,10 +38,14 @@ int main(int argc, char* argv[])
                                 break;
                     case 't':   sscanf(argv[args], "-t%d", &tamanhoMinimo);
                                 break;
-                    case 'F':   sscanf(argv[args], "-F%d", &fluxoRio);
+                    case 'F':   sscanf(argv[args], "-F%f", &fluxoRio);
+                                break;
+
+                    case 'I':   sscanf(argv[args], "-I%d", &it);
                                 break;
                     /* ***************************************/
-                    case 'T':   if(argv[args][2] == '1') testeLinhas = 1;
+                    case 'T':   teste = 1;
+                                if(argv[args][2] == '1') testeLinhas = 1;
                                 if(argv[args][2] == '2') testeFluxo = 1;
                                 if(argv[args][2] == '3') testeMargem = 1;
                                 if(argv[args][2] == '4') testeVariacoes = 1;
@@ -60,18 +65,43 @@ int main(int argc, char* argv[])
 
     }
     /* * Inicializa o rio de acordo com os parâmetros passados pelo usuário. Caso ele não tenha passado, são utilizados valores default. **/
-    nilo = alocaRio(linhas, colunas, fluxoRio, tamanhoMinimo);
 
-
-/* ************************************************/
-    while(1)
+    if(!teste)
     {
-        desenhaRio(nilo);
+          nilo = alocaRio(linhas, colunas, fluxoRio, tamanhoMinimo);
+          while(1)
+          {
+              desenhaRio(nilo);
 
-        meuSleep(100);
+              meuSleep(100);
 
-        system("clear");
-        atualizaRio(nilo);
+              system("clear");
+              atualizaRio(nilo);
+          }
+    }
+    else
+    {
+      if(testaVariacao) testaVariacao(it);
+
+      if(testeFluxo)
+      {
+        if(testaFluxo(it)) printf("Teste de Fluxo: Sucesso\n");
+        else printf("Teste de Fluxo: Fracasso\n");
+      }
+
+      if(testeLinhas)
+      {
+        if(testaLinhas(it)) printf("Teste de Linhas: Sucesso\n");
+        else printf("Teste de Linhas: Fracasso\n");
+      }
+
+      if(testeMargem)
+      {
+        if(testaMargem(it)) printf("Teste de Margem: Sucesso\n");
+        else printf("Teste de Margem: Fracasso\n");
+      }
+
+
     }
     return 0;
 }
