@@ -24,10 +24,10 @@ struct rio
 
 
 
-int atualizaRio(Rio nilo)
+int atualizaRio(Rio rioTemp)
 {
     int numAleatorio, ultimaBarr = 0, tamMaxObs, status;
-    List lista = nilo->linhas;
+    List lista = rioTemp->linhas;
     linhaT temp, novaLinha;
 
     status = SUCESSO_ATUALIZA;
@@ -40,7 +40,7 @@ int atualizaRio(Rio nilo)
       fprintf(stderr,"Erro ao tentar ler as linhas do rio");
       return FALHA_ATUALIZA;
     }
-    novaLinha = geraLinha(temp, nilo->tamMin);
+    novaLinha = geraLinha(temp, rioTemp->tamMin);
     if(novaLinha == NULL)
     {
       fprintf(stderr,"Erro ao tentar gerar uma nova linha");
@@ -64,7 +64,7 @@ int atualizaRio(Rio nilo)
     }
 
 
-    if(ultimaBarr>(nilo->lin/4) && rand()*1.0/RAND_MAX <= PROB_OBST)
+    if(ultimaBarr>(rioTemp->lin/4) && rand()*1.0/RAND_MAX <= PROB_OBST)
     {
       tamMaxObs = (getMargDir(novaLinha)-getMargEsq(novaLinha))*PORC_MAX_BARREIRA-TAM_MIN_BARREIRA;
 
@@ -82,7 +82,7 @@ int atualizaRio(Rio nilo)
         }
       }
     }
-    setFluxo(novaLinha, nilo->fluxo); /*Necessário devido a erro de precisão do float*/
+    setFluxo(novaLinha, rioTemp->fluxo); /*Necessário devido a erro de precisão do float*/
 
 
     mvEOL(lista);
@@ -96,43 +96,43 @@ int atualizaRio(Rio nilo)
 }
 
 
-static void rioInit(Rio nilo)
+static void rioInit(Rio rioTemp)
 {
     int i, margEsq, margDir, margMax;
     linhaT linhaTemp;
 
 
-    margMax = (nilo->col - nilo->tamMin)/2;
+    margMax = (rioTemp->col - rioTemp->tamMin)/2;
     margEsq = rand()%margMax + 1;
-    margDir = nilo->col - (rand()%margMax+1);
+    margDir = rioTemp->col - (rand()%margMax+1);
 
-    linhaTemp = novaLinha(nilo->col, margEsq,margDir);
-    setFluxo(linhaTemp, nilo->fluxo);
-    insertList(nilo->linhas,linhaTemp);
-    mvNext(nilo->linhas);
+    linhaTemp = novaLinha(rioTemp->col, margEsq,margDir);
+    setFluxo(linhaTemp, rioTemp->fluxo);
+    insertList(rioTemp->linhas,linhaTemp);
+    mvNext(rioTemp->linhas);
 
-    for(i=1; i < nilo->lin; i++)
+    for(i=1; i < rioTemp->lin; i++)
     {
-         linhaTemp = geraLinha(linhaTemp, nilo->tamMin);
-         insertList(nilo->linhas, linhaTemp);
-         mvNext(nilo->linhas);
+         linhaTemp = geraLinha(linhaTemp, rioTemp->tamMin);
+         insertList(rioTemp->linhas, linhaTemp);
+         mvNext(rioTemp->linhas);
     }
 
 
 }
 
-void desenhaRio(Rio nilo)
+void desenhaRio(Rio rioTemp)
 {
   linhaT temp;
 
-  mvEOL(nilo->linhas);
-  mvNext(nilo->linhas);
+  mvEOL(rioTemp->linhas);
+  mvNext(rioTemp->linhas);
 
-  while(!isEOL(nilo->linhas))
+  while(!isEOL(rioTemp->linhas))
   {
-    temp = getItem(nilo->linhas);
+    temp = getItem(rioTemp->linhas);
     imprimeLinha(temp);
-    mvNext(nilo->linhas);
+    mvNext(rioTemp->linhas);
   }
 
 
@@ -142,38 +142,38 @@ void desenhaRio(Rio nilo)
 
 Rio alocaRio(int lin, int col, float fluxo, int tamMin)
 {
-    Rio nilo = mallocSafe(sizeof (struct rio));
+    Rio rioTemp = mallocSafe(sizeof (struct rio));
 
-    nilo->linhas = listInit();
-    nilo->col = col;
-    nilo->lin = lin;
-    nilo->fluxo = fluxo;
-    nilo->tamMin = tamMin;
+    rioTemp->linhas = listInit();
+    rioTemp->col = col;
+    rioTemp->lin = lin;
+    rioTemp->fluxo = fluxo;
+    rioTemp->tamMin = tamMin;
 
-    rioInit(nilo);
+    rioInit(rioTemp);
 
-    return nilo;
+    return rioTemp;
 
 }
 
 
-linhaT getLinha(Rio nilo,int ind)
+linhaT getLinha(Rio rioTemp,int ind)
 {
   linhaT linhaTemp;
   int i;
 
-  if(ind > nilo->lin) return NULL;
+  if(ind > rioTemp->lin) return NULL;
 
-  mvEOL(nilo->linhas);
-  for(i=0;i<ind;i++) mvNext(nilo->linhas);
-  linhaTemp = getItem(nilo->linhas);
+  mvEOL(rioTemp->linhas);
+  for(i=0;i<ind;i++) mvNext(rioTemp->linhas);
+  linhaTemp = getItem(rioTemp->linhas);
 
   return linhaTemp;
 }
 
-int getNLinhas(Rio nilo)
+int getNLinhas(Rio rioTemp)
 {
-  return nilo->lin;
+  return rioTemp->lin;
 }
 
 

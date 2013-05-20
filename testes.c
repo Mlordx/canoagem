@@ -12,15 +12,18 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+/* Os testes recebem um inteiro, que é o numero de iterações pelo qual o teste deverá rodar, e devolvem 0 caso dê algum erro no meio de sua execução
+ou 1 caso contrário*/
+
 int testaMargem(int iteracoes){
   int i;
-  Rio nilo;
+  Rio rioTemp;
 
   printf("Teste da variação maxima das margens\n");
-  nilo = alocaRio(NUM_LIN_DEFAULT,NUM_COL_DEFAULT,FLUXO_DEFAULT,0);
+  rioTemp = alocaRio(NUM_LIN_DEFAULT,NUM_COL_DEFAULT,FLUXO_DEFAULT,0);
 
     for(i=0;i<iteracoes;i++)
-        if(atualizaRio(nilo) == FALHA){
+        if(atualizaRio(rioTemp) == FALHA){
             printf("Falha no teste\n");
             return FALHA;
         }
@@ -31,25 +34,25 @@ int testaMargem(int iteracoes){
 
 int testaLinhas(int iteracoes){
   int i;
-  Rio nilo;
+  Rio rioTemp;
 
   printf("Teste de linhas\n");
   printf("Numero de linhas = 10000\n");
 
-  nilo = alocaRio(10000,NUM_COL_DEFAULT,FLUXO_DEFAULT,TAM_MIN_DEFAULT);
+  rioTemp = alocaRio(10000,NUM_COL_DEFAULT,FLUXO_DEFAULT,TAM_MIN_DEFAULT);
 
     for(i=0;i<iteracoes;i++)
-        if(atualizaRio(nilo) == FALHA){
+        if(atualizaRio(rioTemp) == FALHA){
             printf("Falha no teste de linhas\n");
             return FALHA;
         }
 
   printf("Numero de linhas = 5\n");
 
-  nilo = alocaRio(5,NUM_COL_DEFAULT,FLUXO_DEFAULT,TAM_MIN_DEFAULT);
+  rioTemp = alocaRio(5,NUM_COL_DEFAULT,FLUXO_DEFAULT,TAM_MIN_DEFAULT);
 
     for(i=0;i<iteracoes;i++)
-        if(atualizaRio(nilo) == FALHA){
+        if(atualizaRio(rioTemp) == FALHA){
             printf("Falha no teste de linhas\n");
             return FALHA;
 
@@ -61,23 +64,23 @@ int testaLinhas(int iteracoes){
 
 int testaFluxo(int iteracoes){
   int i;
-  Rio nilo;
+  Rio rioTemp;
 
   printf("Teste de fluxo\n");
   printf("Fluxo = 0.0001\n");
-  nilo = alocaRio(NUM_LIN_DEFAULT,NUM_COL_DEFAULT,0.0001,TAM_MIN_DEFAULT);
+  rioTemp = alocaRio(NUM_LIN_DEFAULT,NUM_COL_DEFAULT,0.0001,TAM_MIN_DEFAULT);
 
     for(i=0;i<iteracoes;i++)
-        if(atualizaRio(nilo) == FALHA){
+        if(atualizaRio(rioTemp) == FALHA){
             printf("Falha no teste de fluxo\n");
             return FALHA;
         }
 
   printf("Teste da constancia do fluxo\n");
-  nilo = alocaRio(NUM_LIN_DEFAULT,NUM_COL_DEFAULT,FLUXO_DEFAULT,TAM_MIN_DEFAULT);
+  rioTemp = alocaRio(NUM_LIN_DEFAULT,NUM_COL_DEFAULT,FLUXO_DEFAULT,TAM_MIN_DEFAULT);
 
   for(i=0;i<iteracoes;i++)
-    if(atualizaRio(nilo) == FALHA && /*para ter ao menos 2 linhas*/  (getFluxo(getLinha(nilo,0)) - getFluxo(getLinha(nilo,1))) > 0.0001){
+    if(atualizaRio(rioTemp) == FALHA && /*para ter ao menos 2 linhas*/  (getFluxo(getLinha(rioTemp,0)) - getFluxo(getLinha(rioTemp,1))) > 0.0001){
             printf("Falha no teste!\n");
             return FALHA;
        }
@@ -89,16 +92,16 @@ int testaFluxo(int iteracoes){
 
 void testaVariacao(int iteracoes){
   int i;
-  Rio nilo;
+  Rio rioTemp;
   int varMinEsq = 0,varMaxEsq = 0, varMinDir = 0, varMaxDir = 0,varMediaEsq = 0,varMediaDir = 0,varEsq = 0, varDir = 0;
 
-  nilo = alocaRio(NUM_LIN_DEFAULT,NUM_COL_DEFAULT,FLUXO_DEFAULT,TAM_MIN_DEFAULT);
+  rioTemp = alocaRio(NUM_LIN_DEFAULT,NUM_COL_DEFAULT,FLUXO_DEFAULT,TAM_MIN_DEFAULT);
 
     for(i =0; i< iteracoes;i++){
-        atualizaRio(nilo);
+        atualizaRio(rioTemp);
 
-        varEsq = getMargEsq(getLinha(nilo,0)) - getMargEsq(getLinha(nilo,1));
-        varDir = getMargDir(getLinha(nilo,0)) - getMargDir(getLinha(nilo,1));
+        varEsq = getMargEsq(getLinha(rioTemp,0)) - getMargEsq(getLinha(rioTemp,1));
+        varDir = getMargDir(getLinha(rioTemp,0)) - getMargDir(getLinha(rioTemp,1));
 
             if(varEsq < varMinEsq ) varMinEsq = varEsq;
                 else if(varEsq > varMaxEsq) varMaxEsq = varEsq;
