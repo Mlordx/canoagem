@@ -1,4 +1,4 @@
 
 void meuSleep(int ms);
 
-void* mallocSafe(size_t);
+void* mallocSafe(size_t n);

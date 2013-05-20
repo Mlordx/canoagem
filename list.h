@@ -1,3 +1,6 @@
+#ifndef LIST_H
+#define LIST_H
+
 #include "linhaT.h"
 
 
@@ -24,6 +27,8 @@ int emptyList(List list);
 int isEOL(List list);
 
 int nItens(List list);
+
+#endif
 
 
 

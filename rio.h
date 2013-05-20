@@ -1,3 +1,7 @@
+#ifndef RIO_H
+#define RIO_H
+
+
 #define PROB_OBST 0.3
 #define TAM_MIN_BARREIRA 1
 #define PORC_MAX_BARREIRA 1
@@ -20,5 +24,7 @@ Rio alocaRio(int lin, int col, float fluxo, int tamMin);
 linhaT getLinha(Rio,int);
 
 int getNLinhas(Rio);
+
+#endif
 
 

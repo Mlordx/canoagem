@@ -4,10 +4,12 @@
 #include "terreno.h"
 
 
-void imprimeLinhaN(linhaT);
+
 
 
 typedef struct linhat *linhaT;
+
+void imprimeLinhaN(linhaT);
 
 linhaT geraLinha(linhaT linhaAnt, int tamMin);
 
