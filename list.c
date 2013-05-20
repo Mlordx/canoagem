@@ -19,6 +19,12 @@ struct lista
 
 };
 
+/*
+
+Essa função retorna uma List vazia, apontando para o EOL.
+
+*/
+
 List listInit()
 {
   List list;
@@ -32,20 +38,47 @@ List listInit()
   return list;
 }
 
+
+
+/*
+
+mvNext(List) faz a lista apontar para a próxima célula do
+item que a lista aponta atualmente.
+
+*/
 void mvNext(List list)
 {
   list->celAtual = list->celAtual->prox;
 }
+
+/*
+
+mvPrev(List) faz a lista apontar para a célula anterior do
+item que a lista aponta atualmente.
+
+*/
 
 void mvPrev(List list)
 {
   list->celAtual = list->celAtual->ant;
 }
 
+/*
+Faz a lista apontar para o EOL da lista
+*/
+
 void mvEOL(List list)
 {
   list->celAtual = list->cabeca;
 }
+
+/*
+
+Insere na lista o item passado como arugmento.
+Ele será inserido como uma célula que ficará em sequencia
+da célula apontada atualmente pelo pela lista.
+
+*/
 
 void insertList(List list, Item item)
 {
@@ -58,6 +91,12 @@ void insertList(List list, Item item)
   list->celAtual->prox = newCel;
   list->nItens++;
 }
+
+/*
+Remove da lista a celula que a lista está apontado atualmente.
+E a lista passa a apontar para a celula anterior da que foi deletada.
+
+*/
 
 int removeList(List list)
 {
@@ -80,25 +119,47 @@ int removeList(List list)
   /*return itemTemp;*/
 }
 
+/*
+Função que retorna TRUE caso a lista esteja vazia,
+e FALSE c.c.
+
+*/
 int emptyList(List list)
 {
   return (list->cabeca->prox == list->cabeca);
 }
 
+/*
+Função que retorna TRUE caso a lista esteja apontando para o EOL
+e FALSE c.c.
+*/
 int isEOL(List list)
 {
   return (list->celAtual == list->cabeca);
 }
 
+
+/*
+
+Função que retorna o número de itens que a lista possui.
+
+*/
 int nItens(List list)
 {
   return list->nItens;
 }
 
+
+/*
+
+Função que retorna o item que a lista aponta atualmente.
+Caso seja o EOL, retorna NULL.
+
+*/
 Item getItem(List list)
 {
   if(!isEOL(list)) return list->celAtual->item;
-  else{printf("PINTO\n"); return NULL;}
+  else{printf("PINTO\n"); return (Item)NULL;}
 }
 
 
