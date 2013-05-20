@@ -58,7 +58,6 @@ int atualizaRio(Rio rioTemp)
       temp = getItem(lista);
       if(temp == NULL)
       {
-        fprintf(stderr,"Erro ao tentar ler as linhas do rio");
         return FALHA_ATUALIZA;
       }
       mvNext(lista);
@@ -79,7 +78,6 @@ int atualizaRio(Rio rioTemp)
         numAleatorio = rand()%(tamMaxObs)+TAM_MIN_BARREIRA;
         if(!geraObstaculo(novaLinha,numAleatorio))
         {
-          fprintf(stderr,"Erro ao tentar criar obstáculo");
           status = FALHA_OBST;
         }
       }
@@ -177,7 +175,7 @@ Rio alocaRio(int lin, int col, float fluxo, int tamMin)
 
 Retorna a linhaT do rio correspondente ao índice passado,
 considerando que as linhas são numeradas de cima para baixo,
-de 0 até N-1.
+de 1 até N.
 
 */
 linhaT getLinha(Rio rioTemp,int ind)

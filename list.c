@@ -159,7 +159,7 @@ Caso seja o EOL, retorna NULL.
 Item getItem(List list)
 {
   if(!isEOL(list)) return list->celAtual->item;
-  else{printf("PINTO\n"); return (Item)NULL;}
+  else return (Item)NULL;
 }
 
 

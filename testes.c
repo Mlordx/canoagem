@@ -100,8 +100,8 @@ void testaVariacao(int iteracoes){
     for(i =0; i< iteracoes;i++){
         atualizaRio(rioTemp);
 
-        varEsq = getMargEsq(getLinha(rioTemp,0)) - getMargEsq(getLinha(rioTemp,1));
-        varDir = getMargDir(getLinha(rioTemp,0)) - getMargDir(getLinha(rioTemp,1));
+        varEsq = getMargEsq(getLinha(rioTemp,1)) - getMargEsq(getLinha(rioTemp,2));
+        varDir = getMargDir(getLinha(rioTemp,1)) - getMargDir(getLinha(rioTemp,2));
 
             if(varEsq < varMinEsq ) varMinEsq = varEsq;
                 else if(varEsq > varMaxEsq) varMaxEsq = varEsq;

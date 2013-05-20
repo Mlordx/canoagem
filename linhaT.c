@@ -175,15 +175,15 @@ int geraObstaculo(linhaT lin, int tam)
   int inicio,i, inicioMax;
 
 
+  /*Erro ao criar obstáculo: Tamanho do obstáculo maior que do Rio*/
   if(tam>=lin->tam)
   {
-    fprintf(stderr,"Erro ao criar obstáculo: Tamanho do obstáculo maior que do Rio\n");
     return 0;
   }
 
+  /* Erro ao criar obstáculo: Tamanho do obstáculo faria o fluxo zerar\n*/
   if((inicioMax = lin->margD-lin->margE -1 -tam)<5)
   {
-    fprintf(stderr,"Erro ao criar obstáculo: Tamanho do obstáculo faria o fluxo zerar\n");
     return 0;
   }
 

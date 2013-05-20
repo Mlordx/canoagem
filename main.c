@@ -46,9 +46,9 @@ int main(int argc, char* argv[])
                     /* ***************************************/
                     case 'T':   teste = 1;
                                 if(argv[args][2] == '1') testeLinhas = 1;
-                                if(argv[args][2] == '2') testeFluxo = 1;
-                                if(argv[args][2] == '3') testeMargem = 1;
-                                if(argv[args][2] == '4') testeVariacoes = 1;
+                                else if(argv[args][2] == '2') testeFluxo = 1;
+                                else if(argv[args][2] == '3') testeMargem = 1;
+                                else if(argv[args][2] == '4') testeVariacoes = 1;
                                 else {
                                     printf("Comando inválido.");
                                     exit(EXIT_FAILURE);
