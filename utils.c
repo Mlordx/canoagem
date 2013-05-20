@@ -2,6 +2,8 @@
 #include <stdio.h>
 #include <time.h>
 
+/* Função mallocSafe que verifica se o "malloc" tradicional retornou NULL ou não. */
+/* Evita problemas de alocação de memória.                                        */
 
 void* mallocSafe (size_t n){
   void * pt;
@@ -12,6 +14,9 @@ void* mallocSafe (size_t n){
   }
   return pt;
 }
+
+
+/* Função meuSleep controla o tempo entre a impressão das linhas. (calculado em milisegundos) */
 
 void meuSleep(int ms)
 {
