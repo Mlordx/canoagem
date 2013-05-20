@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
 
 /* ************************************************/
     int seed = SEED_DEFAULT, args;
-    int linhas = NUM_LIN_DEFAULT;
+    int linhas = NUM_LIN_DEFAULT, status;
     int colunas = NUM_COL_DEFAULT, it = ITERACOES_DEFAULT;
     int testeLinhas = 0, testeFluxo = 0, testeVariacoes = 0, testeMargem = 0, teste = 0;
 
@@ -76,12 +76,22 @@ int main(int argc, char* argv[])
               meuSleep(100);
 
               system("clear");
-              atualizaRio(nilo);
+              status = atualizaRio(nilo);
+              if(status == FALHA_OBST)
+              {
+                printf("Falaha ao tentar gerar um obstáculo. O programa sera terminado.");
+                exit(-1);
+              }
+              if(status == FALHA_ATUALIZA)
+              {
+                printf("Falaha ao tentar gerar um novo frame. O programa sera terminado.");
+                exit(-1);
+              }
           }
     }
     else
     {
-      if(testaVariacao) testaVariacao(it);
+      if(testeVariacoes) testaVariacao(it);
 
       if(testeFluxo)
       {

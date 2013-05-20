@@ -91,7 +91,7 @@ void imprimeLinha(linhaT temp)
   int i;
   for (i=0; i<temp->tam; i++)
    printf("%c",getTipo(temp->linha[i]));
-  printf("  %f\n", getFluxo(temp));
+  printf("\n");
 }
 
 /*
