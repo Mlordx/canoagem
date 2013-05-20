@@ -1,3 +1,6 @@
+#ifndef LIST_H
+#define LIST_H
+
 #include "linhaT.h"
 
 
@@ -7,23 +10,25 @@ typedef linhaT Item;
 
 List listInit();
 
-void mvNext(List);
+void mvNext(List list);
 
-void mvPrev(List);
+void mvPrev(List list);
 
-void mvEOL(List);
+void mvEOL(List list);
 
-void insertList(List, Item);
+void insertList(List list, Item item);
 
-int removeList(List);
+int removeList(List list);
 
-Item getItem(List);
+Item getItem(List list);
 
-int emptyList(List);
+int emptyList(List list);
 
-int isEOL(List);
+int isEOL(List list);
 
-int nItens(List);
+int nItens(List list);
+
+#endif
 
 
 
