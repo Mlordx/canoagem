@@ -14,6 +14,9 @@ struct linhat
   int barreira;
 };
 
+/* Recebe uma linha e um tamanho mínimo do rio
+e retorna uma nova linha, baseada na linha anterior. Olhar
+guia do desenvolvedor para maiores detalhes   */
 linhaT geraLinha(linhaT linhaAnt, int tamMin)
 {
     int novaMargEsq, novaMargDir, margDir, margEsq;
@@ -37,6 +40,12 @@ linhaT geraLinha(linhaT linhaAnt, int tamMin)
 
 
 }
+
+/*
+Essa função retorna uma nova linha com um número
+de terrenos especificado (tam), e com as delimitações das
+margens nos índices espificados, considerando que o indice
+da linha varia de 0...tam-1 */
 
 linhaT novaLinha(int tam, int margE, int margD)
 {
@@ -65,6 +74,10 @@ linhaT novaLinha(int tam, int margE, int margD)
 
 }
 
+/*
+Imprime a linha passado como argumento.
+*/
+
 void imprimeLinhaN(linhaT temp)
 {
   int i;
@@ -81,10 +94,23 @@ void imprimeLinha(linhaT temp)
   printf("  %f\n", getFluxo(temp));
 }
 
+/*
+
+Essa função retorna o terreno localizado
+no indice ind da linhaT passada como argumento,
+considerando que o indice varia de 0...tam-1
+*/
+
 Terreno getTerreno(linhaT linha, int ind)
 {
   return linha->linha[ind];
 }
+
+/*
+
+Libera a memória alocada pela linha passada como argumento.
+
+*/
 
 void freeLinha(linhaT linha)
 {
@@ -97,10 +123,22 @@ void freeLinha(linhaT linha)
 
 }
 
+/*
+
+Essa função retorna o indice da margem esquerda da linha.
+
+*/
+
 int getMargEsq(linhaT lin)
 {
   return lin->margE;
 }
+
+/*
+
+Essa função retorna o indice da margem direita da linha.
+
+*/
 
 int getMargDir(linhaT lin)
 {
@@ -111,11 +149,27 @@ int getLinhaTam(linhaT lin){
   return lin->tam;
 }
 
+/*
+
+Essa função retorna 1 caso a linha tenha um obstáculo, e 0
+c.c.
+
+*/
 int temBarreira(linhaT lin)
 {
   return lin->barreira;
 }
 
+
+/*
+
+Essa função tenta gerar um obstáculo do tamanho especificado
+na linha passada como argumento  (sem manter o fluxo original da linha)
+
+Caso consiga, a função retorna 1.
+C.C., a função retorna 0, e a linha mantém seu estado original
+
+*/
 int geraObstaculo(linhaT lin, int tam)
 {
   int inicio,i, inicioMax;
@@ -148,6 +202,12 @@ int geraObstaculo(linhaT lin, int tam)
   return 1;
 }
 
+/*
+
+Retorna o fluxo da linha passada como argumento.
+
+*/
+
 float getFluxo(linhaT lin)
 {
   int i;
@@ -159,6 +219,13 @@ float getFluxo(linhaT lin)
   return soma;
 }
 
+/*
+
+Normaliza as velocidades dos terrenos da linha passada como argumento
+para que a linha tenha ao final da execução da função o fluxo passado como
+argumento.
+
+*/
 void setFluxo(linhaT lin, float fluxoNovo)
 {
   int i;
@@ -171,6 +238,14 @@ void setFluxo(linhaT lin, float fluxoNovo)
 
 
 }
+
+/*
+
+A função gera velocidades para os terrenos da linha 2 baseado na linha 1 e
+define o fluxo da linha 2 como o da linha 1. Vide guia do desenvolvedor
+para mais informações.
+
+*/
 
 
 void igualaFluxo(linhaT lin1, linhaT lin2)
