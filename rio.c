@@ -22,7 +22,11 @@ struct rio
 };
 
 
+/*
+Essa função atualiza o rio em 1 frame. Ou seja,
+irá gerar uma nova linha, e irá deletar a mais velha.
 
+*/
 
 int atualizaRio(Rio rioTemp)
 {
@@ -37,13 +41,11 @@ int atualizaRio(Rio rioTemp)
     temp = getItem(lista);
     if(temp == NULL)
     {
-      fprintf(stderr,"Erro ao tentar ler as linhas do rio");
       return FALHA_ATUALIZA;
     }
     novaLinha = geraLinha(temp, rioTemp->tamMin);
     if(novaLinha == NULL)
     {
-      fprintf(stderr,"Erro ao tentar gerar uma nova linha");
       return FALHA_ATUALIZA;
     }
 
@@ -95,7 +97,10 @@ int atualizaRio(Rio rioTemp)
 
 }
 
+/*
+Função privada que constroi o rio pela primeira vez.
 
+*/
 static void rioInit(Rio rioTemp)
 {
     int i, margEsq, margDir, margMax;
@@ -121,6 +126,12 @@ static void rioInit(Rio rioTemp)
 
 }
 
+/*
+
+Função que imprime o rio na stdout
+
+*/
+
 void desenhaRio(Rio rioTemp)
 {
   linhaT temp;
@@ -138,7 +149,13 @@ void desenhaRio(Rio rioTemp)
 
 }
 
+/*
 
+Função que retorna um rio com o número de linhas, colunas,
+com o fluxo e com o tamanho minimo passaod como argumento.
+
+
+*/
 
 Rio alocaRio(int lin, int col, float fluxo, int tamMin)
 {
@@ -156,7 +173,13 @@ Rio alocaRio(int lin, int col, float fluxo, int tamMin)
 
 }
 
+/*
 
+Retorna a linhaT do rio correspondente ao índice passado,
+considerando que as linhas são numeradas de cima para baixo,
+de 0 até N-1.
+
+*/
 linhaT getLinha(Rio rioTemp,int ind)
 {
   linhaT linhaTemp;
