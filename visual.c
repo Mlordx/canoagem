@@ -34,11 +34,13 @@ void visualInit(Rio rioTemp, int dtemp)
   rio = rioTemp;
   LARGURA_TELA = D*getLinhaTam(getLinha(rioTemp,1));
   ALTURA_TELA = D*getNLinhas(rioTemp);
-  if(!inicializar()) printf("HUE\n");
+  if(!inicializar()) for(;;)printf("HUE");
 }
+
+
 void visualUpdate()
 {
-  al_clear_to_color(al_map_rgb(255, 255, 255));
+  al_clear_to_color(al_map_rgb(153, 204, 255));
   desenhaRioVisual();
   al_flip_display();
 }
@@ -46,23 +48,40 @@ void visualUpdate()
 
 static void desenhaRioVisual()
 {
-  linhaT linhaTemp;
+  linhaT linhaTemp, linhaTempProx;
   int numLinhas;
   int i,j;
 
   numLinhas = getNLinhas(rio);
 
-  for(j=1; j<=numLinhas; j++)
+  for(j=1; j<numLinhas; j++)
   {
     linhaTemp = getLinha(rio,j);
+    linhaTempProx = getLinha(rio,j+1);
     i = numLinhas + 1 - j;
 
     /*Margem esquerda*/
-    al_draw_filled_rectangle(0,ALTURA_TELA-(i*D), D*getMargEsq(linhaTemp), ALTURA_TELA-((i-1)*D), al_map_rgb(150, 100, 0));
+    al_draw_filled_rectangle(0,ALTURA_TELA-((i-1)*D), D*(getMargEsq(linhaTemp)-1), ALTURA_TELA-(i*D), al_map_rgb(204, 102, 0));
+    if(getMargEsq(linhaTemp)>getMargEsq(linhaTempProx))
+        al_draw_filled_triangle(D*(getMargEsq(linhaTemp)), ALTURA_TELA-(i*D), D*(getMargEsq(linhaTempProx)), ALTURA_TELA-((i-1)*D),  D*(getMargEsq(linhaTempProx)), ALTURA_TELA-(i*D), al_map_rgb(204, 102, 0));
+    else
+    {
+        al_draw_filled_rectangle( D*(getMargEsq(linhaTemp)-1) ,ALTURA_TELA-((i-1)*D), D*(getMargEsq(linhaTemp)), ALTURA_TELA-(i*D), al_map_rgb(204, 102, 0));
+        if(getMargEsq(linhaTemp)<getMargEsq(linhaTempProx))
+        al_draw_filled_triangle(D*(getMargEsq(linhaTemp)), ALTURA_TELA-(i*D), D*(getMargEsq(linhaTemp)), ALTURA_TELA-((i-1)*D),  D*(getMargEsq(linhaTempProx)), ALTURA_TELA-((i-1)*D), al_map_rgb(204, 102, 0));
+    }
+
+
+    if(tamBarreira(linhaTemp))
+    {
+        /* Desenha Barreira */
+        al_draw_filled_rectangle(inicioObst(linhaTemp)*D,ALTURA_TELA-(i*D), D*(tamBarreira(linhaTemp)+inicioObst(linhaTemp)), ALTURA_TELA-((i-1)*D), al_map_rgb(204, 102, 0));
+
+    }
 
 
     /* Margem Direita */
-    al_draw_filled_rectangle(LARGURA_TELA-(D*(getLinhaTam(linhaTemp)-getMargDir(linhaTemp)) ),ALTURA_TELA-(i*D),LARGURA_TELA , ALTURA_TELA-((i-1)*D), al_map_rgb(150, 100, 0));
+    al_draw_filled_rectangle(LARGURA_TELA-(D*(getLinhaTam(linhaTemp)-getMargDir(linhaTemp)) ),ALTURA_TELA-(i*D),LARGURA_TELA , ALTURA_TELA-((i-1)*D), al_map_rgb(204, 102, 0));
 
   }
 

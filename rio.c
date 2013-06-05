@@ -61,7 +61,7 @@ int atualizaRio(Rio rioTemp)
         return FALHA_ATUALIZA;
       }
       mvNext(lista);
-      if(temBarreira(temp)) break;
+      if(tamBarreira(temp)) break;
     }
 
 

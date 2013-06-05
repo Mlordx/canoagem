@@ -70,7 +70,7 @@ int main(int argc, char* argv[])
     if(!teste)
     {
           nilo = alocaRio(linhas, colunas, fluxoRio, tamanhoMinimo);
-          visualInit(nilo,5);
+          visualInit(nilo,10);
           while(1)
           {
               desenhaRio(nilo);
