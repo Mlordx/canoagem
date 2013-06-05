@@ -4,6 +4,8 @@
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_audio.h>
+#include "allegro5/allegro_acodec.h"
 
 #include "rio.h"
 #include "linhaT.h"
@@ -25,6 +27,7 @@ static void desenhaRioVisual();
 static int LARGURA_TELA;
 static int ALTURA_TELA;
 ALLEGRO_DISPLAY *janela = NULL;
+ALLEGRO_SAMPLE *sample = NULL;
 Rio rio;
 int D = 5;
 
@@ -117,6 +120,25 @@ static int inicializar()
         fprintf(stderr, "Falha ao inicializar add-on de primitivas.\n");
         return 0;
     }
+
+    if (!al_install_audio())
+    {
+        fprintf(stderr, "Falha ao inicializar o dispositivo de som.\n");
+        return 0;
+    }
+
+    if (!al_init_acodec_addon())
+    {
+        fprintf(stderr, "Falha ao inicializar os codecs de audio.\n");
+        return 0;
+    }
+
+    al_reserve_samples(1); /* Gera e reserva 'n' espaço para samples escolhidos pelo usuário. Cada espaço consiste de uma 'voz' dentro  */
+                           /* do 'mixer', que será por meio da qual cada sample será reproduzido na saída de som escolhida.             */
+
+    sample = al_load_sample("04. Metal Massacre Attack (Aruê Aruô).wav"); /* Sample é carregado. */
+
+    al_play_sample(sample, 1, 0, 1, ALLEGRO_PLAYMODE_LOOP, NULL); /* Faz o sample tocar :D */
 
     janela = al_create_display(LARGURA_TELA, ALTURA_TELA);
     if (!janela)
