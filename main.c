@@ -1,8 +1,8 @@
 #define SEED_DEFAULT 1234567890
-#define NUM_LIN_DEFAULT 30
-#define NUM_COL_DEFAULT 100
+#define NUM_LIN_DEFAULT 160
+#define NUM_COL_DEFAULT 120
 #define FLUXO_DEFAULT 1
-#define TAM_MIN_DEFAULT 5
+#define TAM_MIN_DEFAULT 50
 #define ITERACOES_DEFAULT 1000
 
 #include <stdio.h>
@@ -10,6 +10,7 @@
 #include "rio.h"
 #include "utils.h"
 #include "testes.h"
+#include "visual.h"
 #include <time.h>
 
 int main(int argc, char* argv[])
@@ -69,9 +70,11 @@ int main(int argc, char* argv[])
     if(!teste)
     {
           nilo = alocaRio(linhas, colunas, fluxoRio, tamanhoMinimo);
+          visualInit(nilo,5);
           while(1)
           {
               desenhaRio(nilo);
+              visualUpdate();
 
               meuSleep(100);
 

@@ -8,7 +8,7 @@ Allegro = -lallegro -lallegro_primitives
 
 
 ep2: main.o terreno.o rio.o utils.o list.o linhaT.o testes.o visual.o
-	$(CC) main.o terreno.o rio.o utils.o list.o linhaT.o testes.o -o ep2 -lm $(Allegro)
+	$(CC) main.o terreno.o rio.o utils.o list.o linhaT.o testes.o visual.o -o ep2 -lm $(Allegro)
 
 main.o: main.c
 	$(CC) $(CFLAGS) -c main.c
