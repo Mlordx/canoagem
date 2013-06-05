@@ -51,6 +51,8 @@ static void desenhaRioVisual()
   linhaT linhaTemp, linhaTempProx;
   int numLinhas;
   int i,j;
+  int posDir, posDirProx;
+  int posEsq, posEsqProx;
 
   numLinhas = getNLinhas(rio);
 
@@ -60,28 +62,39 @@ static void desenhaRioVisual()
     linhaTempProx = getLinha(rio,j+1);
     i = numLinhas + 1 - j;
 
+    posEsq = getMargEsq(linhaTemp);
+    posEsqProx = getMargEsq(linhaTempProx);
+
     /*Margem esquerda*/
-    al_draw_filled_rectangle(0,ALTURA_TELA-((i-1)*D), D*(getMargEsq(linhaTemp)-1), ALTURA_TELA-(i*D), al_map_rgb(204, 102, 0));
-    if(getMargEsq(linhaTemp)>getMargEsq(linhaTempProx))
-        al_draw_filled_triangle(D*(getMargEsq(linhaTemp)), ALTURA_TELA-(i*D), D*(getMargEsq(linhaTempProx)), ALTURA_TELA-((i-1)*D),  D*(getMargEsq(linhaTempProx)), ALTURA_TELA-(i*D), al_map_rgb(204, 102, 0));
+    al_draw_filled_rectangle(0,ALTURA_TELA-((i-1)*D), D*(posEsq-1), ALTURA_TELA-(i*D), al_map_rgb(204, 102, 0));
+    if(posEsq>posEsqProx)
+        al_draw_filled_triangle(D*(posEsq), ALTURA_TELA-(i*D), D*(posEsqProx), ALTURA_TELA-((i-1)*D),  D*(posEsqProx), ALTURA_TELA-(i*D), al_map_rgb(204, 102, 0));
     else
     {
-        al_draw_filled_rectangle( D*(getMargEsq(linhaTemp)-1) ,ALTURA_TELA-((i-1)*D), D*(getMargEsq(linhaTemp)), ALTURA_TELA-(i*D), al_map_rgb(204, 102, 0));
-        if(getMargEsq(linhaTemp)<getMargEsq(linhaTempProx))
-        al_draw_filled_triangle(D*(getMargEsq(linhaTemp)), ALTURA_TELA-(i*D), D*(getMargEsq(linhaTemp)), ALTURA_TELA-((i-1)*D),  D*(getMargEsq(linhaTempProx)), ALTURA_TELA-((i-1)*D), al_map_rgb(204, 102, 0));
+        al_draw_filled_rectangle( D*(posEsq-1) ,ALTURA_TELA-((i-1)*D), D*(posEsq), ALTURA_TELA-(i*D), al_map_rgb(204, 102, 0));
+        if(posEsq<posEsqProx)
+        al_draw_filled_triangle(D*(posEsq), ALTURA_TELA-(i*D), D*(posEsq), ALTURA_TELA-((i-1)*D),  D*(posEsqProx), ALTURA_TELA-((i-1)*D), al_map_rgb(204, 102, 0));
     }
 
 
     if(tamBarreira(linhaTemp))
-    {
         /* Desenha Barreira */
         al_draw_filled_rectangle(inicioObst(linhaTemp)*D,ALTURA_TELA-(i*D), D*(tamBarreira(linhaTemp)+inicioObst(linhaTemp)), ALTURA_TELA-((i-1)*D), al_map_rgb(204, 102, 0));
 
-    }
 
+    posDir = getMargDir(linhaTemp);
+    posDirProx = getMargDir(linhaTempProx);
 
     /* Margem Direita */
-    al_draw_filled_rectangle(LARGURA_TELA-(D*(getLinhaTam(linhaTemp)-getMargDir(linhaTemp)) ),ALTURA_TELA-(i*D),LARGURA_TELA , ALTURA_TELA-((i-1)*D), al_map_rgb(204, 102, 0));
+    al_draw_filled_rectangle( (D*(posDir+1) ),ALTURA_TELA-(i*D),LARGURA_TELA , ALTURA_TELA-((i-1)*D), al_map_rgb(204, 102, 0));
+    if(posDir<posDirProx)
+        al_draw_filled_triangle( D*posDir, ALTURA_TELA-(i*D), D*posDirProx, ALTURA_TELA-((i-1)*D),  D*posDirProx, ALTURA_TELA-(i*D), al_map_rgb(204, 102, 0));
+    else
+    {
+        al_draw_filled_rectangle( D*(posDir+1) ,ALTURA_TELA-((i-1)*D), D*posDir, ALTURA_TELA-(i*D), al_map_rgb(204, 102, 0));
+        if(posDir>posDirProx)
+        al_draw_filled_triangle(D*(posDir), ALTURA_TELA-(i*D), D*(posDir), ALTURA_TELA-((i-1)*D),  D*(posDirProx), ALTURA_TELA-((i-1)*D), al_map_rgb(204, 102, 0));
+    }
 
   }
 

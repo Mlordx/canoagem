@@ -76,18 +76,18 @@ int main(int argc, char* argv[])
               desenhaRio(nilo);
               visualUpdate();
 
-              meuSleep(100);
+              meuSleep(50);
 
               system("clear");
               status = atualizaRio(nilo);
               if(status == FALHA_OBST)
               {
-                printf("Falaha ao tentar gerar um obstáculo. O programa sera terminado.");
+                printf("Falha ao tentar gerar um obstáculo. O programa sera terminado.");
                 exit(-1);
               }
               if(status == FALHA_ATUALIZA)
               {
-                printf("Falaha ao tentar gerar um novo frame. O programa sera terminado.");
+                printf("Falha ao tentar gerar um novo frame. O programa sera terminado.");
                 exit(-1);
               }
           }
