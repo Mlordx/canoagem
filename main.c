@@ -2,7 +2,7 @@
 #define NUM_LIN_DEFAULT 160
 #define NUM_COL_DEFAULT 120
 #define FLUXO_DEFAULT 1
-#define TAM_MIN_DEFAULT 50
+#define TAM_MIN_DEFAULT 10
 #define ITERACOES_DEFAULT 1000
 
 #include <stdio.h>
@@ -71,12 +71,12 @@ int main(int argc, char* argv[])
     {
           nilo = alocaRio(linhas, colunas, fluxoRio, tamanhoMinimo);
           visualInit(nilo,10);
-          while(1)
+          /*while(1)
           {
               desenhaRio(nilo);
               visualUpdate();
 
-              meuSleep(50);
+              meuSleep(10);
 
               system("clear");
               status = atualizaRio(nilo);
@@ -90,7 +90,7 @@ int main(int argc, char* argv[])
                 printf("Falha ao tentar gerar um novo frame. O programa sera terminado.");
                 exit(-1);
               }
-          }
+          }*/
     }
     else
     {

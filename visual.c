@@ -28,16 +28,47 @@ static int LARGURA_TELA;
 static int ALTURA_TELA;
 ALLEGRO_DISPLAY *janela = NULL;
 ALLEGRO_SAMPLE *sample = NULL;
+ALLEGRO_EVENT_QUEUE *fila_eventos = NULL;
 Rio rio;
 int D = 5;
 
 void visualInit(Rio rioTemp, int dtemp)
 {
+  ALLEGRO_TIMEOUT timeout;
+  ALLEGRO_EVENT evento;
+  int temEvento;
+  int status;
+
+
+
   D = dtemp;
   rio = rioTemp;
   LARGURA_TELA = D*getLinhaTam(getLinha(rioTemp,1));
-  ALTURA_TELA = D*getNLinhas(rioTemp);
+  ALTURA_TELA = D*(getNLinhas(rioTemp)-1);
   if(!inicializar()) for(;;)printf("HUE");
+
+  while(1)
+  {
+    al_init_timeout(&timeout, 0.05);
+
+    temEvento = al_wait_for_event_until(fila_eventos, &evento, &timeout);
+    if(temEvento && evento.type == ALLEGRO_EVENT_DISPLAY_CLOSE) break;
+
+   /* desenhaRio(nilo);*/
+    visualUpdate();
+
+    status = atualizaRio(rio);
+    if(status == FALHA_OBST)
+    {
+      printf("Falha ao tentar gerar um obstáculo. O programa sera terminado.");
+      exit(-1);
+    }
+    if(status == FALHA_ATUALIZA)
+    {
+      printf("Falha ao tentar gerar um novo frame. O programa sera terminado.");
+      exit(-1);
+    }
+  }
 }
 
 
@@ -63,7 +94,7 @@ static void desenhaRioVisual()
   {
     linhaTemp = getLinha(rio,j);
     linhaTempProx = getLinha(rio,j+1);
-    i = numLinhas + 1 - j;
+    i = numLinhas - j;
 
     posEsq = getMargEsq(linhaTemp);
     posEsqProx = getMargEsq(linhaTempProx);
@@ -82,7 +113,7 @@ static void desenhaRioVisual()
 
     if(tamBarreira(linhaTemp))
         /* Desenha Barreira */
-        al_draw_filled_rectangle(inicioObst(linhaTemp)*D,ALTURA_TELA-(i*D), D*(tamBarreira(linhaTemp)+inicioObst(linhaTemp)), ALTURA_TELA-((i-1)*D), al_map_rgb(204, 102, 0));
+        al_draw_filled_rectangle( (inicioObst(linhaTemp)-1)*D ,ALTURA_TELA-(i*D), D*(tamBarreira(linhaTemp)+inicioObst(linhaTemp)-1), ALTURA_TELA-((i-1)*D), al_map_rgb(204, 102, 0));
 
 
     posDir = getMargDir(linhaTemp);
@@ -148,6 +179,15 @@ static int inicializar()
     }
 
     al_set_window_title(janela, "Testando allegro_primitives");
+
+     fila_eventos = al_create_event_queue();
+    if (!fila_eventos)
+    {
+        fprintf(stderr, "Falha ao criar fila de eventos.\n");
+        al_destroy_display(janela);
+        return 0;
+    }
+     al_register_event_source(fila_eventos, al_get_display_event_source(janela));
 
     return 1;
 }
