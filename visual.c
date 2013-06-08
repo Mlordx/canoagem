@@ -4,8 +4,7 @@
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
-#include <allegro5/allegro_audio.h>
-#include "allegro5/allegro_acodec.h"
+
 
 #include "rio.h"
 #include "linhaT.h"
@@ -15,9 +14,9 @@
 
 
 /* *************  Protótipos *************/
-static void visualUpdate();
+static void visualUpdate(Rio rio);
 static int inicializar();
-static void desenhaRioVisual();
+static void desenhaRioVisual(Rio rio);
 static void  desenhaBarco(int x, int y, int alt, int larg);
 
 /* **************************** */
@@ -29,17 +28,16 @@ static void  desenhaBarco(int x, int y, int alt, int larg);
 static int LARGURA_TELA;
 static int ALTURA_TELA;
 static ALLEGRO_DISPLAY *janela = NULL;
-static ALLEGRO_SAMPLE *sample = NULL;
 static ALLEGRO_EVENT_QUEUE *fila_eventos = NULL;
-static Rio rio;
 static int D = 5;
 
-int visualInit(Rio rioTemp, int dtemp)
+int visualInit(Rio rioTemp, int dtemp, int ms)
 {
   ALLEGRO_TIMEOUT timeout;
   ALLEGRO_EVENT evento;
   int temEvento;
   int status = VISUAL_SUCCESS;
+  Rio rio;
 
 
 
@@ -51,13 +49,13 @@ int visualInit(Rio rioTemp, int dtemp)
 
   while(1)
   {
-    al_init_timeout(&timeout, 0.05);
+    al_init_timeout(&timeout, ms);
 
     temEvento = al_wait_for_event_until(fila_eventos, &evento, &timeout);
     if(temEvento && evento.type == ALLEGRO_EVENT_DISPLAY_CLOSE) break;
 
    /* desenhaRio(nilo);*/
-    visualUpdate();
+    visualUpdate(rio);
 
     status = atualizaRio(rio);
     if(status == FALHA_OBST)
@@ -76,10 +74,10 @@ int visualInit(Rio rioTemp, int dtemp)
 }
 
 
-void visualUpdate()
+void visualUpdate(Rio rio)
 {
   al_clear_to_color(al_map_rgb(153, 204, 255));
-  desenhaRioVisual();
+  desenhaRioVisual(rio);
   al_flip_display();
 }
 
@@ -89,7 +87,7 @@ static void desenhaBarco(int x, int y, int alt, int larg)
   al_draw_filled_ellipse(x, y, larg/2, alt/2, al_map_rgb(166,42,42));
 }
 
-static void desenhaRioVisual()
+static void desenhaRioVisual(Rio rio)
 {
   linhaT linhaTemp, linhaTempProx;
   int numLinhas;
@@ -163,25 +161,6 @@ static int inicializar()
         fprintf(stderr, "Falha ao inicializar add-on de primitivas.\n");
         return 0;
     }
-
-    if (!al_install_audio())
-    {
-        fprintf(stderr, "Falha ao inicializar o dispositivo de som.\n");
-        return 0;
-    }
-
-    if (!al_init_acodec_addon())
-    {
-        fprintf(stderr, "Falha ao inicializar os codecs de audio.\n");
-        return 0;
-    }
-
-    al_reserve_samples(1); /* Gera e reserva 'n' espaço para samples escolhidos pelo usuário. Cada espaço consiste de uma 'voz' dentro  */
-                           /* do 'mixer', que será por meio da qual cada sample será reproduzido na saída de som escolhida.             */
-
-    sample = al_load_sample("04. Metal Massacre Attack (Aruê Aruô).wav"); /* Sample é carregado. */
-
-    al_play_sample(sample, 1, 0, 1, ALLEGRO_PLAYMODE_LOOP, NULL); /* Faz o sample tocar :D */
 
     janela = al_create_display(LARGURA_TELA, ALTURA_TELA);
     if (!janela)

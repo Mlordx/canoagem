@@ -5,7 +5,7 @@
 #define VISUAL_SUCCESS 1
 
 
-int visualInit(Rio, int);
+int visualInit(Rio, int, int);
 
 
 

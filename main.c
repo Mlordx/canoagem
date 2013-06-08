@@ -2,7 +2,7 @@
 #define NUM_LIN_DEFAULT 90
 #define NUM_COL_DEFAULT 90
 #define FLUXO_DEFAULT 1
-#define TAM_MIN_DEFAULT 10
+#define TAM_MIN_DEFAULT 30
 #define ITERACOES_DEFAULT 1000
 
 #include <stdio.h>
@@ -70,7 +70,7 @@ int main(int argc, char* argv[])
     if(!teste)
     {
           nilo = alocaRio(linhas, colunas, fluxoRio, tamanhoMinimo);
-          if(visualInit(nilo,10) ==  VISUAL_FAIL) fprintf(stderr,"Erro durante a exibição do rio.\n");
+          if(visualInit(nilo,10, 0.7) ==  VISUAL_FAIL) fprintf(stderr,"Erro durante a exibição do rio.\n");
     }
     else
     {
