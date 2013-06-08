@@ -65,7 +65,7 @@ int atualizaRio(Rio rioTemp)
     }
 
 
-    if(ultimaBarr>(rioTemp->lin/10) && rand()*1.0/RAND_MAX <= PROB_OBST)
+    if(ultimaBarr>rioTemp->lin*DIST_MIN_OBST && rand()*1.0/RAND_MAX <= PROB_OBST)
     {
       tamMaxObs = (getMargDir(novaLinha)-getMargEsq(novaLinha))*PORC_MAX_BARREIRA-TAM_MIN_BARREIRA;
 

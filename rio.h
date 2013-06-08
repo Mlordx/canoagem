@@ -5,6 +5,7 @@
 #define PROB_OBST 0.9
 #define TAM_MIN_BARREIRA 1
 #define PORC_MAX_BARREIRA 0.5
+#define DIST_MIN_OBST 0.20
 
 #define FALHA_OBST -1
 #define FALHA_ATUALIZA 0

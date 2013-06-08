@@ -169,7 +169,7 @@ janela até o primeiro terreno da barreira.
 
 */
 
-inicioObst(linhaT linha)
+int inicioObst(linhaT linha)
 {
     int tam = 0;
     if(!tamBarreira(linha)) return 0;

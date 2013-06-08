@@ -1,10 +1,11 @@
 #ifndef VISUAL_H
 #define VISUAL_H
 
+#define VISUAL_FAIL 0
+#define VISUAL_SUCCESS 1
 
 
-void visualInit(Rio, int);
-void visualUpdate();
+int visualInit(Rio, int);
 
 
 

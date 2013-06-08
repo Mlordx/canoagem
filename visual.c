@@ -13,10 +13,12 @@
 #include "visual.h"
 
 
-/* *************  Protótipos *************/
 
+/* *************  Protótipos *************/
+static void visualUpdate();
 static int inicializar();
 static void desenhaRioVisual();
+static void  desenhaBarco(int x, int y, int alt, int larg);
 
 /* **************************** */
 
@@ -26,18 +28,18 @@ static void desenhaRioVisual();
 
 static int LARGURA_TELA;
 static int ALTURA_TELA;
-ALLEGRO_DISPLAY *janela = NULL;
-ALLEGRO_SAMPLE *sample = NULL;
-ALLEGRO_EVENT_QUEUE *fila_eventos = NULL;
-Rio rio;
-int D = 5;
+static ALLEGRO_DISPLAY *janela = NULL;
+static ALLEGRO_SAMPLE *sample = NULL;
+static ALLEGRO_EVENT_QUEUE *fila_eventos = NULL;
+static Rio rio;
+static int D = 5;
 
-void visualInit(Rio rioTemp, int dtemp)
+int visualInit(Rio rioTemp, int dtemp)
 {
   ALLEGRO_TIMEOUT timeout;
   ALLEGRO_EVENT evento;
   int temEvento;
-  int status;
+  int status = VISUAL_SUCCESS;
 
 
 
@@ -45,7 +47,7 @@ void visualInit(Rio rioTemp, int dtemp)
   rio = rioTemp;
   LARGURA_TELA = D*getLinhaTam(getLinha(rioTemp,1));
   ALTURA_TELA = D*(getNLinhas(rioTemp)-1);
-  if(!inicializar()) for(;;)printf("HUE");
+  if(!inicializar()) return VISUAL_FAIL;
 
   while(1)
   {
@@ -59,16 +61,18 @@ void visualInit(Rio rioTemp, int dtemp)
 
     status = atualizaRio(rio);
     if(status == FALHA_OBST)
-    {
-      printf("Falha ao tentar gerar um obstáculo. O programa sera terminado.");
-      exit(-1);
-    }
+      fprintf(stderr,"Falha ao tentar gerar um obstáculo.\n");
     if(status == FALHA_ATUALIZA)
     {
-      printf("Falha ao tentar gerar um novo frame. O programa sera terminado.");
-      exit(-1);
+      fprintf(stderr,"Falha ao tentar gerar um novo frame. O programa sera terminado.\nma");
+      status = VISUAL_FAIL;
+      break;
     }
   }
+
+  al_destroy_display(janela);
+  return status;
+
 }
 
 
@@ -79,6 +83,11 @@ void visualUpdate()
   al_flip_display();
 }
 
+static void desenhaBarco(int x, int y, int alt, int larg)
+{
+  /* Elipse preenchido: x1, y1, raio x, raio y, cor*/
+  al_draw_filled_ellipse(x, y, larg/2, alt/2, al_map_rgb(166,42,42));
+}
 
 static void desenhaRioVisual()
 {
@@ -129,13 +138,16 @@ static void desenhaRioVisual()
         if(posDir>posDirProx)
         al_draw_filled_triangle(D*(posDir), ALTURA_TELA-(i*D), D*(posDir), ALTURA_TELA-((i-1)*D),  D*(posDirProx), ALTURA_TELA-((i-1)*D), al_map_rgb(204, 102, 0));
     }
-
   }
 
 
 
-
+  desenhaBarco(LARGURA_TELA/2, ALTURA_TELA-(5*D), 7*D, 2*D);
 }
+
+
+
+
 
 
 static int inicializar()
