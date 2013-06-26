@@ -7,11 +7,18 @@ Allegro = -lallegro -lallegro_primitives
 
 
 
-ep3: main.o terreno.o rio.o utils.o list.o linhaT.o testes.o visual.o
-	$(CC) main.o terreno.o rio.o utils.o list.o linhaT.o testes.o visual.o -o ep3 -lm $(Allegro)
+ep3: main.o terreno.o rio.o utils.o list.o linhaT.o testes.o visual.o barco.o vetor2D.o
+	$(CC) main.o terreno.o rio.o utils.o list.o linhaT.o barco.o vetor2D.o testes.o visual.o -o ep3 -lm $(Allegro)
 
 main.o: main.c
 	$(CC) $(CFLAGS) -c main.c
+
+barco.o: barco.c
+	$(CC) $(CFLAGS) -c barco.c
+
+vetor2D.o: vetor2D.c
+	$(CC) $(CFLAGS) -c vetor2D.c
+
 
 terreno.o: terreno.h terreno.c
 	$(CC) $(CFLAGS) -c terreno.c

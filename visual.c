@@ -54,7 +54,7 @@ int visualInit(Rio rioTemp, int dtemp, float ms)
     temEvento = al_wait_for_event_until(fila_eventos, &evento, &timeout);
     if(temEvento && evento.type == ALLEGRO_EVENT_DISPLAY_CLOSE) break;
 
-   /* desenhaRio(nilo);*/
+
     visualUpdate(rio);
 
     status = atualizaRio(rio);
@@ -62,7 +62,7 @@ int visualInit(Rio rioTemp, int dtemp, float ms)
       fprintf(stderr,"Falha ao tentar gerar um obstáculo.\n");
     if(status == FALHA_ATUALIZA)
     {
-      fprintf(stderr,"Falha ao tentar gerar um novo frame. O programa sera terminado.\nma");
+      fprintf(stderr,"Falha ao tentar gerar um novo frame. O programa sera terminado.\n");
       status = VISUAL_FAIL;
       break;
     }
