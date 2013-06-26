@@ -35,4 +35,8 @@ Vetor2D setVelocidadeBarco(BarcoT barco, Vetor2D vel)
 {
     barco->vel = vel;
 }
+Vetor2D getTamBarco(BarcoT barco)
+{
+    return barco->tam;
+}
 

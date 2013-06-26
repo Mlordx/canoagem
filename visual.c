@@ -4,12 +4,15 @@
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_ttf.h>
 
 
 #include "rio.h"
 #include "linhaT.h"
 #include "terreno.h"
 #include "visual.h"
+#include "vetor2D.h"
+#include "barco.h"
 
 
 
@@ -17,7 +20,7 @@
 static void visualUpdate(Rio rio);
 static int inicializar();
 static void desenhaRioVisual(Rio rio);
-static void  desenhaBarco(int x, int y, int alt, int larg);
+static void  desenhaBarco();
 
 /* **************************** */
 
@@ -30,29 +33,55 @@ static int ALTURA_TELA;
 static ALLEGRO_DISPLAY *janela = NULL;
 static ALLEGRO_EVENT_QUEUE *fila_eventos = NULL;
 static int D = 5;
+static BarcoT barco;
 
 int visualInit(Rio rioTemp, int dtemp, float ms)
 {
   ALLEGRO_TIMEOUT timeout;
   ALLEGRO_EVENT evento;
   int temEvento;
+  int tecla;
   int status = VISUAL_SUCCESS;
   Rio rio;
-
+  Vetor2D vetorTemp;
 
 
   D = dtemp;
   rio = rioTemp;
   LARGURA_TELA = D*getLinhaTam(getLinha(rioTemp,1));
   ALTURA_TELA = D*(getNLinhas(rioTemp)-1);
+
+   barco = novoBarco(novoVetor(LARGURA_TELA/2, ALTURA_TELA-(5*D)), novoVetor(0, 0), novoVetor(2*D, 7*D));
+
   if(!inicializar()) return VISUAL_FAIL;
 
   while(1)
   {
     al_init_timeout(&timeout, ms);
 
-    temEvento = al_wait_for_event_until(fila_eventos, &evento, &timeout);
-    if(temEvento && evento.type == ALLEGRO_EVENT_DISPLAY_CLOSE) break;
+    temEvento = al_wait_for_event(fila_eventos, &evento, &timeout);
+    if(temEvento)
+    {
+        if (evento.type == ALLEGRO_EVENT_DISPLAY_CLOSE) break;
+        else if (evento.type == ALLEGRO_EVENT_KEY_DOWN) printf("HUE1\n");
+            switch(evento.keyboard.keycode)
+            {
+
+              case ALLEGRO_KEY_LEFT:
+                tecla = 1;
+                vetorTemp = getVelocidadeBarco(barco);
+                setVetorX(vetorTemp, getVetorX(vetorTemp)-D);
+                printf("HUE\n");
+
+                break;
+              case ALLEGRO_KEY_RIGHT:
+                vetorTemp = getVelocidadeBarco(barco);
+                setVetorX(vetorTemp, getVetorX(vetorTemp)+D);
+                 tecla = 2;
+                 break;
+             }
+    }
+
 
 
     visualUpdate(rio);
@@ -81,10 +110,13 @@ void visualUpdate(Rio rio)
   al_flip_display();
 }
 
-static void desenhaBarco(int x, int y, int alt, int larg)
+static void desenhaBarco()
 {
+    Vetor2D pos, tam;
+    pos = getPosBarco(barco);
+    tam = getTamBarco(barco);
   /* Elipse preenchido: x1, y1, raio x, raio y, cor*/
-  al_draw_filled_ellipse(x, y, larg/2, alt/2, al_map_rgb(166,42,42));
+  al_draw_filled_ellipse(getVetorX(pos), getVetorY(pos), getVetorX(tam), getVetorY(tam), al_map_rgb(166,42,42));
 }
 
 static void desenhaRioVisual(Rio rio)
@@ -140,7 +172,7 @@ static void desenhaRioVisual(Rio rio)
 
 
 
-  desenhaBarco(LARGURA_TELA/2, ALTURA_TELA-(5*D), 7*D, 2*D);
+  desenhaBarco();
 }
 
 
