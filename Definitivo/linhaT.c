@@ -155,10 +155,35 @@ Essa função retorna 1 caso a linha tenha um obstáculo, e 0
 c.c.
 
 */
-int temBarreira(linhaT lin)
+int tamBarreira(linhaT lin)
 {
   return lin->barreira;
 }
+
+/*
+
+Essa função recebe como argumento uma linhaT,
+e retorna a distancia, em terrenos, da borda esquerda da
+janela até o primeiro terreno da barreira.
+
+
+*/
+
+int inicioObst(linhaT linha)
+{
+    int tam = 0;
+    if(!tamBarreira(linha)) return 0;
+
+    tam+= getMargEsq(linha);
+    while(getTipo(getTerreno(linha,tam++))!=TERRA);
+
+    return tam;
+
+}
+
+
+
+
 
 
 /*
@@ -197,7 +222,7 @@ int geraObstaculo(linhaT lin, int tam)
     /*freeTerreno(lin->linha[inicio+i]);*/
     lin->linha[inicio+i] = novoTerreno(TERRA,0);
   }
-  lin->barreira = 1;
+  lin->barreira = tam;
 
   return 1;
 }

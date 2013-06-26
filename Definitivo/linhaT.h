@@ -25,7 +25,7 @@ int getMargDir(linhaT);
 
 int getLinhaTam(linhaT);
 
-int temBarreira(linhaT);
+int tamBarreira(linhaT);
 
 void imprimeLinha(linhaT);
 
@@ -36,5 +36,7 @@ float getFluxo(linhaT);
 void setFluxo(linhaT, float);
 
 void igualaFluxo(linhaT, linhaT);
+
+int inicioObst(linhaT);
 
 #endif

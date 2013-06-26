@@ -1,0 +1,67 @@
+\documentclass[11pt]{article}
+\usepackage[brazilian]{babel}
+\usepackage[utf8]{inputenc} %Deixa eu colocar letras com ascentos
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{color}
+\usepackage{indentfirst}
+
+\title{Exercício Programa 3  - Guia do Usuário}
+
+\begin{document}
+
+\maketitle
+
+\section{Modo de compilaç\~ ao}
+
+Para gerar o executável do programa, basta executar o seguinte comando na pasta onde está localizado os arquivos do programa.
+
+\begin{itemize}
+
+\item[>]make
+
+\end{itemize}
+
+Com isso, será gerado o executável chamado ep3.
+
+\section{Modo de execução}
+
+O programa tem os seguintes parametros que podem ser inseridos via linha de comando (substituir o que estiver entre chaves adequadamente):
+
+\begin{itemize}
+
+\item[+] \textbf{-L[{\color{red}N}]:} Argumento dizendo o número de linhas que o rio terá. Caso esse argumento não seja passado, um valor default será usado.
+
+\item[+] \textbf{-C[{\color{red}N}]:} Argumento dizendo o número de colunas que o rio terá. Caso esse argumento não seja passado, um valor default será usado.
+
+\item[+] \textbf{-s[{\color{red}seed}]:} Argumento que diz a seed dos números aleatórios que serão usados no programa. Caso esse argumento não seja passado, um valor default será usado.
+
+\item[+] \textbf{-t[{\color{red}tam}]:} Argumento que diz o tamanho mínimo que o rio deverá ter. Caso nenhum valor seja passado, será usado um valor padrão.
+
+\item[+] \textbf{-F[{\color{red}flux}]:} Argumento que diz o fluxo que o rio deverá ter. Caso nenhum valor seja passado, será usado um valor padrão.
+
+\item[+] \textbf{-T[{\color{red}X}]:} Argumento que diz para o programa executar em modo de teste. Esse comando pode ser repetido quantas vezes necessárias, sendo X um número inteiro variando de 1 a 4. De acordo com o número, será execuigualaFluxotado um determinado teste:
+	\begin{enumerate}
+		\item Testa um rio com um número grande de linhas.
+		\item Testa um rio com fluxo 0.
+		\item Testa um rio de tamanho mínimo 0.
+		\item Testa as variações da margem do rio.		
+	
+	\end{enumerate}
+	
+\item[+] \textbf{-I[{\color{red}it}]:} Define quantas iterações, ou quantas vezes o rio será atualizado em cada teste. Esse argumento não tem efeito quando o modo de execução não é o de teste.
+
+\end{itemize}
+
+Exemplos de execução do programa(em bash):
+\begin{itemize}
+	\item[>] ./ep3 -L30 -C100 -s666 -F11.5
+	\item[>] ./ep3\footnote{Irá executar um rio com valores padrões}
+	\item[>] ./ep3 -T1 -T4 -I10000
+	\item[>] ./ep3 -T1 -s11 -I500
+
+
+
+\end{itemize}
+
+\end{document}

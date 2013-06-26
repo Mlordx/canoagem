@@ -1,8 +1,8 @@
 #define SEED_DEFAULT 1234567890
-#define NUM_LIN_DEFAULT 30
-#define NUM_COL_DEFAULT 100
+#define NUM_LIN_DEFAULT 90
+#define NUM_COL_DEFAULT 90
 #define FLUXO_DEFAULT 1
-#define TAM_MIN_DEFAULT 5
+#define TAM_MIN_DEFAULT 30
 #define ITERACOES_DEFAULT 1000
 
 #include <stdio.h>
@@ -10,6 +10,7 @@
 #include "rio.h"
 #include "utils.h"
 #include "testes.h"
+#include "visual.h"
 #include <time.h>
 
 int main(int argc, char* argv[])
@@ -18,7 +19,7 @@ int main(int argc, char* argv[])
 
 /* ************************************************/
     int seed = SEED_DEFAULT, args;
-    int linhas = NUM_LIN_DEFAULT, status;
+    int linhas = NUM_LIN_DEFAULT;
     int colunas = NUM_COL_DEFAULT, it = ITERACOES_DEFAULT;
     int testeLinhas = 0, testeFluxo = 0, testeVariacoes = 0, testeMargem = 0, teste = 0;
 
@@ -69,25 +70,7 @@ int main(int argc, char* argv[])
     if(!teste)
     {
           nilo = alocaRio(linhas, colunas, fluxoRio, tamanhoMinimo);
-          while(1)
-          {
-              desenhaRio(nilo);
-
-              meuSleep(100);
-
-              system("clear");
-              status = atualizaRio(nilo);
-              if(status == FALHA_OBST)
-              {
-                printf("Falaha ao tentar gerar um obstáculo. O programa sera terminado.");
-                exit(-1);
-              }
-              if(status == FALHA_ATUALIZA)
-              {
-                printf("Falaha ao tentar gerar um novo frame. O programa sera terminado.");
-                exit(-1);
-              }
-          }
+          if(visualInit(nilo,10, 0.7) ==  VISUAL_FAIL) fprintf(stderr,"Erro durante a exibição do rio.\n");
     }
     else
     {
