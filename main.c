@@ -70,7 +70,7 @@ int main(int argc, char* argv[])
     if(!teste)
     {
           nilo = alocaRio(linhas, colunas, fluxoRio, tamanhoMinimo);
-          if(visualInit(nilo,10, 0.7) ==  VISUAL_FAIL) fprintf(stderr,"Erro durante a exibição do rio.\n");
+          if(visualInit(nilo,10, 0.01) ==  VISUAL_FAIL) fprintf(stderr,"Erro durante a exibição do rio.\n");
     }
     else
     {

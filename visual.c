@@ -31,7 +31,7 @@ static ALLEGRO_DISPLAY *janela = NULL;
 static ALLEGRO_EVENT_QUEUE *fila_eventos = NULL;
 static int D = 5;
 
-int visualInit(Rio rioTemp, int dtemp, int ms)
+int visualInit(Rio rioTemp, int dtemp, float ms)
 {
   ALLEGRO_TIMEOUT timeout;
   ALLEGRO_EVENT evento;
