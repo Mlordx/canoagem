@@ -49,13 +49,15 @@ int visualInit(Rio rioTemp, int dtemp, float ms)
   LARGURA_TELA = D*getLinhaTam(getLinha(rioTemp,1));
   ALTURA_TELA = D*(getNLinhas(rioTemp)-1);
 
-   barco = novoBarco(novoVetor(LARGURA_TELA/(2*D), (ALTURA_TELA/D) - 5) , novoVetor(1.5, 7), novoVetor(1.5, 7));
+   barco = novoBarco(novoVetor(LARGURA_TELA/(2*D), (ALTURA_TELA/D) - 20) , novoVetor(1.5, 1.7), novoVetor(1.5, 7));
 
   if(!inicializar()) return VISUAL_FAIL;
 
   while(1)
   {
     al_init_timeout(&timeout, ms);
+
+    ms = 0.01/getVetorY(getVelocidadeBarco(barco));
 
     ne = nd = 0;
     temEvento = al_wait_for_event_until(fila_eventos, &evento, &timeout);
@@ -114,6 +116,7 @@ static void desenhaBarco(BarcoT barco, int ne, int nd, Rio rio)
     Vetor2D pos, tam, vel;
     float ve, vd, posX, posY;
     int nLinhas;
+    Terreno terrTemp;
     linhaT linhaTemp;
     pos = getPosBarco(barco);
     tam = getTamBarco(barco);
@@ -122,13 +125,17 @@ static void desenhaBarco(BarcoT barco, int ne, int nd, Rio rio)
      posX = getVetorX(pos);
      posY = getVetorY(pos);
 
-     printf("HUE: %f  %d\n\n", getVetorX(pos)*D, LARGURA_TELA);
+
 
 
     nLinhas = getNLinhas(rio);
     linhaTemp = getLinha(rio,nLinhas - getVetorY(pos));
+    terrTemp = getTerreno(linhaTemp, posX-1);
+    setTipo(terrTemp, TERRA);
     ve = getVelocidade( getTerreno(linhaTemp, posX-1) );
-    vd = getVelocidade( getTerreno(linhaTemp, posY+1) );
+    vd = getVelocidade( getTerreno(linhaTemp, posX+1) );
+
+     printf("HUE: %f  %f   %f\n\n", getVetorX(vel), getVetorY(vel), getAngulo(vel));
     atualizaBarco(barco, ne, nd, ve, vd);
 
     pos = getPosBarco(barco);

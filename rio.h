@@ -2,7 +2,7 @@
 #define RIO_H
 
 
-#define PROB_OBST 0.5
+#define PROB_OBST 0.0
 #define TAM_MIN_BARREIRA 1
 #define PORC_MAX_BARREIRA 0.5
 #define DIST_MIN_OBST 0.25

@@ -24,9 +24,9 @@ void atualizaBarco(BarcoT barco, int ne, int nd, float ve, float vd)
 
   ang = getAngulo(vel);
 
-  velAdE = novoVetor(ne*0.1+ve, 0);
+  velAdE = novoVetor(ne*0.5+ve, 0);
   rotVetor(velAdE, ang + ne*PI/10);
-  velAdD = novoVetor(nd*0.1+vd, 0);
+  velAdD = novoVetor(nd*0.5+vd, 0);
   rotVetor(velAdD, ang - nd*PI/10);
 
   velAdT = somaVetores(velAdD, velAdE);
