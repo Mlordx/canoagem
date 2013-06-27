@@ -4,7 +4,6 @@
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_primitives.h>
-#include <allegro5/allegro_ttf.h>
 
 
 #include "rio.h"
@@ -59,27 +58,29 @@ int visualInit(Rio rioTemp, int dtemp, float ms)
   {
     al_init_timeout(&timeout, ms);
 
-    temEvento = al_wait_for_event(fila_eventos, &evento, &timeout);
+    temEvento = al_wait_for_event_until(fila_eventos, &evento, &timeout);
     if(temEvento)
     {
         if (evento.type == ALLEGRO_EVENT_DISPLAY_CLOSE) break;
-        else if (evento.type == ALLEGRO_EVENT_KEY_DOWN) printf("HUE1\n");
+        else if (evento.type == ALLEGRO_EVENT_KEY_DOWN)
+        {
             switch(evento.keyboard.keycode)
             {
 
               case ALLEGRO_KEY_LEFT:
                 tecla = 1;
-                vetorTemp = getVelocidadeBarco(barco);
+                vetorTemp = getPosBarco(barco);
+                if(!vetorTemp) printf("HUEEE\n");
                 setVetorX(vetorTemp, getVetorX(vetorTemp)-D);
-                printf("HUE\n");
 
                 break;
               case ALLEGRO_KEY_RIGHT:
-                vetorTemp = getVelocidadeBarco(barco);
+                vetorTemp = getPosBarco(barco);
                 setVetorX(vetorTemp, getVetorX(vetorTemp)+D);
                  tecla = 2;
                  break;
              }
+        }
     }
 
 
@@ -115,6 +116,8 @@ static void desenhaBarco()
     Vetor2D pos, tam;
     pos = getPosBarco(barco);
     tam = getTamBarco(barco);
+
+    printf("HUE: %f %f\n",getVetorX(pos), getVetorY(pos));
   /* Elipse preenchido: x1, y1, raio x, raio y, cor*/
   al_draw_filled_ellipse(getVetorX(pos), getVetorY(pos), getVetorX(tam), getVetorY(tam), al_map_rgb(166,42,42));
 }
@@ -188,6 +191,8 @@ static int inicializar()
         return 0;
     }
 
+
+
     if (!al_init_primitives_addon())
     {
         fprintf(stderr, "Falha ao inicializar add-on de primitivas.\n");
@@ -203,6 +208,8 @@ static int inicializar()
 
     al_set_window_title(janela, "Testando allegro_primitives");
 
+
+
      fila_eventos = al_create_event_queue();
     if (!fila_eventos)
     {
@@ -211,6 +218,15 @@ static int inicializar()
         return 0;
     }
      al_register_event_source(fila_eventos, al_get_display_event_source(janela));
+
+    if (!al_install_keyboard())
+    {
+        fprintf(stderr, "Falha ao inicializar o teclado.\n");
+        return false;
+    }
+
+    al_register_event_source(fila_eventos, al_get_keyboard_event_source());
+    al_register_event_source(fila_eventos, al_get_display_event_source(janela));
 
     return 1;
 }

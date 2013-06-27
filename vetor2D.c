@@ -39,13 +39,13 @@ float getVetorY(Vetor2D vetor)
 void setVetorX(Vetor2D vetor, float x)
 {
     if(vetor) vetor->x = x;
-    fprintf(stderr, "Erro em vetor2D: Vetor nulo.\n");
+    else fprintf(stderr, "Erro em vetor2D: Vetor nulo.\n");
 
 }
 void setVetorY(Vetor2D vetor, float y)
 {
     if(vetor) vetor->y = y;
-    fprintf(stderr, "Erro em vetor2D: Vetor nulo.\n");
+    else fprintf(stderr, "Erro em vetor2D: Vetor nulo.\n");
 }
 
 float getModulo(Vetor2D vetor)
