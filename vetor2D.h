@@ -11,6 +11,10 @@ Vetor2D novoVetor(float, float);
 float getVetorX(Vetor2D);
 float getVetorY(Vetor2D);
 
+Vetor2D somaVetores(Vetor2D, Vetor2D);
+
+void freeVetor(Vetor2D vetor);
+
 
 void setVetorX(Vetor2D, float);
 void setVetorY(Vetor2D, float);

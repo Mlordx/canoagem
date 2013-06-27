@@ -19,6 +19,22 @@ Vetor2D novoVetor(float x, float y)
     return vetor;
 }
 
+void freeVetor(Vetor2D vetor)
+{
+  free(vetor);
+}
+
+Vetor2D somaVetores(Vetor2D vetor1, Vetor2D vetor2)
+{
+  float x,y;
+
+  x = vetor1->x + vetor2->x;
+  y = vetor2->y + vetor1->y;
+
+  return novoVetor(x,y);
+}
+
+
 
 float getVetorX(Vetor2D vetor)
 {
@@ -70,7 +86,8 @@ void rotVetor(Vetor2D vetor, float ang)
 
 float getAngulo(Vetor2D vetor)
 {
-    return atan(getVetorY(vetor)/getVetorX(vetor));
+  if(getModulo(vetor) == 0) return PI/2;
+  return asin(getVetorY(vetor)/getModulo(vetor));
 }
 
 

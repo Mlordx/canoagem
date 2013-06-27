@@ -4,12 +4,42 @@
 #include "utils.h"
 
 
+
+
 struct barco
 {
   Vetor2D pos;
   Vetor2D vel;
   Vetor2D tam;
 };
+
+void atualizaBarco(BarcoT barco, int ne, int nd, float ve, float vd)
+{
+  Vetor2D vel, velAdE, velAdD, velAdT;
+  float ang;
+  vel = barco->vel;
+
+  setVetorX(vel, getVetorX(vel)*0.8);
+  setVetorY(vel, getVetorY(vel)*0.8);
+
+  ang = getAngulo(vel);
+
+  velAdE = novoVetor(ne*0.1+ve, 0);
+  rotVetor(velAdE, ang + ne*PI/10);
+  velAdD = novoVetor(nd*0.1+vd, 0);
+  rotVetor(velAdD, ang - nd*PI/10);
+
+  velAdT = somaVetores(velAdD, velAdE);
+  freeVetor(velAdD); freeVetor(velAdE);
+
+
+  barco->vel = somaVetores(vel, velAdT);
+  freeVetor(vel); freeVetor(velAdT);
+
+
+  setVetorX(barco->pos, getVetorX(barco->pos) + getVetorX(barco->vel));
+
+}
 
 
 BarcoT novoBarco(Vetor2D pos, Vetor2D vel, Vetor2D tam)
@@ -31,7 +61,7 @@ Vetor2D getPosBarco(BarcoT barco)
 {
     return barco->pos;
 }
-Vetor2D setVelocidadeBarco(BarcoT barco, Vetor2D vel)
+void setVelocidadeBarco(BarcoT barco, Vetor2D vel)
 {
     barco->vel = vel;
 }
