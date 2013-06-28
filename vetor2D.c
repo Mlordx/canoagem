@@ -79,15 +79,25 @@ void rotVetor(Vetor2D vetor, float ang)
     ang += getAngulo(vetor);
 
     mod = getModulo(vetor);
-    setVetorX(vetor,mod*cos(ang));
-    setVetorY(vetor,mod*sin(ang));
+    setVetorX(vetor,mod*sin(ang));
+    setVetorY(vetor,mod*cos(ang));
 
 }
 
 float getAngulo(Vetor2D vetor)
 {
-  if(getModulo(vetor) == 0) return PI/2;
-  return asin(getVetorY(vetor)/getModulo(vetor));
+  if(getVetorX(vetor) == 0 && getVetorY(vetor) == 0) return 0;
+
+  return acos( getVetorX(vetor)/getModulo(vetor) );
+
+
+/*  if(getVetorX(vetor)== 0 && getVetorY(vetor) != 0)
+  {
+    printf("HUE");
+    return getVetorY(vetor)> 0 ? PI/2 : 3*PI/2;
+  }
+  if(getVetorY(vetor) == 0) return getVetorX(vetor) < 0? PI : 0;
+  return atan(getVetorY(vetor)/getVetorX(vetor));*/
 }
 
 
