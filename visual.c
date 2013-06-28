@@ -239,7 +239,7 @@ static int inicializar()
         return 0;
    }
 
-  image = al_load_bitmap("BarcoBolado.png");
+  image = al_load_bitmap("BarcoBoladoV2.png");
 
   if(!image) {
       fprintf(stderr,"Falha ao carregar Imagem!\n");
