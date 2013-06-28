@@ -79,8 +79,8 @@ void rotVetor(Vetor2D vetor, float ang)
     ang += getAngulo(vetor);
 
     mod = getModulo(vetor);
-    setVetorX(vetor,mod*sin(ang));
-    setVetorY(vetor,mod*cos(ang));
+    setVetorX(vetor,mod*cos(ang));
+    setVetorY(vetor,mod*sin(ang));
 
 }
 
