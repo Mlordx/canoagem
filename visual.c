@@ -49,7 +49,7 @@ int visualInit(Rio rioTemp, int dtemp, float ms)
   LARGURA_TELA = D*getLinhaTam(getLinha(rioTemp,1));
   ALTURA_TELA = D*(getNLinhas(rioTemp)-1);
 
-   barco = novoBarco(novoVetor(LARGURA_TELA/(2*D), (ALTURA_TELA/D) - 20) , novoVetor(1.5, 1.7), novoVetor(1.5, 7));
+   barco = novoBarco(novoVetor(LARGURA_TELA/(2*D), (ALTURA_TELA/D) - 20) , novoVetor(0,1.5), novoVetor(1.5, 7));
 
   if(!inicializar()) return VISUAL_FAIL;
 
@@ -57,7 +57,7 @@ int visualInit(Rio rioTemp, int dtemp, float ms)
   {
     al_init_timeout(&timeout, ms);
 
-    ms = 0.01/getVetorY(getVelocidadeBarco(barco));
+    /*ms = 0.01/getVetorY(getVelocidadeBarco(barco));*/
 
     ne = nd = 0;
     temEvento = al_wait_for_event_until(fila_eventos, &evento, &timeout);
