@@ -24,10 +24,11 @@ void atualizaBarco(BarcoT barco, int ne, int nd, float ve, float vd)
 
   ang = getAngulo(vel);
 
-  velAdE = novoVetor(0,ne*0.3+ve);
+  velAdE = novoVetor(0,ne*0.8+ve);
   rotVetor(velAdE, ne*PI/8);
-  velAdD = novoVetor(0,nd*0.3+vd);
+  velAdD = novoVetor(0,nd*0.8+vd);
   rotVetor(velAdD, - nd*PI/8);
+
 
  /* ve = ve + ne*0.5;
   vd = vd + nd*0.5;
@@ -46,6 +47,7 @@ void atualizaBarco(BarcoT barco, int ne, int nd, float ve, float vd)
 
 
   velAdT = somaVetores(velAdD, velAdE);
+  printf("VetorAd: %f %f\n",getVetorX(velAdT), getVetorY(velAdT));
   freeVetor(velAdD); freeVetor(velAdE);
 
 

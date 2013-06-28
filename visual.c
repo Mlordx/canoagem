@@ -41,6 +41,7 @@ int visualInit(Rio rioTemp, int dtemp, float ms)
   int temEvento;
   int status = VISUAL_SUCCESS;
   int ne,nd;
+  float vy;
   Rio rio;
 
 
@@ -57,7 +58,9 @@ int visualInit(Rio rioTemp, int dtemp, float ms)
   {
     al_init_timeout(&timeout, ms);
 
-    /*ms = 0.01/getVetorY(getVelocidadeBarco(barco));*/
+
+    if((vy = getVetorY(getVelocidadeBarco(barco)) ) < 3 && vy > 0) ms = 0.03 - (getVetorY(getVelocidadeBarco(barco)))/100;
+    printf("TEMPO: %f ms\n", ms);
 
     ne = nd = 0;
     temEvento = al_wait_for_event_until(fila_eventos, &evento, &timeout);
