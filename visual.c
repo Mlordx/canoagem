@@ -3,11 +3,13 @@
 
 
 #include <allegro5/allegro.h>
+#include "allegro5/allegro_image.h"
 #include <allegro5/allegro_primitives.h>
 
 
 #include "rio.h"
 #include "linhaT.h"
+#include "utils.h"
 #include "terreno.h"
 #include "visual.h"
 #include "vetor2D.h"
@@ -31,6 +33,7 @@ static int LARGURA_TELA;
 static int ALTURA_TELA;
 static ALLEGRO_DISPLAY *janela = NULL;
 static ALLEGRO_EVENT_QUEUE *fila_eventos = NULL;
+static ALLEGRO_BITMAP  *image   = NULL;
 static int D = 5;
 static BarcoT barco;
 
@@ -54,9 +57,10 @@ int visualInit(Rio rioTemp, int dtemp, float ms)
 
   if(!inicializar()) return VISUAL_FAIL;
 
+
   while(1)
   {
-    ms = 1;
+    ms = 0.01;
     al_init_timeout(&timeout, ms);
 
 
@@ -101,6 +105,7 @@ int visualInit(Rio rioTemp, int dtemp, float ms)
   }
 
   al_destroy_display(janela);
+  al_destroy_bitmap(image);
   return status;
 
 }
@@ -146,6 +151,9 @@ static void desenhaBarco(BarcoT barco, int ne, int nd, Rio rio)
     atualizaBarco(barco, ne, nd, ve, vd);
     if(estaBatendo(barco, rio)) printf("MORTE, DARKNESS AND PONEIS\n");
 
+    posX = getVetorX(pos);
+    posY = getVetorY(pos);
+
     pos = getPosBarco(barco);
     tam = getTamBarco(barco);
     vel = getVelocidadeBarco(barco);
@@ -153,7 +161,8 @@ static void desenhaBarco(BarcoT barco, int ne, int nd, Rio rio)
 
 
   /* Elipse preenchido: x1, y1, raio x, raio y, cor*/
-  al_draw_filled_ellipse(getVetorX(pos)*D,getVetorY(pos)*D , getVetorX(tam)*D, getVetorY(tam)*D, al_map_rgb(166,42,42));
+  /*al_draw_filled_ellipse(getVetorX(pos)*D,getVetorY(pos)*D , getVetorX(tam)*D, getVetorY(tam)*D, al_map_rgb(166,42,42));*/
+  al_draw_rotated_bitmap(image,12,30, posX*D,posY*D,getAngulo(vel)-PI/2,NULL);
 }
 
 
@@ -223,6 +232,19 @@ static int inicializar()
         fprintf(stderr, "Falha ao inicializar a biblioteca Allegro.\n");
         return 0;
     }
+
+   if(!al_init_image_addon()){
+        fprintf(stderr, "Falha ao inicializar o add-on de imagens.\n");
+        return 0;
+   }
+
+  image = al_load_bitmap("BarcoBolado.png");
+
+  if(!image) {
+      fprintf(stderr,"Falha ao carregar Imagem!\n");
+      return 0;
+   }
+
 
 
 
