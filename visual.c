@@ -3,7 +3,7 @@
 
 
 #include <allegro5/allegro.h>
-#include "allegro5/allegro_image.h"
+#include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
 
 
@@ -44,6 +44,8 @@ int visualInit(Rio rioTemp, int dtemp, float ms)
   int temEvento;
   int status = VISUAL_SUCCESS;
   int ne,nd;
+  float tempoInicial;
+  int sair = 0;
   float vy;
   Rio rio;
 
@@ -57,21 +59,20 @@ int visualInit(Rio rioTemp, int dtemp, float ms)
 
   if(!inicializar()) return VISUAL_FAIL;
 
-
-  while(1)
+  while(!sair)
   {
-    ms = 0.01;
-    al_init_timeout(&timeout, ms);
 
-
+    al_rest(ms);
     if((vy = getVetorY(getVelocidadeBarco(barco)) ) < 3 && vy > 0) ms = 0.03 - (getVetorY(getVelocidadeBarco(barco)))/100;
    /* printf("TEMPO: %f ms\n", ms);*/
 
     ne = nd = 0;
-    temEvento = al_wait_for_event_until(fila_eventos, &evento, &timeout);
-    if(temEvento)
+   /* temEvento = al_wait_for_event_until(fila_eventos, &evento, &timeout);*/
+   tempoInicial = al_get_time();
+    while (!al_is_event_queue_empty(fila_eventos) && al_get_time() - tempoInicial < ms)
     {
-        if (evento.type == ALLEGRO_EVENT_DISPLAY_CLOSE) break;
+        al_wait_for_event(fila_eventos, &evento);
+        if (evento.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {sair = 1; break;}
         else if (evento.type == ALLEGRO_EVENT_KEY_DOWN)
         {
             switch(evento.keyboard.keycode)
