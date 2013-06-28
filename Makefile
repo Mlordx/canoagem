@@ -1,6 +1,6 @@
 CFLAGS= -Wall -pedantic -g -Wno-unused-result -lm
 CC=gcc
-Allegro = -lallegro -lallegro_primitives -lallegro_ttf
+Allegro = -lallegro -lallegro_primitives -lallegro_ttf  -lallegro_image
 
 
 #-------------------------------------------------
