@@ -2,6 +2,7 @@
 #define BARCO_H
 
 #include "vetor2D.h"
+#include "rio.h"
 
 
 typedef struct barco* BarcoT;
@@ -14,6 +15,7 @@ Vetor2D getTamBarco(BarcoT);
 void setVelocidadeBarco(BarcoT, Vetor2D);
 Vetor2D atualizaPos(BarcoT, float);
 void atualizaBarco(BarcoT,int, int, float, float);
+int estaBatendo(BarcoT, Rio);
 
 
 

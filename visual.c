@@ -56,11 +56,12 @@ int visualInit(Rio rioTemp, int dtemp, float ms)
 
   while(1)
   {
+    ms = 1;
     al_init_timeout(&timeout, ms);
 
 
     if((vy = getVetorY(getVelocidadeBarco(barco)) ) < 3 && vy > 0) ms = 0.03 - (getVetorY(getVelocidadeBarco(barco)))/100;
-    printf("TEMPO: %f ms\n", ms);
+   /* printf("TEMPO: %f ms\n", ms);*/
 
     ne = nd = 0;
     temEvento = al_wait_for_event_until(fila_eventos, &evento, &timeout);
@@ -117,7 +118,7 @@ void visualUpdate(Rio rio)
 static void desenhaBarco(BarcoT barco, int ne, int nd, Rio rio)
 {
     Vetor2D pos, tam, vel;
-    float ve, vd, posX, posY;
+    float ve, vd, posX, posY, tamX;
     int nLinhas;
     Terreno terrTemp;
     linhaT linhaTemp;
@@ -127,19 +128,23 @@ static void desenhaBarco(BarcoT barco, int ne, int nd, Rio rio)
 
      posX = getVetorX(pos);
      posY = getVetorY(pos);
+     tamX = getVetorX(tam);
 
 
 
 
     nLinhas = getNLinhas(rio);
-    linhaTemp = getLinha(rio,nLinhas - getVetorY(pos));
-    terrTemp = getTerreno(linhaTemp, posX-1);
+    linhaTemp = getLinha(rio,getVetorY(pos));
+    /*terrTemp = getTerreno(linhaTemp, posX-1);
     setTipo(terrTemp, TERRA);
-    ve = getVelocidade( getTerreno(linhaTemp, posX-1) );
-    vd = getVelocidade( getTerreno(linhaTemp, posX+1) );
+    desenhaRio(rio);
+    printf("\033[2J\033[1;1H");*/
+    ve = getVelocidade( getTerreno(linhaTemp, posX-tamX/2) );
+    vd = getVelocidade( getTerreno(linhaTemp, posX+tamX/2) );
 
-     printf("HUE: %f  %f   %f\n\n", getVetorX(vel), getVetorY(vel), getAngulo(vel));
+     /*printf("HUE: %f  %f   %f\n\n", getVetorX(vel), getVetorY(vel), getAngulo(vel));*/
     atualizaBarco(barco, ne, nd, ve, vd);
+    if(estaBatendo(barco, rio)) printf("MORTE, DARKNESS AND PONEIS\n");
 
     pos = getPosBarco(barco);
     tam = getTamBarco(barco);

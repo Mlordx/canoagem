@@ -6,6 +6,7 @@
 
 
 
+
 struct barco
 {
   Vetor2D pos;
@@ -41,13 +42,13 @@ void atualizaBarco(BarcoT barco, int ne, int nd, float ve, float vd)
 
 
 
-  printf("HUE: %f\n",180*ang/PI);
+/*  printf("HUE: %f\n",180*ang/PI);*/
 
 
 
 
   velAdT = somaVetores(velAdD, velAdE);
-  printf("VetorAd: %f %f\n",getVetorX(velAdT), getVetorY(velAdT));
+ /* printf("VetorAd: %f %f\n",getVetorX(velAdT), getVetorY(velAdT));*/
   freeVetor(velAdD); freeVetor(velAdE);
 
 
@@ -57,6 +58,31 @@ void atualizaBarco(BarcoT barco, int ne, int nd, float ve, float vd)
 
   setVetorX(barco->pos, getVetorX(barco->pos) + getVetorX(barco->vel));
 
+}
+
+int estaBatendo(BarcoT barco, Rio rio)
+{
+  int i, j, posY, posX, tamY, tamX;
+  linhaT linhaTemp;
+  Terreno terrTemp;
+
+  posY = getVetorY(barco->pos);
+  posX = getVetorX(barco->pos);
+  tamY = getVetorY(barco->tam);
+  tamX = getVetorX(barco->tam);
+
+
+  for(i = -tamY; i <= tamY; i++)
+  {
+    linhaTemp = getLinha(rio,posY + i);
+    for(j = -tamX; j <= tamX; j++)
+    {
+      terrTemp = getTerreno(linhaTemp, posX + j);
+      if(getTipo(terrTemp) == TERRA) return 1;
+    }
+  }
+
+  return 0;
 }
 
 
