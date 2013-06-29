@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define TEMPO_INV 11
+#define TEMPO_INV 1
+#define MS_INV 0.02
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
@@ -38,7 +39,8 @@ static ALLEGRO_BITMAP  *image   = NULL;
 static ALLEGRO_BITMAP  *imagemVida   = NULL;
 static int D = 5;
 static BarcoT barco;
-static inv = 0;
+static int inv = 0;
+static int GAME_OVER = 0;
 
 int visualInit(Rio rioTemp, int dtemp, float ms)
 {
@@ -62,8 +64,9 @@ int visualInit(Rio rioTemp, int dtemp, float ms)
 
   if(!inicializar()) return VISUAL_FAIL;
 
-  while(!sair)
+  while(!GAME_OVER)
   {
+    if(inv) ms = MS_INV;
     al_rest(ms);
     if((vy = getVetorY(getVelocidadeBarco(barco)) ) < 3 && vy > 0) ms = 0.03 - (getVetorY(getVelocidadeBarco(barco)))/100;
    /* printf("TEMPO: %f ms\n", ms);*/
@@ -74,7 +77,7 @@ int visualInit(Rio rioTemp, int dtemp, float ms)
     while (!al_is_event_queue_empty(fila_eventos) && al_get_time() - tempoInicial < ms)
     {
         al_wait_for_event(fila_eventos, &evento);
-        if (evento.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {sair = 1; break;}
+        if (evento.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {GAME_OVER = 1; break;}
         else if (evento.type == ALLEGRO_EVENT_KEY_DOWN)
         {
             switch(evento.keyboard.keycode)
@@ -155,7 +158,9 @@ static void desenhaBarco(BarcoT barco, int ne, int nd, Rio rio)
     atualizaBarco(barco, ne, nd, ve, vd);
     if(estaBatendo(barco, rio) && !inv){
        setVida(barco, getVida(barco)-1);
-       inv = 11;
+       setVetorX(pos, LARGURA_TELA/(2*D));
+       if(getVida(barco) <= 0) GAME_OVER = 1;
+       inv = TEMPO_INV/MS_INV;
     }
 
     if(inv) inv--;
@@ -177,7 +182,7 @@ static void desenhaBarco(BarcoT barco, int ne, int nd, Rio rio)
   /* Elipse preenchido: x1, y1, raio x, raio y, cor*/
   /*al_draw_filled_ellipse(getVetorX(pos)*D,getVetorY(pos)*D , getVetorX(tam)*D, getVetorY(tam)*D, al_map_rgb(166,42,42));*/
 
-  if(inv%2 == 0) al_draw_rotated_bitmap(image,22,30, posX*D,posY*D,-(getAngulo(vel)+PI/2),NULL);
+  if(inv%2 == 0) al_draw_rotated_bitmap(image,22,30, posX*D,posY*D,-(getAngulo(vel)+PI/2),ALLEGRO_FLIP_VERTICAL);
  /* printf("HUE: %f\n",180*getAngulo(vel)/PI);
   printf("Velocidade: %f %f\n", getVetorX(vel), getVetorY(vel));*/
 }
