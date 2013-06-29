@@ -55,13 +55,13 @@ int visualInit(Rio rioTemp, int dtemp, float ms)
   LARGURA_TELA = D*getLinhaTam(getLinha(rioTemp,1));
   ALTURA_TELA = D*(getNLinhas(rioTemp)-1);
 
-   barco = novoBarco(novoVetor(LARGURA_TELA/(2*D), (ALTURA_TELA/D) - 20) , novoVetor(0,1.5), novoVetor(1.5, 7));
+   barco = novoBarco(novoVetor(LARGURA_TELA/(2*D), (ALTURA_TELA/D) - 20) , novoVetor(0,1.5), novoVetor(45.0/(2*D), 60.0/(2*D)));
 
   if(!inicializar()) return VISUAL_FAIL;
 
   while(!sair)
   {
-
+    ms = 0.7;
     al_rest(ms);
     if((vy = getVetorY(getVelocidadeBarco(barco)) ) < 3 && vy > 0) ms = 0.03 - (getVetorY(getVelocidadeBarco(barco)))/100;
    /* printf("TEMPO: %f ms\n", ms);*/
@@ -150,7 +150,7 @@ static void desenhaBarco(BarcoT barco, int ne, int nd, Rio rio)
 
      /*printf("HUE: %f  %f   %f\n\n", getVetorX(vel), getVetorY(vel), getAngulo(vel));*/
     atualizaBarco(barco, ne, nd, ve, vd);
-   /* if(estaBatendo(barco, rio)) printf("MORTE, DARKNESS AND PONEIS\n");*/
+    if(estaBatendo(barco, rio)) printf("MORTE, DARKNESS AND PONEIS\n");
 
     posX = getVetorX(pos);
     posY = getVetorY(pos);
@@ -163,9 +163,9 @@ static void desenhaBarco(BarcoT barco, int ne, int nd, Rio rio)
 
   /* Elipse preenchido: x1, y1, raio x, raio y, cor*/
   /*al_draw_filled_ellipse(getVetorX(pos)*D,getVetorY(pos)*D , getVetorX(tam)*D, getVetorY(tam)*D, al_map_rgb(166,42,42));*/
-  al_draw_rotated_bitmap(image,22,30, posX*D,posY*D,-(getAngulo(vel)-PI/2),NULL);
-  printf("HUE: %f\n",180*getAngulo(vel)/PI);
-  printf("Velocidade: %f %f\n", getVetorX(vel), getVetorY(vel));
+  al_draw_rotated_bitmap(image,22,30, posX*D,posY*D,-(getAngulo(vel)+PI/2),NULL);
+ /* printf("HUE: %f\n",180*getAngulo(vel)/PI);
+  printf("Velocidade: %f %f\n", getVetorX(vel), getVetorY(vel));*/
 }
 
 
