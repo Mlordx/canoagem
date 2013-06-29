@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define TEMPO_INV 11
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
@@ -34,8 +35,10 @@ static int ALTURA_TELA;
 static ALLEGRO_DISPLAY *janela = NULL;
 static ALLEGRO_EVENT_QUEUE *fila_eventos = NULL;
 static ALLEGRO_BITMAP  *image   = NULL;
+static ALLEGRO_BITMAP  *imagemVida   = NULL;
 static int D = 5;
 static BarcoT barco;
+static inv = 0;
 
 int visualInit(Rio rioTemp, int dtemp, float ms)
 {
@@ -55,13 +58,12 @@ int visualInit(Rio rioTemp, int dtemp, float ms)
   LARGURA_TELA = D*getLinhaTam(getLinha(rioTemp,1));
   ALTURA_TELA = D*(getNLinhas(rioTemp)-1);
 
-   barco = novoBarco(novoVetor(LARGURA_TELA/(2*D), (ALTURA_TELA/D) - 20) , novoVetor(0,1.5), novoVetor(45.0/(2*D), 60.0/(2*D)));
+   barco = novoBarco(novoVetor(LARGURA_TELA/(2*D), (ALTURA_TELA/D) - 20) , novoVetor(0,1.5), novoVetor(45.0/(2*D), 60.0/(2*D)),3);
 
   if(!inicializar()) return VISUAL_FAIL;
 
   while(!sair)
   {
-    ms = 0.7;
     al_rest(ms);
     if((vy = getVetorY(getVelocidadeBarco(barco)) ) < 3 && vy > 0) ms = 0.03 - (getVetorY(getVelocidadeBarco(barco)))/100;
    /* printf("TEMPO: %f ms\n", ms);*/
@@ -126,6 +128,7 @@ static void desenhaBarco(BarcoT barco, int ne, int nd, Rio rio)
     Vetor2D pos, tam, vel;
     float ve, vd, posX, posY, tamX;
     int nLinhas;
+    int i;
     Terreno terrTemp;
     linhaT linhaTemp;
     pos = getPosBarco(barco);
@@ -150,7 +153,17 @@ static void desenhaBarco(BarcoT barco, int ne, int nd, Rio rio)
 
      /*printf("HUE: %f  %f   %f\n\n", getVetorX(vel), getVetorY(vel), getAngulo(vel));*/
     atualizaBarco(barco, ne, nd, ve, vd);
-    if(estaBatendo(barco, rio)) printf("MORTE, DARKNESS AND PONEIS\n");
+    if(estaBatendo(barco, rio) && !inv){
+       setVida(barco, getVida(barco)-1);
+       inv = 11;
+    }
+
+    if(inv) inv--;
+
+    for(i = 0; i < getVida(barco); i++){
+      al_draw_scaled_bitmap(imagemVida, D, D , 164, 120,
+      D+ i*41, D , 41, 30, NULL);
+    }
 
     posX = getVetorX(pos);
     posY = getVetorY(pos);
@@ -163,7 +176,8 @@ static void desenhaBarco(BarcoT barco, int ne, int nd, Rio rio)
 
   /* Elipse preenchido: x1, y1, raio x, raio y, cor*/
   /*al_draw_filled_ellipse(getVetorX(pos)*D,getVetorY(pos)*D , getVetorX(tam)*D, getVetorY(tam)*D, al_map_rgb(166,42,42));*/
-  al_draw_rotated_bitmap(image,22,30, posX*D,posY*D,-(getAngulo(vel)+PI/2),NULL);
+
+  if(inv%2 == 0) al_draw_rotated_bitmap(image,22,30, posX*D,posY*D,-(getAngulo(vel)+PI/2),NULL);
  /* printf("HUE: %f\n",180*getAngulo(vel)/PI);
   printf("Velocidade: %f %f\n", getVetorX(vel), getVetorY(vel));*/
 }
@@ -244,6 +258,13 @@ static int inicializar()
   image = al_load_bitmap("BarcoBoladoV2.png");
 
   if(!image) {
+      fprintf(stderr,"Falha ao carregar Imagem!\n");
+      return 0;
+   }
+
+   imagemVida = al_load_bitmap("coracao.png");
+
+  if(!imagemVida) {
       fprintf(stderr,"Falha ao carregar Imagem!\n");
       return 0;
    }
