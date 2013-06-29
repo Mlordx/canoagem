@@ -163,7 +163,7 @@ static void desenhaBarco(BarcoT barco, int ne, int nd, Rio rio)
 
   /* Elipse preenchido: x1, y1, raio x, raio y, cor*/
   /*al_draw_filled_ellipse(getVetorX(pos)*D,getVetorY(pos)*D , getVetorX(tam)*D, getVetorY(tam)*D, al_map_rgb(166,42,42));*/
-  al_draw_rotated_bitmap(image,22,30, posX*D,posY*D,getAngulo(vel)-PI/2,NULL);
+  al_draw_rotated_bitmap(image,22,30, posX*D,posY*D,-(getAngulo(vel)-PI/2),NULL);
   printf("HUE: %f\n",180*getAngulo(vel)/PI);
   printf("Velocidade: %f %f\n", getVetorX(vel), getVetorY(vel));
 }
