@@ -1,10 +1,16 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define TEMPO_INV 1
+#define MS_INV 0.02
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_native_dialog.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
+
 
 
 #include "rio.h"
@@ -34,8 +40,13 @@ static int ALTURA_TELA;
 static ALLEGRO_DISPLAY *janela = NULL;
 static ALLEGRO_EVENT_QUEUE *fila_eventos = NULL;
 static ALLEGRO_BITMAP  *image   = NULL;
+static ALLEGRO_BITMAP  *imagemVida   = NULL;
+static ALLEGRO_FONT *font = NULL;
 static int D = 5;
 static BarcoT barco;
+static int inv = 0;
+static int score = 0;
+static int GAME_OVER = 0;
 
 int visualInit(Rio rioTemp, int dtemp, float ms)
 {
@@ -49,19 +60,18 @@ int visualInit(Rio rioTemp, int dtemp, float ms)
   float vy;
   Rio rio;
 
-
   D = dtemp;
   rio = rioTemp;
   LARGURA_TELA = D*getLinhaTam(getLinha(rioTemp,1));
   ALTURA_TELA = D*(getNLinhas(rioTemp)-1);
 
-   barco = novoBarco(novoVetor(LARGURA_TELA/(2*D), (ALTURA_TELA/D) - 20) , novoVetor(0,1.5), novoVetor(1.5, 7));
+   barco = novoBarco(novoVetor(LARGURA_TELA/(2*D), (ALTURA_TELA/D) - 20) , novoVetor(0,1.5), novoVetor(45.0/(2*D), 60.0/(2*D)),3);
 
   if(!inicializar()) return VISUAL_FAIL;
 
-  while(!sair)
+  while(!GAME_OVER)
   {
-
+    if(inv) ms = MS_INV;
     al_rest(ms);
     if((vy = getVetorY(getVelocidadeBarco(barco)) ) < 3 && vy > 0) ms = 0.03 - (getVetorY(getVelocidadeBarco(barco)))/100;
    /* printf("TEMPO: %f ms\n", ms);*/
@@ -72,7 +82,7 @@ int visualInit(Rio rioTemp, int dtemp, float ms)
     while (!al_is_event_queue_empty(fila_eventos) && al_get_time() - tempoInicial < ms)
     {
         al_wait_for_event(fila_eventos, &evento);
-        if (evento.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {sair = 1; break;}
+        if (evento.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {GAME_OVER = 1; break;}
         else if (evento.type == ALLEGRO_EVENT_KEY_DOWN)
         {
             switch(evento.keyboard.keycode)
@@ -85,12 +95,15 @@ int visualInit(Rio rioTemp, int dtemp, float ms)
                 nd++;
                 break;
              }
+
         }
+
     }
 
-
+    score += 1;
 
     visualUpdate(rio);
+    al_draw_textf(font, al_map_rgb(0,0,0), LARGURA_TELA-100, 0, ALLEGRO_ALIGN_RIGHT ,"Score: %d", score);
     desenhaBarco(barco, ne, nd, rioTemp);
     al_flip_display();
 
@@ -126,6 +139,7 @@ static void desenhaBarco(BarcoT barco, int ne, int nd, Rio rio)
     Vetor2D pos, tam, vel;
     float ve, vd, posX, posY, tamX;
     int nLinhas;
+    int i;
     Terreno terrTemp;
     linhaT linhaTemp;
     pos = getPosBarco(barco);
@@ -136,7 +150,7 @@ static void desenhaBarco(BarcoT barco, int ne, int nd, Rio rio)
      posY = getVetorY(pos);
      tamX = getVetorX(tam);
 
-
+    i = 0;
 
 
     nLinhas = getNLinhas(rio);
@@ -150,7 +164,28 @@ static void desenhaBarco(BarcoT barco, int ne, int nd, Rio rio)
 
      /*printf("HUE: %f  %f   %f\n\n", getVetorX(vel), getVetorY(vel), getAngulo(vel));*/
     atualizaBarco(barco, ne, nd, ve, vd);
-   /* if(estaBatendo(barco, rio)) printf("MORTE, DARKNESS AND PONEIS\n");*/
+    if(estaBatendo(barco, rio) && !inv){
+       setVida(barco, getVida(barco)-1);
+       setVetorX(pos, LARGURA_TELA/(2*D));
+       if(getVida(barco) <= 0){
+           i = al_show_native_message_box(NULL, "Canoagem","Você Perdeu!", "Deseja recomeçar?",NULL, ALLEGRO_MESSAGEBOX_YES_NO);
+           if(i == 1){
+               setVida(barco, 3);
+               setVetorX(pos, (getMargEsq(getLinha(rio,posY)) + getMargDir(getLinha(rio,posY))/(2)));
+               score = 0;
+           }
+            else if(!i || i == 2){
+                GAME_OVER = 1;
+            }
+       }
+       inv = TEMPO_INV/MS_INV;
+    }
+
+    if(inv) inv--;
+
+    for(i = 0; i < getVida(barco); i++){
+      al_draw_scaled_bitmap(imagemVida, D, D , 164, 120,D+ i*41, D , 41, 30, NULL);
+    }
 
     posX = getVetorX(pos);
     posY = getVetorY(pos);
@@ -163,9 +198,10 @@ static void desenhaBarco(BarcoT barco, int ne, int nd, Rio rio)
 
   /* Elipse preenchido: x1, y1, raio x, raio y, cor*/
   /*al_draw_filled_ellipse(getVetorX(pos)*D,getVetorY(pos)*D , getVetorX(tam)*D, getVetorY(tam)*D, al_map_rgb(166,42,42));*/
-  al_draw_rotated_bitmap(image,22,30, posX*D,posY*D,getAngulo(vel)-PI/2,NULL);
-  printf("HUE: %f\n",180*getAngulo(vel)/PI);
-  printf("Velocidade: %f %f\n", getVetorX(vel), getVetorY(vel));
+
+  if(inv%2 == 0) al_draw_rotated_bitmap(image,22,30, posX*D,posY*D,-(getAngulo(vel)+PI/2),ALLEGRO_FLIP_VERTICAL);
+ /* printf("HUE: %f\n",180*getAngulo(vel)/PI);
+  printf("Velocidade: %f %f\n", getVetorX(vel), getVetorY(vel));*/
 }
 
 
@@ -248,6 +284,19 @@ static int inicializar()
       return 0;
    }
 
+   imagemVida = al_load_bitmap("coracao.png");
+
+  if(!imagemVida) {
+      fprintf(stderr,"Falha ao carregar Imagem!\n");
+      return 0;
+   }
+
+   al_init_font_addon();
+
+
+   al_init_ttf_addon();
+
+   font = al_load_ttf_font("interstate-black.ttf",38,0 );
 
 
 
@@ -264,7 +313,7 @@ static int inicializar()
         return 0;
     }
 
-    al_set_window_title(janela, "Testando allegro_primitives");
+    al_set_window_title(janela, "EP3 - LAB PROG I");
 
 
 

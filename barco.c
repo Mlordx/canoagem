@@ -12,7 +12,17 @@ struct barco
   Vetor2D pos;
   Vetor2D vel;
   Vetor2D tam;
+  int vidas;
 };
+
+int setVida(BarcoT barco,int v)
+{
+ barco->vidas = v;
+}
+int getVida(BarcoT barco)
+{
+  return barco->vidas;
+}
 
 void atualizaBarco(BarcoT barco, int ne, int nd, float ve, float vd)
 {
@@ -90,7 +100,7 @@ int estaBatendo(BarcoT barco, Rio rio)
 }
 
 
-BarcoT novoBarco(Vetor2D pos, Vetor2D vel, Vetor2D tam)
+BarcoT novoBarco(Vetor2D pos, Vetor2D vel, Vetor2D tam, int vidas)
 {
     BarcoT barco;
     barco = mallocSafe(sizeof(*barco));
@@ -98,6 +108,7 @@ BarcoT novoBarco(Vetor2D pos, Vetor2D vel, Vetor2D tam)
     barco->pos = pos;
     barco->vel = vel;
     barco->tam = tam;
+    barco->vidas = vidas;
 
     return barco;
 }
