@@ -212,6 +212,49 @@ Assim, usamos uma série de regras para desenharmos o rio. Denotando o tamanho d
 As regras sobre a função \textbf{desnehaRioVisual} foram explicadas explicitamente pois, apesar de a ideia parecer simples, o código não ficou muito simples, então é de grande útilidade para o desenvolvedor entender a idiea antes de ler o código.
 
 
+\section{Parte 3}
+
+Nessa parte finalizamos o jogo, implementando todas as funcionalidades principais para a jogabilidade, como colisões, sistemas de vida e de recomeço de jogo, além de movimento do barco associado com o movimento do rio.
+
+\subsection{Módulo vetor2D.c}
+
+Esse módulo cria um tipo de primeira classe chamado \textbf{Vetor2D}, usado para representar um vetor bidimensional, com componentes X e Y. As funções fornecidas por esse módulo são bem simples e auto-explicativas, só é bom lembrar que os ângulos fornecidos pelas e/ou para as funções que mexem com o ângulo do vetor são dados em radianos, e mexem com o ângulo do vetor com relação à horizontal.
+
+
+\subsection{Módulo barco.c}
+
+Esse módulo cria o tipo \textbf{BarcoT}, que representa nosso barco como um tipo de primeira classe. O barco tem informações como \emph{Tamanho, Posição, Velocidade e Quantidade de vidas}. Principais funções:
+
+\begin{itemize}
+
+\item \textbf{novoBarco({\color{red}Vetor2D}, {\color{red}Vetor2D}, {\color{red}Vetor2D}, {\color{red}int})}: Retorna um novo barco, sendo os parâmetros destinados para \emph{Posição, Velocidade, Tamanho e Quantidade de Vidas}, respectivamente.
+
+\item \textbf{estaBatendo({\color{red}BarcoT}, {\color{red}Rio})}: Verifica se o barco está batendo em algum bloco de terra. Caso esteja colidindo, retorna 1, e retorna 0 caso contrário. Para a detecção de colisão, usamos um retângulo de lados definidos pela componente \emph{Tamanho} do barco. Mesmo que o barco esteja rotacionado, a caixa de colisão continua na vertical. Apesar de parecer impreciso, funciona como uma boa aproximação, e torna a colisão menos complicada.
+
+\item \textbf{atualizaBarco({\color{red}BarcoT},{\color{red}int}, {\color{red}int}, {\color{red}float}, {\color{red}float})}: Essa função irá cálcular a próxima posição do barco, assim como sua próxima velocidade, baseado nos argumentos passados que são, respectivamente: Número de remadas à esquerda, número de remadas à direita, velocidade do rio à esquerda e velocidade do rio à direita. O método para o cálculo da nova velocidade será explicado mais a frente.
+
+
+\end{itemize}
+
+
+\subsection{Modificações na visual.c}
+
+Algumas modificações foram feitas na visual.c, visando implementar as funcionalidades de jogabilidade, e aqui discutiremos as principais modificações.
+
+A primeira modificação foi na função \textbf{desenhaBarco}, que agora faz todas as chamadas de funções e cálculos necessários para a movimentação do barco, além de se responsabilizar por desenhar o barco na janela.
+
+Além disso, foram implementadas algumas funções para melhorar a jogabilidade:
+
+\begin{itemize}
+
+\item \textbf{Invunerabilidade temporária:} Ao bater em algum obstáculo ou pedaço de terra, o barco irá perder uma vida e ficará invunerável por alguns segundos (definidos pela macro \textit{TEMPO\_{}INV}), e com uma velocidade fixa (definida pela macro \textit{MS\_{}INV}). Enquanto estiver nesse estado, o jogador pode atravessar blocos de terra livremente.
+
+\item \textbf{Score:} O Score, ou pontuação, é quase auto-explicativo. Serve como um objetivo no jogo, seja para competir com amigos ou para sua auto-superação.
+
+\item \textbf{Inclinação visual do barco:} Para deixar o jogo mais responsível para a visão do jogador, a inclinação da imagem do barco também varia de acordo com a inclinação de sua velocidade.
+
+
+\end{itemize}
 
 
 
