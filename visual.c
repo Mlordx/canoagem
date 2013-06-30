@@ -103,7 +103,7 @@ int visualInit(Rio rioTemp, int dtemp, float ms)
     score += 1;
 
     visualUpdate(rio);
-    al_draw_textf(font, al_map_rgb(0,0,0), LARGURA_TELA-200, 0, ALLEGRO_ALIGN_RIGHT ,"Score: %d", score);
+    al_draw_textf(font, al_map_rgb(0,0,0), LARGURA_TELA-100, 0, ALLEGRO_ALIGN_RIGHT ,"Score: %d", score);
     desenhaBarco(barco, ne, nd, rioTemp);
     al_flip_display();
 
