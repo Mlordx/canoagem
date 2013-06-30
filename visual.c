@@ -7,6 +7,7 @@
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
+#include <allegro5/allegro_native_dialog.h>
 
 
 #include "rio.h"
@@ -142,7 +143,7 @@ static void desenhaBarco(BarcoT barco, int ne, int nd, Rio rio)
      posY = getVetorY(pos);
      tamX = getVetorX(tam);
 
-
+    i = 0;
 
 
     nLinhas = getNLinhas(rio);
@@ -159,7 +160,16 @@ static void desenhaBarco(BarcoT barco, int ne, int nd, Rio rio)
     if(estaBatendo(barco, rio) && !inv){
        setVida(barco, getVida(barco)-1);
        setVetorX(pos, LARGURA_TELA/(2*D));
-       if(getVida(barco) <= 0) GAME_OVER = 1;
+       if(getVida(barco) <= 0){
+           i = al_show_native_message_box(NULL, "Canoagem","Você Perdeu!", "Deseja recomeçar?",NULL, ALLEGRO_MESSAGEBOX_YES_NO);
+           if(i == 1){
+               setVida(barco, 3);
+               setVetorX(pos, LARGURA_TELA/(2*D));
+           }
+            else if(!i || i == 2){
+                GAME_OVER = 1;
+            }
+       }
        inv = TEMPO_INV/MS_INV;
     }
 
