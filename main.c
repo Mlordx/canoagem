@@ -7,24 +7,38 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include "parser.h"
 #include "rio.h"
 #include "utils.h"
 #include "testes.h"
 #include "visual.h"
 #include <time.h>
 
+/* Variaveis do Bison */
+
+
+extern int seed, linhas, colunas, it, tamanhoMinimo;
+extern float fluxoRio;
+
+
+/* ------------------------ */
+
+
 int main(int argc, char* argv[])
 {
     Rio nilo;
 
 /* ************************************************/
-    int seed = SEED_DEFAULT, args;
+    /*int seed = SEED_DEFAULT, args;
     int linhas = NUM_LIN_DEFAULT;
-    int colunas = NUM_COL_DEFAULT, it = ITERACOES_DEFAULT;
+    int colunas = NUM_COL_DEFAULT, it = ITERACOES_DEFAULT;*/
     int testeLinhas = 0, testeFluxo = 0, testeVariacoes = 0, testeMargem = 0, teste = 0;
+    int args;
 
-    int tamanhoMinimo = TAM_MIN_DEFAULT;
-    float fluxoRio = FLUXO_DEFAULT;
+    yyparse();
+
+   /* int tamanhoMinimo = TAM_MIN_DEFAULT;
+    float fluxoRio = FLUXO_DEFAULT;*/
 
     if(argc >= 2){
         for(args = 1; args < argc; args++){

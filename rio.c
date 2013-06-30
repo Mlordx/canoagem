@@ -6,6 +6,16 @@
 #include "list.h"
 
 
+/* Bison */
+
+extern float PROB_OBST, PORC_MAX_BARREIRA, DIST_MIN_OBST;
+extern int TAM_MIN_BARREIRA;
+
+
+
+/* ******* */
+
+
 
 
 linhaT geraLinha(linhaT linhaAnt, int tamMin);

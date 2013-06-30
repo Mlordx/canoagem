@@ -7,10 +7,10 @@ Allegro = -lallegro -lallegro_primitives -lallegro_ttf  -lallegro_image -lallegr
 
 
 
-ep3: main.o terreno.o rio.o utils.o list.o linhaT.o testes.o visual.o barco.o vetor2D.o
-	$(CC) main.o terreno.o rio.o utils.o list.o linhaT.o barco.o vetor2D.o testes.o visual.o -o ep3 -lm $(Allegro)
+ep3: main.o terreno.o rio.o utils.o list.o linhaT.o testes.o visual.o barco.o vetor2D.o parser.o scanner.o parser.h
+	$(CC) main.o terreno.o rio.o utils.o list.o linhaT.o barco.o vetor2D.o testes.o parser.o scanner.o visual.o -o ep3 -lm $(Allegro) -lfl
 
-main.o: main.c
+main.o: main.c parser.h
 	$(CC) $(CFLAGS) -c main.c
 
 barco.o: barco.c
@@ -40,6 +40,18 @@ testes.o: testes.h testes.c
 
 visual.o: visual.h visual.c
 	$(CC) $(CFLAGS) -c visual.c
+
+parser.o: parser.c
+	$(CC) -c parser.c
+
+scanner.o: scanner.c
+	$(CC) -c scanner.c
+
+scanner.c: flex.l parser.h
+	flex -o scanner.c flex.l
+
+parser.c parser.h: parser.y
+	bison --defines=parser.h -o parser.c parser.y
 
 clean:
 	rm *.o *~

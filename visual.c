@@ -1,8 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define TEMPO_INV 1
-#define MS_INV 0.02
+
 
 #include <allegro5/allegro.h>
 #include <allegro5/allegro_image.h>
@@ -20,6 +19,7 @@
 #include "visual.h"
 #include "vetor2D.h"
 #include "barco.h"
+#include "parser.h"
 
 
 
@@ -30,6 +30,13 @@ static void desenhaRioVisual(Rio rio);
 static void  desenhaBarco(BarcoT, int, int, Rio);
 
 /* **************************** */
+
+
+
+/* ******************* Bison ****************** */
+extern int TEMPO_INV;
+extern float MS_INV;
+/* **************************************** */
 
 
 
@@ -74,8 +81,7 @@ int visualInit(Rio rioTemp, int dtemp, float ms)
     if(inv) ms = MS_INV;
     al_rest(ms);
     vy = getVetorY(getVelocidadeBarco(barco));
-    if(/*vy = getVetorY(getVelocidadeBarco(barco))  < 3*/ vy > 0) ms = 0.025/(2*vy);
-    printf("TEMPO: %f ms\n", ms);
+    if(/*vy = getVetorY(getVelocidadeBarco(barco))  < 3*/ vy > 0) ms = 0.05/(2*vy);
 
     ne = nd = 0;
    /* temEvento = al_wait_for_event_until(fila_eventos, &evento, &timeout);*/
