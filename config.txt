@@ -1,0 +1,14 @@
+PARAMETROS PARA O PROGRAMA.
+Seed: 123        
+linhas: 100     
+colunas: 99     
+iteracoes: 101
+Tamanho minimo do rio: 30      
+fluxo: 15.0
+Probabilidade de obstáculo: 0.2
+Tamanho minimo do obstáculo: 1
+Tamanho max do obstáculo: 0.5
+Distância mínima entre obstáculos: 0.6
+MS entre frames durante invunerabilidade: 0.07
+Tempo de invunerabilidade: 3
+
