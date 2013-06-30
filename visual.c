@@ -8,6 +8,9 @@
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_native_dialog.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_ttf.h>
+
 
 
 #include "rio.h"
@@ -38,6 +41,7 @@ static ALLEGRO_DISPLAY *janela = NULL;
 static ALLEGRO_EVENT_QUEUE *fila_eventos = NULL;
 static ALLEGRO_BITMAP  *image   = NULL;
 static ALLEGRO_BITMAP  *imagemVida   = NULL;
+static ALLEGRO_FONT *font = NULL;
 static int D = 5;
 static BarcoT barco;
 static int inv = 0;
@@ -54,7 +58,7 @@ int visualInit(Rio rioTemp, int dtemp, float ms)
   int sair = 0;
   float vy;
   Rio rio;
-
+  int score = 0;
 
   D = dtemp;
   rio = rioTemp;
@@ -86,17 +90,23 @@ int visualInit(Rio rioTemp, int dtemp, float ms)
 
               case ALLEGRO_KEY_LEFT:
                 ne++;
+                score++;
                 break;
               case ALLEGRO_KEY_RIGHT:
                 nd++;
+                score++;
                 break;
              }
+             printf("%d \n",score);
+
         }
+
     }
 
 
 
     visualUpdate(rio);
+    al_draw_textf(font, al_map_rgb(255,155,232), 200, 200, ALLEGRO_ALIGN_CENTER, "Score: %d", score);
     desenhaBarco(barco, ne, nd, rioTemp);
     al_flip_display();
 
@@ -165,6 +175,7 @@ static void desenhaBarco(BarcoT barco, int ne, int nd, Rio rio)
            if(i == 1){
                setVida(barco, 3);
                setVetorX(pos, LARGURA_TELA/(2*D));
+               score = 0;
            }
             else if(!i || i == 2){
                 GAME_OVER = 1;
@@ -176,8 +187,7 @@ static void desenhaBarco(BarcoT barco, int ne, int nd, Rio rio)
     if(inv) inv--;
 
     for(i = 0; i < getVida(barco); i++){
-      al_draw_scaled_bitmap(imagemVida, D, D , 164, 120,
-      D+ i*41, D , 41, 30, NULL);
+      al_draw_scaled_bitmap(imagemVida, D, D , 164, 120,D+ i*41, D , 41, 30, NULL);
     }
 
     posX = getVetorX(pos);
@@ -284,6 +294,12 @@ static int inicializar()
       return 0;
    }
 
+   al_init_font_addon();
+
+
+   al_init_ttf_addon();
+
+   font = al_load_ttf_font("interstate-black.ttf",72,0 );
 
 
 
@@ -300,7 +316,7 @@ static int inicializar()
         return 0;
     }
 
-    al_set_window_title(janela, "Testando allegro_primitives");
+    al_set_window_title(janela, "EP3 - LAB PROG I");
 
 
 
