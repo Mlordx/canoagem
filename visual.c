@@ -171,7 +171,7 @@ static void desenhaBarco(BarcoT barco, int ne, int nd, Rio rio)
            i = al_show_native_message_box(NULL, "Canoagem","Você Perdeu!", "Deseja recomeçar?",NULL, ALLEGRO_MESSAGEBOX_YES_NO);
            if(i == 1){
                setVida(barco, 3);
-               setVetorX(pos, LARGURA_TELA/(2*D));
+               setVetorX(pos, (getMargEsq(getLinha(rio,posY)) + getMargDir(getLinha(rio,posY))/(2)));
                score = 0;
            }
             else if(!i || i == 2){
