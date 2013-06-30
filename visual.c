@@ -45,6 +45,7 @@ static ALLEGRO_FONT *font = NULL;
 static int D = 5;
 static BarcoT barco;
 static int inv = 0;
+static int score = 0;
 static int GAME_OVER = 0;
 
 int visualInit(Rio rioTemp, int dtemp, float ms)
@@ -58,7 +59,6 @@ int visualInit(Rio rioTemp, int dtemp, float ms)
   int sair = 0;
   float vy;
   Rio rio;
-  int score = 0;
 
   D = dtemp;
   rio = rioTemp;
@@ -90,23 +90,20 @@ int visualInit(Rio rioTemp, int dtemp, float ms)
 
               case ALLEGRO_KEY_LEFT:
                 ne++;
-                score++;
                 break;
               case ALLEGRO_KEY_RIGHT:
                 nd++;
-                score++;
                 break;
              }
-             printf("%d \n",score);
 
         }
 
     }
 
-
+    score += 1;
 
     visualUpdate(rio);
-    al_draw_textf(font, al_map_rgb(255,155,232), 200, 200, ALLEGRO_ALIGN_CENTER, "Score: %d", score);
+    al_draw_textf(font, al_map_rgb(0,0,0), LARGURA_TELA-200, 0, ALLEGRO_ALIGN_RIGHT ,"Score: %d", score);
     desenhaBarco(barco, ne, nd, rioTemp);
     al_flip_display();
 
@@ -299,7 +296,7 @@ static int inicializar()
 
    al_init_ttf_addon();
 
-   font = al_load_ttf_font("interstate-black.ttf",72,0 );
+   font = al_load_ttf_font("interstate-black.ttf",38,0 );
 
 
 
