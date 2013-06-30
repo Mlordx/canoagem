@@ -103,7 +103,7 @@ int visualInit(Rio rioTemp, int dtemp, float ms)
     score += 1;
 
     visualUpdate(rio);
-    al_draw_textf(font, al_map_rgb(0,0,0), LARGURA_TELA-200, 0, ALLEGRO_ALIGN_RIGHT ,"Score: %d", score);
+    al_draw_textf(font, al_map_rgb(0,0,0), LARGURA_TELA-100, 0, ALLEGRO_ALIGN_RIGHT ,"Score: %d", score);
     desenhaBarco(barco, ne, nd, rioTemp);
     al_flip_display();
 
@@ -171,7 +171,7 @@ static void desenhaBarco(BarcoT barco, int ne, int nd, Rio rio)
            i = al_show_native_message_box(NULL, "Canoagem","Você Perdeu!", "Deseja recomeçar?",NULL, ALLEGRO_MESSAGEBOX_YES_NO);
            if(i == 1){
                setVida(barco, 3);
-               setVetorX(pos, LARGURA_TELA/(2*D));
+               setVetorX(pos, (getMargEsq(getLinha(rio,posY)) + getMargDir(getLinha(rio,posY))/(2)));
                score = 0;
            }
             else if(!i || i == 2){
