@@ -32,14 +32,28 @@ int main(int argc, char* argv[])
 
     int testeLinhas = 0, testeFluxo = 0, testeVariacoes = 0, testeMargem = 0, teste = 0;
     int args;
-
     yyparse();
-
     /* Modifica a seed de acordo com o valor passado. */
     srand(seed);
     /* **************************************************************************************************/
-
-
+    if(argc == 2){
+        if(argv[1][0] == '-'){
+            switch(argv[1][1]) {
+                case 'T':   teste = 1;
+                            if(argv[1][2] == '1') testeLinhas = 1;
+                            else if(argv[1][2] == '2') testeFluxo = 1;
+                            else if(argv[1][2] == '3') testeMargem = 1;
+                            else if(argv[1][2] == '4') testeVariacoes = 1;
+                            else {
+                                printf("Comando inválido.");
+                                exit(EXIT_FAILURE);
+                            }
+                            break;
+                default:    printf("Comando inválido.");
+                            exit(EXIT_FAILURE);
+            }
+        }
+    }
 
     /* * Inicializa o rio de acordo com os parâmetros passados pelo usuário. Caso ele não tenha passado, são utilizados valores default. **/
 
