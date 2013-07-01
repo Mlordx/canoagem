@@ -147,7 +147,7 @@ static void desenhaBarco(BarcoT barco, int ne, int nd, Rio rio)
     int nLinhas;
     int i;
     Terreno terrTemp;
-    linhaT linhaTemp;
+    linhaT linhaTemp, linhaTemp2;
     pos = getPosBarco(barco);
     tam = getTamBarco(barco);
     vel = getVelocidadeBarco(barco);
@@ -161,14 +161,17 @@ static void desenhaBarco(BarcoT barco, int ne, int nd, Rio rio)
 
     nLinhas = getNLinhas(rio);
     linhaTemp = getLinha(rio,getVetorY(pos));
-    
+
     ve = getVelocidade( getTerreno(linhaTemp, posX-tamX/2) );
     vd = getVelocidade( getTerreno(linhaTemp, posX+tamX/2) );
 
     atualizaBarco(barco, ne, nd, ve, vd);
     if(estaBatendo(barco, rio) && !inv){
+
+      linhaTemp2 = getLinha(rio, posY);
+
        setVida(barco, getVida(barco)-1);
-       setVetorX(pos, (LARGURA_TELA)/(2*D));
+       setVetorX(pos, (getMargDir(linhaTemp2)-getMargEsq(linhaTemp2))/2 + getMargEsq(linhaTemp2));
        if(getVida(barco) <= 0){
            i = al_show_native_message_box(NULL, "Canoagem","Você Perdeu!", "Deseja recomeçar?",NULL, ALLEGRO_MESSAGEBOX_YES_NO);
            if(i == 1){
