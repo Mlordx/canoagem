@@ -62,12 +62,12 @@ parametro:
 	| ITERACOES ENDL { printf("Numero de iteracoes: %d\n", $1); it = $1; }
 	| TAMANHO ENDL { printf("Tamanho de margem minimo: %d\n", $1); tamanhoMinimo = $1; }
 	| FLUXO ENDL { printf("Fluxo inicial: %f\n", $1); fluxoRio = $1; }
-	| TAMANHO_OB ENDL { printf("Tamanho minimo do obstaculo: %f\n", $1); TAM_MIN_BARREIRA = $1; }
+	| TAMANHO_OB ENDL { printf("Tamanho minimo do obstaculo: %d\n", $1); TAM_MIN_BARREIRA = $1; }
 	| PROB_OB ENDL { printf("Probabilidade de obstaculo: %f\n", $1); PROB_OBST = $1; }
-	| MAX_OB ENDL { printf("Tamanho maximo do obstaculo: %f\n", $1); PORC_MAX_BARREIRA  = $1; }
-	| DIS_OB ENDL { printf("Distancia minima entre obstaculos: %f\n", $1); DIST_MIN_OBST  = $1; }
-	| MSINV ENDL { printf("MS entre frames de invulnerabilidade: %f\n", $1); MS_INV  = $1; }
-	| TINV ENDL { printf("Tempo de invulnerabilidade: %f\n", $1); TEMPO_INV  = $1; }
+	| MAX_OB ENDL { printf("Tamanho maximo do obstaculo: %f\n", $1); PORC_MAX_BARREIRA = $1; }
+	| DIS_OB ENDL { printf("Distancia minima entre obstaculos: %f\n", $1); DIST_MIN_OBST = $1; }
+	| MSINV ENDL { printf("MS entre frames de invulnerabilidade: %f\n", $1); MS_INV = $1; }
+	| TINV ENDL { printf("Tempo de invulnerabilidade: %d\n", $1); TEMPO_INV = $1; }
 	| ENDL
 ;
 
