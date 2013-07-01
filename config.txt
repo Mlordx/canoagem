@@ -1,10 +1,10 @@
 PARAMETROS PARA O PROGRAMA.
 Seed: 123        
-linhas: 100     
-colunas: 99     
-iteracoes: 101
+Linhas: 60     
+Colunas: 99     
+Iteracoes: 101
 Tamanho minimo do rio: 30      
-fluxo: 15.0
+Fluxo: 15.0
 Probabilidade de obstáculo: 0.2
 Tamanho minimo do obstáculo: 1
 Tamanho max do obstáculo: 0.5
