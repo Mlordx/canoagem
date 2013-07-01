@@ -257,5 +257,23 @@ Além disso, foram implementadas algumas funções para melhorar a jogabilidade:
 \end{itemize}
 
 
+\subsection{Cálculo da velocidade}
+
+Para o cálculo da velocidade do barco, fazemos algo um pouco diferente do sugerido pela professora. Fazemos o seguinte:
+
+\begin{itemize}
+
+\item  $\vec{V_b} = 0.8 * \vec{V_b}$, sendo $\vec{V_b}$ a velocidade do barco.
+
+\item Criamos dois vetores,$\vec{V}_{aE}$ e $\vec{V}_{aD}$, sendo que $|\vec{V}_{aE}| = n_e*0.8 + v_e$ e $|\vec{V}_{aD}| = n_d*0.8 + v_d$. Sendo que os ângulos com a vertical de $\vec{V}_{aE}$ e $\vec{V}_{aD}$ são, respectivamente, $\frac{\pi}{4}$ e $-\frac{\pi}{4}$, e sendo $n_e$ e $n_d$ o número de clics para a esquerda e para a direita, respectivamente, e sendo $v_d$ e $v_e$ as velocidades do rio do lado direito e do lado direito, respectivamente.
+
+\item Fazemos $\vec{V}_A = \vec{V}_{aE} + \vec{V}_{aD}$.
+
+\item Então, fazemos $\vec{V}_b = \vec{V}_b + \vec{V}_A$.
+
+
+
+\end{itemize}
+
 
 \end{document}
