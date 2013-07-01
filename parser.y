@@ -2,9 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "parser.h"  /* to get the token types that we return */
+#include "parser.h"  /* para termos acesso ao tipo dos tokens que retornamos */
 
-/* stuff from flex that bison needs to know about: */
+/* funções do flex que o bison necessita reconhecer: */
 extern int yylex();
 extern int yyparse();
 extern FILE *yyin;
@@ -15,21 +15,21 @@ float fluxoRio = 1, PROB_OBST = 0, DIST_MIN_OBST = 1, PORC_MAX_BARREIRA = 0, MS_
 void yyerror(const char *s);
 %}
 
-/* Bison fundamentally works by asking flex to get the next token, which it
-returns as an object of type "yystype".  But tokens could be of any
-arbitrary data type!  So we deal with that in Bison by defining a C union
-holding each of the types of tokens that Flex could return, and have Bison
-use that union instead of "int" for the definition of "yystype": */
+/* Bison pede ao flex para encontrar o próximo token. O flex, então, retorna
+um objeto do tipo "yystype". O problema é que os tokens podem ser retornados
+como um objeto de qualquer tipo arbitrário de dado. Sendo assim, criamos
+uma "union" em linguagem C que cria objetos dos tipos que melhor se
+adequam às nossas necessidades.                                              */
 %union {
 	int ival;
 	float fval;
 }
 
-/* define the constant-string tokens: */
+/* define os tokens não-terminais: */
 %token ENDL
 %token CABECALHO
-/* define the "terminal symbol" token types I'm going to use (in CAPS
-by convention), and associate each with a field of the union: */
+/* define os tokens terminais, em maiúsculo(por convenção),
+e os associa ao campo respectivo da union.                 */
 %token <ival> SEED
 %token <ival> NLINHAS
 %token <ival> NCOLUNAS
@@ -62,28 +62,19 @@ parametro:
 	| ITERACOES ENDL { printf("Numero de iteracoes: %d\n", $1); it = $1; }
 	| TAMANHO ENDL { printf("Tamanho de margem minimo: %d\n", $1); tamanhoMinimo = $1; }
 	| FLUXO ENDL { printf("Fluxo inicial: %f\n", $1); fluxoRio = $1; }
-	| TAMANHO_OB ENDL { printf("HUE1: %f\n", $1); TAM_MIN_BARREIRA = $1; }
-	| PROB_OB ENDL { printf("Fluxo inicial: %f\n", $1); PROB_OBST = $1; }
-	| MAX_OB ENDL { printf("Fluxo inicial: %f\n", $1); PORC_MAX_BARREIRA  = $1; }
-	| DIS_OB ENDL { printf("Fluxo inicial: %f\n", $1); DIST_MIN_OBST  = $1; }
-	| MSINV ENDL { printf("MS inv: %f\n", $1); MS_INV  = $1; }
-	| TINV ENDL { printf("Tempo inv: %f\n", $1); TEMPO_INV  = $1; }
+	| TAMANHO_OB ENDL { printf("Tamanho minimo do obstaculo: %f\n", $1); TAM_MIN_BARREIRA = $1; }
+	| PROB_OB ENDL { printf("Probabilidade de obstaculo: %f\n", $1); PROB_OBST = $1; }
+	| MAX_OB ENDL { printf("Tamanho maximo do obstaculo: %f\n", $1); PORC_MAX_BARREIRA  = $1; }
+	| DIS_OB ENDL { printf("Distancia minima entre obstaculos: %f\n", $1); DIST_MIN_OBST  = $1; }
+	| MSINV ENDL { printf("MS entre frames de invulnerabilidade: %f\n", $1); MS_INV  = $1; }
+	| TINV ENDL { printf("Tempo de invulnerabilidade: %f\n", $1); TEMPO_INV  = $1; }
 	| ENDL
 ;
 
 %%
 
-/* int main() {	
-	FILE *myfile = fopen("entradaFlex", "r");
-	yyin = myfile;
-	do{
-		yyparse();
-	} while (!feof(yyin));
-	return 0;
-} */
-
 void yyerror(const char *s) {
 	printf("Parse error!  Entrada de parametros incorreta: %s\n", s);
-	/* might as well halt now: */
+	/* encerra programa devido a inconsistencia de parametros: */
 	exit(-1);
 }
