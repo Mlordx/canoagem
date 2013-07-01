@@ -15,7 +15,7 @@ struct barco
   int vidas;
 };
 
-int setVida(BarcoT barco,int v)
+void setVida(BarcoT barco,int v)
 {
  barco->vidas = v;
 }
@@ -27,13 +27,11 @@ int getVida(BarcoT barco)
 void atualizaBarco(BarcoT barco, int ne, int nd, float ve, float vd)
 {
   Vetor2D vel, velAdE, velAdD, velAdT;
-  float ang;
   vel = barco->vel;
 
   setVetorX(vel, getVetorX(vel)*0.8);
   setVetorY(vel, getVetorY(vel)*0.8);
 
-  ang = getAngulo(vel);
 
   velAdE = novoVetor(0,ne*0.8+ve);
   rotVetor(velAdE, ne*PI/4);

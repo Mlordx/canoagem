@@ -16,7 +16,7 @@
 
 /* Variaveis do Bison */
 
-
+extern int yyparse();
 extern int seed, linhas, colunas, it, tamanhoMinimo;
 extern float fluxoRio;
 
@@ -31,7 +31,6 @@ int main(int argc, char* argv[])
 /* ************************************************/
 
     int testeLinhas = 0, testeFluxo = 0, testeVariacoes = 0, testeMargem = 0, teste = 0;
-    int args;
     yyparse();
     /* Modifica a seed de acordo com o valor passado. */
     srand(seed);

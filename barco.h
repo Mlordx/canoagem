@@ -18,7 +18,7 @@ void atualizaBarco(BarcoT,int, int, float, float);
 int estaBatendo(BarcoT, Rio);
 
 int getVida(BarcoT);
-int setVida(BarcoT,int);
+void setVida(BarcoT,int);
 
 
 

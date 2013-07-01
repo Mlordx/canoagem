@@ -57,13 +57,10 @@ static int GAME_OVER = 0;
 
 int visualInit(Rio rioTemp, int dtemp, float ms)
 {
-  ALLEGRO_TIMEOUT timeout;
   ALLEGRO_EVENT evento;
-  int temEvento;
   int status = VISUAL_SUCCESS;
   int ne,nd;
   float tempoInicial;
-  int sair = 0;
   float vy;
   Rio rio;
 
@@ -144,9 +141,7 @@ static void desenhaBarco(BarcoT barco, int ne, int nd, Rio rio)
 {
     Vetor2D pos, tam, vel;
     float ve, vd, posX, posY, tamX;
-    int nLinhas;
     int i;
-    Terreno terrTemp;
     linhaT linhaTemp, linhaTemp2;
     pos = getPosBarco(barco);
     tam = getTamBarco(barco);
@@ -158,8 +153,6 @@ static void desenhaBarco(BarcoT barco, int ne, int nd, Rio rio)
 
     i = 0;
 
-
-    nLinhas = getNLinhas(rio);
     linhaTemp = getLinha(rio,getVetorY(pos));
 
     ve = getVelocidade( getTerreno(linhaTemp, posX-tamX/2) );
@@ -189,7 +182,7 @@ static void desenhaBarco(BarcoT barco, int ne, int nd, Rio rio)
     if(inv) inv--;
 
     for(i = 0; i < getVida(barco); i++){
-      al_draw_scaled_bitmap(imagemVida, D, D , 164, 120,D+ i*41, D , 41, 30, NULL);
+      al_draw_scaled_bitmap(imagemVida, D, D , 164, 120,D+ i*41, D , 41, 30, ALLEGRO_FLIP_HORIZONTAL);
     }
 
     posX = getVetorX(pos);
