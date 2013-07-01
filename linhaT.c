@@ -206,7 +206,7 @@ int geraObstaculo(linhaT lin, int tam)
     return 0;
   }
 
-  /* Erro ao criar obstáculo: Tamanho do obstáculo faria o fluxo zerar\n*/
+  /* Erro ao criar obstáculo: Tamanho do obstáculo faria o fluxo zerar*/
   if((inicioMax = lin->margD-lin->margE -1 -tam)<5)
   {
     return 0;
@@ -219,7 +219,6 @@ int geraObstaculo(linhaT lin, int tam)
 
   for(i=0;i<tam;i++)
   {
-    /*freeTerreno(lin->linha[inicio+i]);*/
     lin->linha[inicio+i] = novoTerreno(TERRA,0);
   }
   lin->barreira = tam;

@@ -81,11 +81,10 @@ int visualInit(Rio rioTemp, int dtemp, float ms)
     if(inv) ms = MS_INV;
     al_rest(ms);
     vy = getVetorY(getVelocidadeBarco(barco));
-    if(/*vy = getVetorY(getVelocidadeBarco(barco))  < 3*/ vy > 0) ms = 0.05/(2*vy);
+    if( vy > 0) ms = 0.05/(2*vy);
 
     ne = nd = 0;
-   /* temEvento = al_wait_for_event_until(fila_eventos, &evento, &timeout);*/
-   tempoInicial = al_get_time();
+    tempoInicial = al_get_time();
     while (!al_is_event_queue_empty(fila_eventos) && al_get_time() - tempoInicial < ms)
     {
         al_wait_for_event(fila_eventos, &evento);
@@ -153,27 +152,23 @@ static void desenhaBarco(BarcoT barco, int ne, int nd, Rio rio)
     tam = getTamBarco(barco);
     vel = getVelocidadeBarco(barco);
 
-     posX = getVetorX(pos);
-     posY = getVetorY(pos);
-     tamX = getVetorX(tam);
+    posX = getVetorX(pos);
+    posY = getVetorY(pos);
+    tamX = getVetorX(tam);
 
     i = 0;
 
 
     nLinhas = getNLinhas(rio);
     linhaTemp = getLinha(rio,getVetorY(pos));
-    /*terrTemp = getTerreno(linhaTemp, posX-1);
-    setTipo(terrTemp, TERRA);
-    desenhaRio(rio);
-    printf("\033[2J\033[1;1H");*/
+    
     ve = getVelocidade( getTerreno(linhaTemp, posX-tamX/2) );
     vd = getVelocidade( getTerreno(linhaTemp, posX+tamX/2) );
 
-     /*printf("HUE: %f  %f   %f\n\n", getVetorX(vel), getVetorY(vel), getAngulo(vel));*/
     atualizaBarco(barco, ne, nd, ve, vd);
     if(estaBatendo(barco, rio) && !inv){
        setVida(barco, getVida(barco)-1);
-       setVetorX(pos, LARGURA_TELA/(2*D));
+       setVetorX(pos, (LARGURA_TELA)/(2*D));
        if(getVida(barco) <= 0){
            i = al_show_native_message_box(NULL, "Canoagem","Você Perdeu!", "Deseja recomeçar?",NULL, ALLEGRO_MESSAGEBOX_YES_NO);
            if(i == 1){
@@ -202,13 +197,7 @@ static void desenhaBarco(BarcoT barco, int ne, int nd, Rio rio)
     vel = getVelocidadeBarco(barco);
 
 
-
-  /* Elipse preenchido: x1, y1, raio x, raio y, cor*/
-  /*al_draw_filled_ellipse(getVetorX(pos)*D,getVetorY(pos)*D , getVetorX(tam)*D, getVetorY(tam)*D, al_map_rgb(166,42,42));*/
-
   if(inv%2 == 0) al_draw_rotated_bitmap(image,22,30, posX*D,posY*D,-(getAngulo(vel)+PI/2),ALLEGRO_FLIP_VERTICAL);
- /* printf("HUE: %f\n",180*getAngulo(vel)/PI);
-  printf("Velocidade: %f %f\n", getVetorX(vel), getVetorY(vel));*/
 }
 
 

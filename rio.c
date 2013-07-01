@@ -20,7 +20,6 @@ extern int TAM_MIN_BARREIRA;
 
 linhaT geraLinha(linhaT linhaAnt, int tamMin);
 
-/*static Terreno** alocaFase(int lin, int col);*/
 
 struct rio
 {

@@ -89,15 +89,6 @@ float getAngulo(Vetor2D vetor)
   if(getVetorX(vetor) == 0 && getVetorY(vetor) == 0) return 0;
 
   return acos( getVetorX(vetor)/getModulo(vetor) );
-
-
-/*  if(getVetorX(vetor)== 0 && getVetorY(vetor) != 0)
-  {
-    printf("HUE");
-    return getVetorY(vetor)> 0 ? PI/2 : 3*PI/2;
-  }
-  if(getVetorY(vetor) == 0) return getVetorX(vetor) < 0? PI : 0;
-  return atan(getVetorY(vetor)/getVetorX(vetor));*/
 }
 
 

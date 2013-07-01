@@ -111,12 +111,9 @@ int removeList(List list)
 
   list->celAtual->prox = celTemp->prox;
   celTemp->prox->ant = celTemp->ant;
-  /*itemTemp = celTemp->item;*/
   free(celTemp);
   list->nItens--;
   return 0;
-
-  /*return itemTemp;*/
 }
 
 /*
